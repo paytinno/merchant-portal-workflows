@@ -1,0 +1,1399 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/png" href="data:image/png;base64,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">
+<title>Merchant Portal Workflows</title>
+<!-- Single-file build of merchant-portal-workflows, 2026-10-19 11:18. Generated by tools/build-html.ps1 from src/; do not edit. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --bg:#F5F6F8; --panel:#FFFFFF; --ink:#16191F; --ink-2:#434A55; --ink-3:#6B7380; --line:#E3E6EB; --line-2:#F0F2F5; --hover:#F6F7F9;
+  --accent:#F2600C; --accent-ink:#FFFFFF; --accent-soft:#FFF1E8;
+  --green:#137A4B; --green-bg:#E8F5EE; --amber:#9A5B00; --amber-bg:#FDF3E1; --red:#B42318; --red-bg:#FDECEA; --blue:#1F5FA8; --blue-bg:#EAF1FB; --grey-bg:#F0F2F5;
+  --side:#15181E; --side-ink:#E7E9EE; --side-mute:#8B93A1; --side-line:#262B34; --side-hover:#1E232B; --side-cur:#232933; --side-field:#1E232B;
+  --shadow:0 1px 2px rgba(16,24,40,.04); --pop:0 8px 24px rgba(16,24,40,.12),0 2px 6px rgba(16,24,40,.06);
+  --r:8px; --r-sm:6px;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif; --mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+}
+:root[data-look="light"]{
+  --bg:#FAF9F7; --panel:#FFFFFF; --ink:#1A1A18; --ink-2:#474540; --ink-3:#77736B; --line:#E7E4DE; --line-2:#F2F0EC; --hover:#F7F5F2;
+  --side:#FFFFFF; --side-ink:#26241F; --side-mute:#8A857B; --side-line:#ECE9E3; --side-hover:#F5F3EF; --side-cur:#FFF1E8; --side-field:#F5F3EF;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  color-scheme:dark; --bg:#0F1115; --panel:#161A20; --ink:#E9ECF1; --ink-2:#B8BFCA; --ink-3:#8790A0; --line:#262C35; --line-2:#1C2129; --hover:#1B2027;
+  --accent-soft:#3A2214; --green:#5CCB94; --green-bg:#11291E; --amber:#F0B35A; --amber-bg:#2C2210; --red:#FF8A80; --red-bg:#331715; --blue:#8DB8F0; --blue-bg:#13233A; --grey-bg:#1C2129;
+  --side:#0B0D10; --side-line:#1C2027; --side-hover:#151920; --side-cur:#1B2028; --side-field:#151920; --shadow:none; }}
+:root[data-theme="dark"]{
+  color-scheme:dark; --bg:#0F1115; --panel:#161A20; --ink:#E9ECF1; --ink-2:#B8BFCA; --ink-3:#8790A0; --line:#262C35; --line-2:#1C2129; --hover:#1B2027;
+  --accent-soft:#3A2214; --green:#5CCB94; --green-bg:#11291E; --amber:#F0B35A; --amber-bg:#2C2210; --red:#FF8A80; --red-bg:#331715; --blue:#8DB8F0; --blue-bg:#13233A; --grey-bg:#1C2129;
+  --side:#0B0D10; --side-line:#1C2027; --side-hover:#151920; --side-cur:#1B2028; --side-field:#151920; --shadow:none; }
+
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:14px/1.5 var(--sans);-webkit-font-smoothing:antialiased}
+h1,h2,h3{margin:0}
+a{color:inherit}
+p{margin:0}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+.num{font-variant-numeric:tabular-nums}
+.mono{font-family:var(--mono);font-size:12.5px}
+.muted{color:var(--ink-3)} .small{font-size:12.5px}
+.hide{display:none!important}
+
+/* ---------- layout ---------- */
+.app{display:grid;grid-template-columns:228px minmax(0,1fr);min-height:100vh}
+aside{background:var(--side);color:var(--side-ink);padding:14px 10px;position:sticky;top:0;height:100vh;display:flex;flex-direction:column;overflow:auto;border-right:1px solid var(--side-line)}
+.brand{display:flex;align-items:center;gap:10px;padding:4px 10px 16px}
+.brand img{width:24px;height:24px}
+.brand b{font-weight:600;font-size:15px;letter-spacing:-.01em}
+nav{display:flex;flex-direction:column;gap:1px}
+nav .grp{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--side-mute);padding:16px 10px 6px}
+nav a{position:relative;display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:var(--r-sm);text-decoration:none;color:var(--side-ink);font-weight:500;font-size:13.5px}
+nav a .ico{width:18px;height:18px;display:grid;place-items:center;flex:none;color:var(--side-mute)}
+nav a svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+nav a:hover{background:var(--side-hover)}
+nav a[aria-current=page]{background:var(--side-cur);font-weight:600}
+nav a[aria-current=page]::before{content:"";position:absolute;left:-10px;top:7px;bottom:7px;width:3px;border-radius:0 3px 3px 0;background:var(--accent)}
+nav a[aria-current=page] .ico{color:var(--accent)}
+nav a .n{margin-left:auto;font-size:11.5px;font-weight:600;min-width:20px;height:18px;padding:0 6px;border-radius:9px;display:grid;place-items:center;background:var(--side-hover);color:var(--side-mute)}
+nav a .n.alert{background:var(--accent);color:#fff}
+nav a.locked{opacity:.5}
+.side-foot{margin-top:auto;padding:14px 4px 0;font-size:12px;color:var(--side-mute);display:grid;gap:8px;border-top:1px solid var(--side-line)}
+.side-foot label{display:grid;gap:4px}
+.side-foot select{width:100%;border:1px solid var(--side-line);border-radius:var(--r-sm);background:var(--side-field);color:var(--side-ink);padding:5px 8px;font-size:13px;min-height:30px}
+.envtoggle{display:flex;gap:2px;background:var(--side-field);border:1px solid var(--side-line);border-radius:var(--r-sm);padding:2px}
+.envtoggle button{flex:1;border:0;background:transparent;border-radius:4px;padding:4px 0;font-size:12px;font-weight:500;color:var(--side-mute)}
+.envtoggle button[aria-pressed=true]{background:var(--panel);color:var(--ink);box-shadow:var(--shadow)}
+.envtoggle button[aria-pressed=true][data-env=production]{background:var(--red);color:#fff}
+:root:not([data-look="light"]) .envtoggle button[aria-pressed=true]:not([data-env=production]){background:#2C323C;color:#fff}
+
+main{padding:24px 32px 64px;max-width:1280px;min-width:0}
+.top{display:flex;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap}
+.top h1{font-size:22px;font-weight:600;letter-spacing:-.015em}
+.top .tag{font-size:11.5px;font-weight:600;padding:1px 8px;border-radius:4px;background:var(--amber-bg);color:var(--amber);border:1px solid currentColor;text-transform:uppercase;letter-spacing:.04em}
+.top .tag.prod{background:var(--red-bg);color:var(--red)}
+.top .sub{color:var(--ink-2);flex-basis:100%;margin-top:-6px;font-size:14px}
+.top .tools{margin-left:auto;display:flex;gap:8px;align-items:center}
+.search{position:relative}
+.search input{width:240px;height:34px;border:1px solid var(--line);border-radius:var(--r-sm);padding:0 12px;background:var(--panel)}
+.search .res{position:absolute;right:0;top:40px;width:340px;background:var(--panel);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--pop);z-index:30;max-height:340px;overflow:auto}
+.search .res a{display:block;padding:8px 12px;text-decoration:none;border-bottom:1px solid var(--line-2)}
+.search .res a:hover{background:var(--hover)}
+.search .res small{color:var(--ink-3);margin-left:6px}
+
+/* ---------- controls ---------- */
+.btn{display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 12px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--panel);font-size:13px;font-weight:500;text-decoration:none;white-space:nowrap;box-shadow:var(--shadow)}
+.btn:hover{background:var(--hover);border-color:#CDD2D9}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.primary:hover{background:#D9550A;border-color:#D9550A}
+.btn.danger{color:var(--red)}
+.btn:disabled{opacity:.45;cursor:default}
+.btn:disabled:hover{background:var(--panel);border-color:var(--line)}
+.linkbtn{background:none;border:0;padding:0;color:var(--blue);text-decoration:underline;text-underline-offset:3px;font-weight:500}
+details.menu{position:relative}
+details.menu summary{list-style:none}
+details.menu summary::-webkit-details-marker{display:none}
+details.menu .items{position:absolute;right:0;top:38px;min-width:320px;background:var(--panel);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--pop);padding:4px;z-index:20}
+details.menu .items button{display:flex;width:100%;justify-content:space-between;gap:12px;text-align:left;background:none;border:0;border-radius:4px;padding:7px 10px;font-size:13.5px}
+details.menu .items button:hover{background:var(--hover)}
+details.menu .items button:disabled{opacity:.45}
+details.menu .items small{color:var(--ink-3);white-space:nowrap;font-size:12px}
+details.menu .items span{white-space:nowrap}
+details.menu .items hr{border:0;border-top:1px solid var(--line-2);margin:4px 0}
+
+/* ---------- blocks ---------- */
+.strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr));gap:1px;margin-bottom:24px;background:var(--line-2);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden}
+.strip > div{padding:14px 18px;background:var(--panel)}
+.strip .l{font-size:12.5px;color:var(--ink-3)}
+.strip .v{font-size:22px;font-weight:600;font-variant-numeric:tabular-nums;margin-top:2px;letter-spacing:-.01em}
+.strip .v small{display:block;font-size:12.5px;color:var(--ink-3);font-weight:400;letter-spacing:0;margin-top:1px}
+.strip .v.red{color:var(--red)} .strip .v.amber{color:var(--amber)}
+
+section{margin-bottom:28px}
+section > h2{font-size:14px;font-weight:600;margin-bottom:10px;display:flex;align-items:baseline;gap:8px}
+section > h2 .muted{font-weight:400;font-size:13px}
+section > h2 .tools{margin-left:auto;font-weight:400}
+.cols{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:28px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:14px 16px}
+
+table{border-collapse:separate;border-spacing:0;width:100%;background:var(--panel);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line-2);vertical-align:top}
+th{font-weight:500;font-size:12px;color:var(--ink-3);background:var(--panel);border-bottom:1px solid var(--line);white-space:nowrap}
+tr:last-child td{border-bottom:0}
+td.r,th.r{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+tr.click{cursor:pointer} tr.click:hover td{background:var(--hover)}
+td .sub,dd .sub{display:block;color:var(--ink-3);font-size:12.5px}
+td a,.list a,dd a{text-decoration:none;font-weight:500;color:var(--ink)}
+td a:hover,.list a:hover,dd a:hover{text-decoration:underline;text-underline-offset:3px}
+.tw{overflow-x:auto}
+
+/* status labels */
+.st{display:inline-flex;align-items:center;gap:6px;white-space:nowrap;font-size:12px;font-weight:500;padding:1px 8px;border-radius:4px;background:var(--grey-bg);color:var(--ink-2)}
+.st::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.8}
+.st:empty{padding:0;width:10px;height:10px;border-radius:50%}
+.st:empty::before{display:none}
+.st.green{background:var(--green-bg);color:var(--green)} .st.amber{background:var(--amber-bg);color:var(--amber)} .st.red{background:var(--red-bg);color:var(--red)} .st.blue{background:var(--blue-bg);color:var(--blue)} .st.grey{background:var(--grey-bg);color:var(--ink-3)}
+.risk{font-weight:500}
+.warn{color:var(--amber)} .bad{color:var(--red)} .good{color:var(--green)}
+.pg{font-variant-numeric:tabular-nums;white-space:nowrap;font-weight:500}
+.pg.in{color:var(--red);font-weight:700} .pg.over{color:var(--red)} .pg.watch{color:var(--amber)} .pg.ok{color:var(--ink-2);font-weight:400}
+
+.list{list-style:none;margin:0;padding:0;background:var(--panel);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow)}
+.list li{display:flex;gap:14px;align-items:center;padding:11px 16px;border-bottom:1px solid var(--line-2)}
+.list li:last-child{border-bottom:0}
+.list li .what{flex:1;min-width:0}
+.list li .when{font-size:12px;font-weight:500;white-space:nowrap;padding:1px 8px;border-radius:4px;background:var(--grey-bg);color:var(--ink-2)}
+.list li .when.bad{background:var(--red-bg);color:var(--red)} .list li .when.warn{background:var(--amber-bg);color:var(--amber)}
+.todo li{align-items:flex-start}
+.todo li .what b{font-weight:600}
+.todo li .why{display:block;color:var(--ink-2);font-size:13px;margin-top:2px}
+.todo li .btn{flex:none;margin-top:2px}
+.todo .kind{flex:none;width:92px;margin-top:2px;font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-3)}
+.todo .k-broken{color:var(--red)} .todo .k-decide,.todo .k-approve{color:var(--blue)} .todo .k-schemes{color:var(--amber)} .todo .k-setup{color:var(--green)}
+.todo.quiet li{padding:9px 16px}
+.todo.quiet li .what b{font-weight:500}
+
+.tabs{display:flex;flex-wrap:wrap;gap:2px;margin-bottom:18px;border-bottom:1px solid var(--line)}
+.tabs a{padding:8px 12px;margin-bottom:-1px;border-bottom:2px solid transparent;text-decoration:none;font-weight:500;font-size:13.5px;color:var(--ink-3);white-space:nowrap}
+.tabs a span{margin-left:6px;font-size:12px;color:var(--ink-3);background:var(--grey-bg);padding:0 6px;border-radius:8px}
+.tabs a span.bad{background:var(--red-bg);color:var(--red)}
+.tabs a:hover{color:var(--ink)}
+.tabs a[aria-current=page]{color:var(--ink);border-bottom-color:var(--accent)}
+dl.facts{display:grid;grid-template-columns:170px minmax(0,1fr);margin:0;background:var(--panel);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden}
+dl.facts dt,dl.facts dd{margin:0;padding:8px 14px;border-bottom:1px solid var(--line-2)}
+dl.facts dt{color:var(--ink-3)}
+dl.facts dt:nth-last-of-type(1),dl.facts dd:last-child{border-bottom:0}
+.note{font-size:12.5px;color:var(--ink-3);margin-top:10px}
+.callout{padding:10px 14px;border-radius:var(--r);border:1px solid var(--line);border-left:3px solid var(--amber);background:var(--panel);margin-bottom:16px;font-size:13.5px}
+.callout.red{border-left-color:var(--red);background:var(--red-bg)}
+.empty{color:var(--ink-3);padding:20px;text-align:center;background:var(--panel);border:1px dashed var(--line);border-radius:var(--r)}
+.flt{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+input[type=text],input[type=number],input[type=date],select,textarea{border:1px solid var(--line);border-radius:var(--r-sm);background:var(--panel);padding:5px 10px;min-height:32px}
+textarea{width:100%;min-height:78px;resize:vertical}
+input:focus,select:focus,textarea:focus,button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.timeline{list-style:none;margin:0;padding:0;background:var(--panel);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow)}
+.timeline li{display:grid;grid-template-columns:120px minmax(0,1fr);gap:14px;padding:9px 16px;border-bottom:1px solid var(--line-2)}
+.timeline li:last-child{border-bottom:0}
+.timeline li .w{color:var(--ink-3);font-size:12.5px}
+.bars{display:flex;align-items:flex-end;gap:3px;height:110px;padding:12px 12px 0;background:var(--panel);border:1px solid var(--line);border-bottom:0;border-radius:var(--r) var(--r) 0 0}
+.bars i{flex:1;background:#C9D3E0;border-radius:2px 2px 0 0;min-height:2px}
+.bars i.now{background:var(--accent)}
+.axis{display:flex;justify-content:space-between;font-size:11.5px;color:var(--ink-3);padding:6px 12px;background:var(--panel);border:1px solid var(--line);border-top:1px solid var(--line-2);border-radius:0 0 var(--r) var(--r)}
+.feed{list-style:none;margin:0;padding:0;font-size:13px;max-height:360px;overflow:auto;background:var(--panel);border:1px solid var(--line);border-radius:var(--r)}
+
+dialog{border:1px solid var(--line);border-radius:10px;background:var(--panel);color:var(--ink);width:min(540px,94vw);padding:0;box-shadow:var(--pop)}
+dialog::backdrop{background:rgba(16,24,40,.4)}
+dialog header{padding:18px 20px 6px;font-weight:600;font-size:16px}
+dialog .body{padding:6px 20px 4px;max-height:70vh;overflow:auto}
+dialog .body p{margin-bottom:12px;color:var(--ink-2)}
+dialog footer{display:flex;gap:8px;justify-content:flex-end;padding:14px 20px;border-top:1px solid var(--line-2);margin-top:12px}
+.form{display:grid;gap:12px}
+.form label{display:grid;gap:5px;font-size:13px;font-weight:500;color:var(--ink-2)}
+#toast{position:fixed;left:50%;transform:translateX(-50%);bottom:22px;background:var(--ink);color:var(--panel);border-radius:var(--r);padding:10px 16px;font-size:13.5px;max-width:520px;z-index:60;display:none;box-shadow:var(--pop)}
+#toast.err{background:var(--red);color:#fff}
+pre.json{background:var(--line-2);border:1px solid var(--line);border-radius:var(--r-sm);padding:10px;overflow:auto;font-size:12px;max-height:320px;white-space:pre-wrap;word-break:break-all;font-family:var(--mono)}
+
+/* chargeback path (the portal's "i" view) */
+.callout .sub{display:block;color:var(--ink-2);font-size:13px;margin-top:3px}
+/* case queue */
+.seg{display:inline-flex;gap:2px;padding:3px;margin-bottom:14px;background:var(--grey-bg);border:1px solid var(--line);border-radius:var(--r)}
+.seg a{padding:6px 14px;border-radius:var(--r-sm);text-decoration:none;font-size:13.5px;font-weight:500;color:var(--ink-2);white-space:nowrap}
+.seg a span{margin-left:6px;font-size:12px;color:var(--ink-3)}
+.seg a:hover{color:var(--ink)}
+.seg a[aria-current=page]{background:var(--panel);color:var(--ink);box-shadow:var(--shadow);font-weight:600}
+.seg a[aria-current=page] span{color:var(--accent)}
+.flt .chk{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--ink-2)}
+table.queue th a.sort{text-decoration:none;color:inherit;white-space:nowrap}
+table.queue th a.sort:hover{color:var(--ink)}
+table.queue th a.sort.on{color:var(--ink)}
+.kindtag{display:inline-block;font-size:11.5px;font-weight:600;padding:1px 8px;border-radius:4px;background:var(--grey-bg);color:var(--ink-2);white-space:nowrap}
+/* system map */
+details.msgs{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);margin-bottom:8px}
+details.msgs summary{cursor:pointer;padding:10px 14px}
+details.msgs > div{padding:0 14px 12px}
+details.msgs h3{font-size:12px;font-weight:500;color:var(--ink-3);margin:4px 0 6px}
+details.msgs ul{margin:0;padding-left:18px}
+details.msgs li{padding:1px 0}
+
+@media (max-width:960px){ .cols{grid-template-columns:minmax(0,1fr)} }
+/* narrow screens: the sidebar stays on the left as an icon rail */
+@media (max-width:820px){
+  .app{grid-template-columns:56px minmax(0,1fr)}
+  aside{padding:12px 6px;overflow-x:hidden;scrollbar-width:none}
+  aside::-webkit-scrollbar{display:none}
+  .brand{justify-content:center;padding:4px 0 12px}
+  .brand b{display:none}
+  nav .grp{height:0;padding:0;margin:6px 8px;border-top:1px solid var(--side-line);font-size:0}
+  nav a{justify-content:center;padding:8px 0;font-size:0;gap:0}
+  nav a[aria-current=page]::before{left:-6px}
+  nav a .n{position:absolute;top:1px;right:2px;margin:0;min-width:15px;height:15px;font-size:10px;padding:0 4px}
+  .side-foot{padding:10px 0 0}
+  .side-foot label{font-size:0}
+  .side-foot select{font-size:11px;padding:3px 2px}
+  .envtoggle{flex-direction:column}
+  .envtoggle button{font-size:0;padding:3px 0}
+  .envtoggle button::after{content:attr(data-short);font-size:10.5px}
+  #sideFoot{display:none}
+  main{padding:16px}
+  .top h1{font-size:19px}
+  .search input{width:100%}
+  dl.facts{grid-template-columns:120px minmax(0,1fr)}
+  .todo .kind{display:none}
+  .todo li{flex-wrap:wrap}
+}
+
+</style>
+<style>
+/* ===== merchant portal additions on top of the admin's base styles ===== */
+.mswitch{position:relative;display:flex;align-items:center;gap:10px;width:100%;margin:0 0 6px;padding:8px 10px;border:1px solid var(--side-line);border-radius:var(--r-sm);background:var(--side-field);color:var(--side-ink);text-align:left}
+.mswitch .av{width:28px;height:28px;border-radius:6px;background:var(--accent);color:#fff;display:grid;place-items:center;font-weight:600;font-size:12px;flex:none}
+.mswitch div{min-width:0}
+.mswitch b{display:block;font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mswitch small{display:block;font-size:11.5px;color:var(--side-mute)}
+.mswitch select{position:absolute;opacity:0;inset:0;width:100%;cursor:pointer}
+.side-foot .chk{display:flex;align-items:center;gap:8px;color:var(--side-ink);font-size:12.5px;cursor:pointer}
+.side-foot .linkbtn{color:var(--side-mute);font-size:12px;text-align:left;font-weight:400}
+nav a.off{opacity:.38}
+nav a .lock{margin-left:auto;font-size:11px;color:var(--side-mute)}
+
+/* workflow badges */
+.wfb{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.02em;padding:0 7px;border-radius:4px;white-space:nowrap;border:1px solid currentColor;line-height:18px}
+.wfb.v81{color:var(--green);background:var(--green-bg)} .wfb.part{color:var(--amber);background:var(--amber-bg)} .wfb.new{color:var(--blue);background:var(--blue-bg)}
+.wfid{font-family:var(--mono);font-size:12px;color:var(--ink-3);white-space:nowrap}
+
+/* behind this screen */
+.behind{margin-top:36px;border:1px solid var(--line);border-left:3px solid var(--blue);border-radius:var(--r);background:var(--panel);padding:12px 16px}
+.behind h2{font-size:13px;font-weight:600;margin-bottom:6px;display:flex;gap:8px;align-items:baseline}
+.behind h2 .muted{font-weight:400}
+.behind ul{margin:0;padding:0;list-style:none;display:grid;gap:4px}
+.behind li{font-size:13px;display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+.behind li a{font-weight:500;text-decoration:none} .behind li a:hover{text-decoration:underline}
+.trace{margin-top:10px;border-top:1px solid var(--line-2);padding-top:8px}
+.trace h3{font-size:12px;font-weight:500;color:var(--ink-3);margin:0 0 4px}
+.trace ol{margin:0;padding-left:18px;font-size:12px;font-family:var(--mono);color:var(--ink-2)}
+.trace ol li{display:list-item}
+
+/* workflow lane diagram */
+.lanes{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);overflow:auto;box-shadow:var(--shadow)}
+.lanes .row{display:grid;align-items:stretch;border-bottom:1px solid var(--line-2);min-width:900px}
+.lanes .row:last-child{border-bottom:0}
+.lanes .hd{background:var(--line-2);border-bottom:1px solid var(--line)}
+.lanes .hd div{font-size:11px;font-weight:600;color:var(--ink-2);text-align:center;padding:8px 2px;line-height:1.25}
+.lanes .hd div small{display:block;font-weight:400;color:var(--ink-3)}
+.lanes .hd div.txt{text-align:left;padding-left:14px}
+.lanes .c{position:relative;min-height:36px}
+.lanes .c::before{content:"";position:absolute;left:50%;top:0;bottom:0;border-left:1px dashed var(--line)}
+.lanes .c.ln::after{content:"";position:absolute;top:17px;height:2px;background:var(--ink-3);left:0;right:0}
+.lanes .c.ln.from::after{left:50%} .lanes .c.ln.to::after{right:50%}
+.lanes .c .nr{position:absolute;left:50%;top:8px;margin-left:-10px;width:20px;height:20px;border-radius:50%;background:var(--ink);color:var(--panel);font-size:10.5px;font-weight:600;display:grid;place-items:center;z-index:2}
+.lanes .c .hd2{position:absolute;top:12px;width:0;height:0;border-top:6px solid transparent;border-bottom:6px solid transparent;z-index:1}
+.lanes .c .hd2.r{left:calc(50% - 9px);border-left:9px solid var(--ink-3)}
+.lanes .c .hd2.l{left:50%;border-right:9px solid var(--ink-3)}
+.lanes .row.sca .c.ln::after{background:var(--accent)}
+.lanes .row.sca .c .hd2.r{border-left-color:var(--accent)} .lanes .row.sca .c .hd2.l{border-right-color:var(--accent)}
+.lanes .row.sca .c .nr{background:var(--accent);color:#fff}
+.lanes .row.fail .c .nr{background:var(--red);color:#fff}
+.lanes .row.fail .c.ln::after{background:var(--red)}
+.lanes .row.fail .c .hd2.r{border-left-color:var(--red)} .lanes .row.fail .c .hd2.l{border-right-color:var(--red)}
+.lanes .t{padding:7px 14px;font-size:13px;border-left:1px solid var(--line-2)}
+.lanes .t .api{display:block;font-family:var(--mono);font-size:11.5px;color:var(--blue);margin-top:2px;word-break:break-word}
+.lanes .t .tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
+.lanes .t .tg{font-size:11px;font-weight:500;padding:0 6px;border-radius:4px;background:var(--grey-bg);color:var(--ink-2)}
+.lanes .t .tg.sca{background:var(--accent-soft);color:var(--accent)} .lanes .t .tg.gap{background:var(--amber-bg);color:var(--amber)} .lanes .t .tg.fail{background:var(--red-bg);color:var(--red)} .lanes .t .tg.rule{background:var(--blue-bg);color:var(--blue)}
+.lanes .t .if{display:block;color:var(--red);font-size:12.5px;margin-top:3px}
+.lanes .row.grp .t{font-weight:600;font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);background:var(--line-2);padding:5px 14px}
+.lanes .row.grp .c{background:var(--line-2);min-height:26px}
+.lanes .row.grp .c::before{display:none}
+.legend{display:flex;flex-wrap:wrap;gap:16px;font-size:12px;color:var(--ink-3);margin:8px 0 0}
+.legend i{display:inline-block;width:18px;height:2px;background:var(--ink-3);vertical-align:middle;margin-right:6px}
+.legend i.sca{background:var(--accent)} .legend i.fail{background:var(--red)}
+.legend b{display:inline-grid;place-items:center;width:16px;height:16px;border-radius:50%;background:var(--ink);color:var(--panel);font-size:10px;margin-right:6px;vertical-align:middle}
+
+/* open questions */
+.qs{display:grid;gap:10px}
+.q{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:12px 16px;box-shadow:var(--shadow)}
+.q .qh{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.q .qh b{font-weight:600}
+.q .qh .r{margin-left:auto;display:flex;gap:8px;align-items:baseline}
+.q p{margin-top:6px;font-size:13.5px;color:var(--ink-2)}
+.q p.prop{color:var(--ink)}
+.q p.prop b{color:var(--blue);font-weight:600}
+
+/* tracker */
+ol.path{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+ol.path li{flex:1 1 130px;padding:10px 12px;border:1px solid var(--line);border-radius:var(--r);background:var(--panel);display:flex;flex-direction:column;gap:2px}
+ol.path li b{font-size:13px;font-weight:600}
+ol.path li span{font-size:12px;color:var(--ink-3)}
+ol.path li.done{background:var(--line-2)} ol.path li.done b{color:var(--ink-2)}
+ol.path li.now{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+ol.path li.next{opacity:.6}
+ol.path li.stop{border-color:var(--red)}
+
+/* wizard */
+.wiz{display:grid;grid-template-columns:230px minmax(0,1fr);gap:24px;align-items:start}
+.wiz ol.steps{list-style:none;margin:0;padding:6px;background:var(--panel);border:1px solid var(--line);border-radius:var(--r);position:sticky;top:16px}
+.wiz ol.steps a{display:flex;gap:10px;align-items:center;padding:7px 10px;border-radius:var(--r-sm);text-decoration:none;font-size:13.5px;color:var(--ink-2)}
+.wiz ol.steps a:hover{background:var(--hover)}
+.wiz ol.steps a[aria-current=step]{background:var(--accent-soft);color:var(--ink);font-weight:600}
+.wiz ol.steps .n{width:22px;height:22px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;font-size:11.5px;flex:none;background:var(--panel)}
+.wiz ol.steps .ok .n{background:var(--green);color:#fff;border-color:var(--green)}
+.whyask{font-size:12.5px;color:var(--ink-3);border-left:2px solid var(--line);padding-left:10px;margin:4px 0 16px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px 16px}
+.grid2 .full{grid-column:1/-1}
+.form input,.form select,.form textarea{width:100%}
+.form input[type=checkbox],.form input[type=radio]{width:auto}
+.form label.inline{display:flex;gap:8px;align-items:flex-start;font-weight:400;color:var(--ink)}
+input[type=email],input[type=tel]{border:1px solid var(--line);border-radius:var(--r-sm);background:var(--panel);padding:5px 10px;min-height:32px}
+.drop{border:1px dashed var(--line);border-radius:var(--r);padding:10px 14px;display:flex;gap:12px;align-items:center;background:var(--panel);margin-bottom:8px}
+.drop .what{flex:1;min-width:0}
+.drop .what small{display:block;color:var(--ink-3)}
+.actions{display:flex;gap:8px;justify-content:flex-end;margin-top:16px;flex-wrap:wrap;align-items:center}
+.actions .l{margin-right:auto}
+
+/* signing box (SCA) */
+.signbox{border:1px solid var(--accent);background:var(--accent-soft);border-radius:var(--r);padding:12px 14px;margin:4px 0 12px}
+.signbox b{font-size:13px}
+.signbox dl{display:grid;grid-template-columns:130px 1fr;gap:4px 10px;margin:6px 0 0;font-size:13.5px}
+.signbox dt{color:var(--ink-3)} .signbox dd{margin:0;font-weight:500;word-break:break-word}
+.secret{font-family:var(--mono);font-size:13px;padding:8px 10px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--line-2);word-break:break-all}
+table.matrix td,table.matrix th{text-align:center;white-space:nowrap}
+table.matrix td:first-child,table.matrix th:first-child{text-align:left;white-space:normal}
+table.matrix .y{color:var(--green);font-weight:600} table.matrix .s{color:var(--accent);font-weight:600} table.matrix .a{color:var(--blue);font-weight:600} table.matrix .no{color:var(--ink-3);opacity:.5}
+.chip{display:inline-block;font-size:12px;padding:0 8px;border-radius:10px;border:1px solid var(--line);background:var(--panel);color:var(--ink-2);white-space:nowrap;line-height:20px}
+.fresh{font-size:12px;color:var(--ink-3);font-weight:400}
+.split{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:12px;margin-bottom:24px}
+.bal{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;box-shadow:var(--shadow);display:flex;flex-direction:column}
+.bal .l{font-size:12.5px;color:var(--ink-3)}
+.bal .v{font-size:23px;font-weight:600;letter-spacing:-.01em;font-variant-numeric:tabular-nums;margin:2px 0 4px}
+.bal .s{font-size:12.5px;color:var(--ink-2)}
+.bal .actions{justify-content:flex-start;margin-top:auto;padding-top:10px}
+.bal.main{border-color:var(--ink-3)}
+.toc{columns:2;column-gap:28px}
+.toc a{display:flex;gap:8px;align-items:baseline;break-inside:avoid;padding:3px 0;text-decoration:none;font-size:13.5px}
+.toc a:hover span.tt{text-decoration:underline}
+.card h3{font-size:13.5px;font-weight:600;margin-bottom:6px}
+.card + .card{margin-top:12px}
+ul.plain{margin:0;padding-left:18px} ul.plain li{padding:2px 0}
+.mt{margin-top:12px} .mb{margin-bottom:12px}
+.right{margin-left:auto}
+@media print{aside,.top .tools,.behind,.noprint{display:none!important}.app{display:block}main{max-width:none;padding:0}.lanes{overflow:visible}section{break-inside:avoid-page}}
+@media (max-width:960px){.wiz{grid-template-columns:minmax(0,1fr)}.wiz ol.steps{position:static;display:flex;flex-wrap:wrap}.grid2{grid-template-columns:minmax(0,1fr)}.toc{columns:1}}
+@media (max-width:820px){.mswitch{padding:4px;justify-content:center}.mswitch div{display:none}.side-foot .chk span,.side-foot .linkbtn{display:none}}
+.form label > .btn{justify-self:start}
+
+</style>
+<script>try { if (localStorage.getItem("mpw.look") === "light") { document.documentElement.dataset.look = "light"; document.documentElement.dataset.theme = "light"; } } catch (e) {}</script>
+</head>
+<body>
+<div class="app">
+  <aside>
+    <div class="brand"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAAgAElEQVR4AezBCbDu913f9/fn9/8/z3POuefcRfsu29jygoLBxsTGbGZrMQQSgoeMHZjgQgN0aDJJB2g6pEBSEpiBkkAGaKFNJjTNFNqkoUCapAQa9iUsxga8YIQt25IlWbr3nuV5/v/f991zzpVt2ZIs2Zit1usVnvIRLTzlI1p4yke08JSPaOEpH9HCUz6ihQ9Ca7BatHEc03q3H62rl7AYk9WijXO3H22qeMqfGuFJ2l613Hjt6sLTb96649rzy+tbMj10sd8zz0xby7Z3dodrN9N86WgzXwyGYw0CgoAmELU2M3Pv9mACQUCOSSABeqc2s1MVPZBIEjOEASGYEBq0RTKGBLlCEwjHAkE4nFkfTa4VgXAskEB4WIMsG8sBWoBAFGbtihwLpKQO5xxJioc1GLYaW4Jd+2TmjcwbmfZn9y/NtX8412ZT1KacN6UFDBDB4o9HeBKuPb9YfurHX3jhZ774whff+ay9T9veWpwbO+nrxdoaK+njOGyW1H5VP5qxQEkZS1JCiRrUmuyWIqQMir1DFzAo6alWraeQAqxQQq+GEg0F9hamoVGJSEoQKIMixNI+DX2e26SggiIkgoiaCItiHCTIiXisV5UlIkiwGZYTDPIwNc7zojhVtFbrjH0/yz5ZhxePDn7v7Ue+6YGJtz+w7ne98dL6d95yMN9/aS4Pu4f7nSP+GIQnMA7w+Z9yzcd+zV+6+bue9YyrXrRYHi1bP2Blg82S9CXSKQ5pdKKgWBLFXtALSihBsBcKlFjSlJo7KUFRaQVsQgwolFBFnztRUmIJfYDNEgRKUChRQaFExXmgzwFBCwUUARFLoizmMFRQEEHQQkFFi9hotUUYeDeVaZ5ATrXWmIfG0Tgy9ZlWvea23Q+yKtdHh+/cP3rDQ1N/632Hm9/52QfW//rnH+z/8e3r2t8Uyh+d8ASuPjcuvu5LbvnqL/tzN/1942p76120+T62YrIeoK+AopioWmFfgpISClBaASWUoAgoUEBJSmruUEIJJRTUHFQoQUkHe5ECqlBJbzg1KEChJEIKKLEKFQpSoGIVCBJSImIJBWNvtAoIKHIioFhyqkJzAYb3kt47VuNEAtKZakMyACPdgZ6FcxbsTwWtsV2H63sP5t/9+Yfav7nriF/7xYc2v/C6y9Nd92/qcJI/dOEJfNTNq7N/9z+/5du/4JPPvbpqnbQNYw6yqA1shFoQoTJjhVQTDR1QUkBBuiCgWIJCB0ooYRaqoIAOWtCbSlBSkg7OnVSwCkqoUD2khyhUkQIqMANVWIUlGFAoSUEMGE5VQQWKYwGBAgJ0UMEQAgrVOaEBOaWoBIJyqqWhgiCimCsQ6KXVdnnb0aIuMxzdN/H6115a/+hPPXD0L157efq9txz2Bw+L4g9JeALPfdrWVd/61Td+z2e+8MwXtVYNNoxsYHNE6404oEVlhoJUI4qdY5IeUkIXDVGowgqUpAsFVIcZKKAKBXtQiUKHlDh3UsGSFFhgD3SIkpIUUIFZrIISSzCgWEUKYiMGFBQKqHDKQAUCdFFBiAEFihMWaDihoAKNU0KjIaKi8m5JOFFVXmYr0+KsA1tspmJqbO7bHL7plx7a/JsfuWfzQ6+5OP/2vZv+4KYo+fAKT+COW1dnv+Wrbviuz3nx3l9uOWojE60XTNIqgOhMTycVUjEaO8ckPaSELhhQmEXBKlJCAVVkBkooULCDSgS6pMRJoliQEgvsgQ5RUpICKjCLVVBiCQYUq0hBbMSAgkIBFU4ZqECALioIMaBAccICDScUVKAhEKDZEFFROaHSWkOlSqYamR1cNUlJH1fsb22zv5kPfvcgv/6/vW3zff/2nYc/cc+67j0oN3wYhSdw2/XLnW/8ihv/uy/8jGu+JvN9w5lxgiMZOANdqm3QDQipgBLFzjFJDymxSwwqzIJgSXphSSqkAyWUqNhBIQodUuDUicEqUmKBPdAhSkpSQAVmsQpKLMGAYhUpiI0YUFRSQAUICFQgQBcVhBhQoDhhgYYTCirQEAjQbIionFBRScKJ6pKMVJfeZLEs7CiNzfIq7plWvvOo3vqah9Y/9s/ftv+PfvXS5vWXZjfFh0d4AtddGFf/zatv/tq//Hk3fMPIg+MZ35WsR+hnCKGGfXRD+gCGWESxc0wyAwUpoTjlLBagpAsCM1BCCSUU2EEFJQXpwiwUWBLFgpqFClFaF0osSA9UQYklGFCsIgWxEYECLKxABZUQMIDQuULAgAJFAAs0nFBQgYZAhBBUTqicUEmCikJxLKEhNUMbIIvRo1oyjxe4/yCsUptfvXjwo//sHUf/469fnn/jrsP+jnVZ8gcTnsDemWH8qi+67pVf+Yobv/PsLuf36m6W8zIerqih0ceLxA1t2gIhdKLYuWKWlKSA4pg4gQIlKcEGU4FAF6qwAiUqFqQkXdIDJZZQQEn1gg5RUkIHu7QKKJRYgIBiFSmIjQiUoFjBAktCiEEFAQEhBpUgCVig4YSCCjQEIiCoJEFFJQkqyqm5gTS2emOcG9I4bOFoCNWay4LBgQf7Ynrjpn79371r/j/+1b1HP/yGy9PvH5Yb/gDCExiH8GkvOvtnvu7VN33Pc5+xesmFdk/bmQdcbzMPUuODpGbGoz0i2DZGY+eKWVKSAgoQnEGBgpRQgbmDgS70QoGKx2IV6ZAOVJEKltAFoXqHDlFSQge7tAoolFiCAcUqUhAbEShBsYIFloQQgwgVUBBiUEkkgAUaTigeCzQEIiDvoaKSBBXlPZojcSC1II5UFXPrzMNMX8xWKzLcwqWDjfcN470//o6j7/9f7778T37/cPr9i3Nt+BCFJ+HGaxY7f/UV13z1qz7/+m+8dnnfmb1plvlMpqHj+CCtF4vDqzhhOySKnStmSUkKKEBwBg2UpIQKzB0MdKGLAgUqlqRDutCBKiyghBKroEOUlNDBLq0CCiWWYECxihTERgRKUKxggSUhxCCSCioIMagkEsACDScUVKAhEAF5DxWVJKgoBBg7xIHN0JjbQGgsJhm62IqDRXG0VA/EcY+Htq9m/9B7f+wdl7/3B9/60A+88WDzllk+JOFJWIzhVS8//59+/V+59h9ff/7wur3NJvQdpnGmxgcZZljuX0OQGg6JYueYMENKUkABgjNooCQVKGEWFDrQCwQLFCihS7rYJRUsoRcoVkGHKCmhg11aBRRKLMGAYhUpiI0IlKBYwQJLQojhVIEKQgwqQQIoIEhQQJGGQoAYVE6IIKdElCsE0jCFgblxKjUwzgPjtCCzzHszh32SXM3B4gbesX/pjf/DW+7/2//y3sMfuWfT9/kQhCdhaPDJH7d753/7Fdd/z8fccfalu9NDjMCmrTO3y4x9YHl0nlRhjohiB4R0oCRdLECxAwUUUJIC5oKCFNALBXtDgZKU0IFexEAXSrSouWNJDK2EEmdJAYYoliCgWJIKMaSLJQGsYInKiVQ4JSAgxKDQAiWonAihSkAgCETAoHJCBCEJKicU5EQjCpEKGJAw9IHFPNB6WA9rspTMo51zHLDov7Y//fQPvP3o7/3E/Uc/c8+m7/NBCk/Sc562de1/9arrvvlzX3zhS84M7myPB1QO05lovbGYV1AFTqTAApR0oCBdLECxFxRQYC9aBeYiPVBCFRZYAwiUpIACekFBuqBY0ucZlVRoCh2cJQoVoliCAcQqUiGGzGJJDAilqCDEoBICAkIMAi0DVUVVkYQk9N4hASSABor3UDmRBJUTCgjYuELeV3i3FJhCoNXoUTvHxXZmft3l6We+/60Xv/lH33nw/x50Ox+E8CRdc27cetkL9172lV9w7dc+/46rPmVreDAr90kn1kCYiR1KUmABSjpQkC4WoDgXFlBCl1aBuUgBJfTCAh2gAiWUpIK9kwopoUSLPndQUiEKHZwlChWiWAIBxSpSIYbMYkkMCKWoIMQgEgMCQgwCLQNVRVWRhCT03knCFYLB4j1UTiRB5YSCcqzx+CQEFYGi0Ry1ttlfnGMzLKefvfdd/+I777r4Db98cfPmSWZ5csKTNDS4+drlhb/4aVd9wZd/wfXfdO1Vi1uv8n6GDRHowyFQtN5IgQUo6UBBuliAUnOHDhRQReuBuUgBJXRRqBpAoEsKKKAXKUgJJSrVOyhUSAkd6BKFClGqBAKKVaRCDJnFkhgQSlFBiEEkBgSEGARaBqqKqiIJSei9k3AsgGCweA+VE0lQOaGgEAPhAypFGroijgylTp39xS6Xywd/8J6jb/3Otxz8owem2i+QJyF8EBZD8uzbt278hi+75ds+/ePOv+JsO1osp4vAnGmciaF1SIEFCOlCQbpQoFJTJx0osaT1QC8oSBd6oWANUgklCCmwd1IhJZSo2DsqVGgldKALChWiVHGFYhWpEENmsSQECkpRQYjhlICAEMOJZKCqqCqSkITeu0B4j0CBShJUTiRB5YSCQuRRBMLDAgW0arS+Q2cgOWKc1lYfedfOBV570H/l7715/9X//oH1a2Z5UsIH6fzusPrzn3zVy7/mC677hmfdev5jl9NdLBYb5gypTbEAKUMFSlKQLpTYQYW5oIAulKSH9CIFdLGEkqrRFKEEIQX2IgV0QUGxCktSkAJKmAWFChSolBKOlcSQLnRAiIChV6GA0AwiMZwqCEEFGidUTiShqgTCI1VQOaHySMoTUt7HYh5o8zaVxnq5T/XOsvDiYo8Hc/bw/7736Lv/4V0Xv+N3D6Z7Z5EnED5IQ4Nn3rx13Zd/7rVf/sUvO/s393b7hUW7yHRU7IzLtHlNSqyAki4pSBcLLGEuUkCJXVoP6R0rpAtVWGANUAGFkhicO62DCgJV2AuVVEiJJZkhihUoKUUlgEqzwVykgAqRY6FXoYAQQSACAkKjoaLhRBJOqKgk4T0Ei1MqKo+nCIT3UuQKhQANWEyNNq+ohMPVIfNShkLZ4aG6ngemvO073vTO//LH79v/t/dt6lLxgYUPwWJMXvK8M8/5a6+4+ps/8WN2/ly1YXl+LMbN5bRakxIroKQLXdLFAhTmIh0soUvrgSoygyUpscAaoAAFIR2cO6kQBcWS6p0IFCDQJV1SYgWUElROlcSQLnSIEAFDVxQQIghEQEBoNFQ0JOHdVFSScIVgsDilovJ4KmB4LzklxwSEARgrpDcMbIbOZoQswHnbvtlj08f5/7l49L/8nTdd/Ja7j/rvXe5OfADhQ3T1uWH1Kc/f+4Sv/MKbvvnOZ17zSbteGrbqflqtSRkKUOyQLuligSXMRQooySzpgerQQ0rohYI1YAUUSloP9k46oESxpKpICRVQ6EKHVkIFlVJKOREhBmZJAQVNjoWuKCBEEIiAgNBoqGhIwrupqCQcCyAYLE6pqCTh/QlUeEwqp4TBRkV6k1aw7LCZYN5asWFgwcKZLX7rYP61f/iWg7//cw9sfvLuw35v8fjChyiBq/bG1ee8+MKnftXnX/fNz7lleMEZLo6jR1BgJSjOnXRJL+wcE2dJB0ronVaBuUiFdKCDBVZEopKCFDB3qICSEpXqnRgsiZAO9qJ1sDhVSikREFJABwoiNDlVggJCBIHIFQWxISIBwnsogoFwTCCCFVBEVJIQgsi7STAg70+UY4IwOLAZi6NRVh3OHEJzm7UD+wtpi+7sgrewu/7xd1z+rn961+EPvHl/fuO66DyO8Ad0w1WLvc94wd4nvOKTdl/9Kc8ePu/c9rhX80DvoTVCP6LW+6RPLAQKNjVQQvpE3JAqMkHrI8wrMi2gAA+NPXRBoAuzRKCEEoUuxEBJSuhgL5pgQUoQKKAEBYMlCDFEgWAHBOSYICDvJackvA+h1EB4mJwIJ+SEJCEJj6Sg8miinFKIoSLVoIljJ1ToNByA6DyM3LNzgTe+a/qVb/2ty3/1P7xz86uzyOMIf0AtsFqmffyztp7+N/781d/4kuee/fxhtbu3aA+ymB9kqyoezmSGpEHN9JqggB4yN1INpiIdKKF3UHAgAl0ooQuzqKQCikJVQEFJD5TQi1RAQaGAAkpOFViAXCEgpAeKhwmC8mhCDO8mUgXhvQyYEDklkoTWGsgVAZWqIoRHEjklyDEhBOSKQJWcSKAlTEO8f2ePB6bVQz/4pv2v/Z43HvzPl2dnHkf4MAiwt9O2XvBR28/4C590/hWf/gm7X7Vz5ui6q9r9nJ1n2kEL0wJao9iQjaQHeoMOdKAXVIeaoToouMRqpIBeUMIsCBRQolAGSqLQIQWUUCElKAoFWBBBoQpSXCEgpEMKBJQr5JQcC0QYimPhvaQKwnsZkPeVhCQ8korK41FORY6FR6qSBBJIGnMLD6yWHGzO95945+H3/Z3XXfr6tx72SzyO8GESoDXy7FtXN3zZ55z765/9otWXXr27vO5c32R1tCbThoxQNacd7dF6A9ZQh+CEvZMe6CP2gfSQmtFOCiihC10sSAGKBgtQ6JIKKHRIAQIFAgWUkAIFOyAohGMCHVIgx+RRBJrQhBDkYYo8moDhPQK01hA5EUJZWEB4NEE5FSG8L+VUAkmoFh4c8GC6kdcfrH/h237n0n/xcw9sfv2g23kM4cPs7Jm2vOOW5R2f9cLtz/rUj97+3Odcf+EFO0PONQ+zakcwT4ybbVoRPQIPiBP0IvNI5iX2JekyzJfADiUpsQO9kwqUUKDBApUUpACBDilAsCCCHBMsQLCDAgICAh2aIMfk8cmxcCKAHFMeyYC8ryQkAeSKoKLyWBTkiiaE8EgqJ5KQhGpwOeXEtbz1sD34/Xdd/vofefvRD7/1sD/AYwgfZgG2tzKe22mr59y8uu2Tn3vm5S+78+xfuP36rY/Z3traZT7ijPeQ6SCtBgYXuJbMMHSJndRMdXGabZIUhICBzQwFKVCgpBdEoCQdIlCQAgoUKEgBAgUIFlcIGBCYJQXKFYI8mgOYkIQknKjeJadIwgnpyPsL70veTXkU5VQjPJECDgPkHPfN2+t//Y79H/gHbzr4pjdcnu/lMYQ/REOD269dXnjmjavbX3bn3stf+pzdL7z9uuWdK+5fLj1gYJlFxzrYZCVks7HNU4hUD/YGNqjCXtihCa2AClhQoUoQLEmHVpACC1BSQEFqgCookEAvIMSAAsFJUpxSOZGERzJQKUxIQhJOVBVJSEISThSdD4bK+1NOhRDC4xIqsmmNXisO+k799kF++ut+86Ev/cV3be7iMYQ/AqtFctXuuP3S5+y85HM+dvuLP/pmP/Gas6tb7NP2MG4vVpnYronxaM2ik2EKfT0zLoASSuyFvahNByUFlsRQJamAkgI6pIpUQLFC6yEVUKyAYhUYEFCgwSQICCIISXgkgbYAAklIQgK9ihCSkAQC0pEnSxRQSLhClFMpnlAlbIaR5oLZa3ztpf4Lf/M1973y5x5Yv5nHEP4Ind9pi5uuGq953i3jc2+/erj9mTcsn3/LNTsfc36r33T93upWWay25mqLcSfjtGbn8F5Sa+zSbAwIHVKQEpVUwxIEClqJXVJASSqgUANloEQBgSo0UBwTaDBLKoCoXBGukHdrTCSQhCScKCWBpJEEkaIAebJU3p/KiQjI4wrQ0zhqS0bCkmv8jw/1n/2a37jvlb/4rs3v8xjCH7EEhsAwpJ3dbls3nh8uPOO6xdM/+qbV8285v7jztvOr55zZ3bluMR8ur+fyzlatV6N9sWrD6rDtLdZT0YT0DgoVtIFASUoooAsKFVQUugHBAgWrY0EIKjGkB0quEIUhDRJAIAwUe0NPQ0jLCAwUqZmWoqUgAnIiQORhAeR9CcgJlfcKJ5QrimMCAQQCyCNJYxq32MzFkrO+9nL/la997aVX/uQ7N2/gMYQ/ZgGWi2R7keHc9rBzfmfYPbNsW7sLdm/e9aarVnX+/NK9a3bGG3dWi2uKthVdjrhsOpSZp54DC1GiUIBACYICEklU5FiBGqAhIES06EghiBxLM5FUAi0sdppnb1xxy9Vntp6+v9xb7cbxbObVsGCIa1Y5ZGibDBRMxYLGkgF6kdZQMQV2ohAID5NTBSinIhCoAgXCCUOiolwRiKDh0rjLZowPHPq2b/+tzav+yZvXP1U8WvgTrAUS0iCrMcPWyLgcslwM2VoNbI3Jopfz/uRBSYWHyfsQCCTQeIQAgfAIczErBXJFsho4E2iACewOWd2yM1x/7fZ4btHa8tqt4baPOT++9Mbd8VnXbHnL3vLMuW0dtocNtTqgDg44s1zhVOnzxHJsNGdwJgUECCggIMh7SQhggfIBRbDk4uIsh6Ne3tS7vvt35i/93tevf2wWeT/hT5kACafCFQLKEwpPTB6thfC+bCHhit2xLW/cGa65cbvd8NEXls+97cz4zGefHT/+6efz/L2dXO84jBfmznY/omXDlE2kWM7QpoDiIKeKUwIBlGPhhBWQDygCJQ8tznI06uWe/e99/ebV3/26wx/eFPJ+wlM+LAIsGtkastwesrxhZ9h9/tWLj/usW1evuPOqxcuu217evMvBsDUcIGsKM85LhmlJaqbaEREUEAKEY/KwoICNR1J5pAh0uLg8y2YR72b78J+97sEv+wevPfihqZD3E57yh6IB22OWt+8N1730htVLPvvmxRe94Do+Y2srV+3SWfQZGCjHDH3DUIekihMKjSsiDwtUQD4wwRkuL8+xWcb7Jy5/328ffel3v/bg/5xF3k94yh+qMXB2mdUzz403fe7t48s/5cbxL92yt3XnbtrZ7e0h1S/SNofZ6pJICCqN0AIUxwQhFWLjAxLmDgeLc+y37gObuue/f+3mS/7xG47+XZdHCU/5IxHg+p22eua54fpPvWn52Z/z9J2/ds3Z8XnX9Ys5y8xcRUiG1qg+QUmAUERASDVieJhAeB8CYZ7C4ZmruVQb33E4v+XbX7N+1T9/0+ani0cLT/mwGEIbQmshioIKs3R5rwBXb7Wzf/GZW5//ymdv/a1n7fQ79tLamCOCjENL9Ql7MXDMAiVCegiN9ycQrhCY53Cwey2X+trfv7x5/bf+2vpVP3LX9CvyaOEjWHivBm0M4xJWi2SrhRGInJAGBGjAmLAYkuUi2Vu13b1FOwOkwSIw9LLmcnPUPXhgXe+8PHu5g10KWLSwuHV3ePqLbxhf9Hm3ts974TXjp+0Nm12rs1qOROM8EyQWlARIb4TGu8ljUGZGLm9d4LKTb3xo8+t/55ePXvWTb5teJ48WPgI0YNWytQx7BVNLG64eh2ecbdzWcGUVgdWI122RZ24nd/RwzRxaxtD7zBJYdBhn2GphdwU3XJXcft3WeOO5nXF3HByqqFmmkrmsce6X3nbp6Dfeua63HVXbbCoHD0x58J6Nhw/M/YG71/3NN+xk9yuet/zPPvsZ269ie3trhyOWh/sZpwkKMFQ6Kk1I8R7hRON92JiHLS5l8FJb8Jr7Nz/1X//85Vf+5gP97TyG8P8zDdoYVsskVw/t2nNp149x9+yy/dntMZ82lVmOq7Y3Lm8b++am9Twtat4wpoG0pa1V73G5YA6ZnWh2thtsC+eGxtW7S+58xgUunCmu2h44O8KyZsa5qA5zh6nDULOb9aEHXS+7sLH0cNP27568//6pv+639uefeai858arFs/4vOftvuLqW6+7Y299X7v28H631pswB10wp+jpNCcax+RU5FgIIXKqGOltjyMvsz/s1E+/Y/6hr/oPl//K/Uce8RjCn2INsgjtzJDdM0POQTZXL/K0WxbDJ2239rRz5HlnJp+Hw7J22LrU+mrqyXLcphHsG6pP2DsIfSomZzIMbCbTqrFqYbsVZ9K549ZtXvS8G7j52jMMmwNGZxZ9Q9scMUwbMs1UD/Mc5optJjvz6GxjTeNyDVxm5GIa07Tpm+SIoe5727i8+8brVzfedsPilh0PF1f3hzIeHDKmUQ50pJhpdKLEcCKIhgghQJCRNdswzNw75eh//735W//2Lx/+3f2ZmccQ/hQJ0CCrluX2kK2zQ87dvmrPu3XRXnBhbM9bLvLsasM1W1XX92qrcTLbNPp6yuFS5tVIL+nVmeeZKum96B1iQxrr1YqDzZrdcWTVO1vTho+6bpdPfP41PPPmbdrmflod0mpgKBn6xNBnMhfMs/SkemPuYB/JZqQKulKEDeFIrMWQPizowfvPnGMaq551x3WcOzu03PWaLNwQpQxYxAI7p4RwokEBCoQmVEY2tcPc4t1HXv6BN6z/xne99vB/OuoUjyH8KTGGnBva7i2r9lHXLYZbnrEzvvimZf7shZan7Vi3tXEcNtAuznOqRIvN1BGYe3ezqcwdMgALOFpDBUijz41UI8PAPivW8yFbteb67fBZLzrHC++4hsXmQcb5gKF36FJ9ZggMVTBBOqSDBdWhGzoDfdximjt9mqAEoYBOUcFu8uDiLJfGPS5sF7d+9E22e9/EyGEyFFgMc6eVqCDHwonQsAQ5FUAGNuyy5ox3Hx695Ttes//X/+kbD//lppDHEP4EWzay07I4v2hnn7k1PuvO7fFTblm0T7x2a3zRYrU4Z9XWMM/Z7jP7+wephKk19+eetcWasCnZFKQW2MPGDYywEdYbaG3JZlOMQ2OeJ9owMlI86+YF/8lLr+fWcxuyfw/LKtKBPoAjumFAWkE60IECBStUNWbDREcDXehigUIBvWDT4WjYZs02jSPm6YAbb9tl90KjtzWNiWWX1sUCCacEDCgQIiBUBg6z58Vcyy+949L/9W2/dv/f+oV717/Z5TGFP6EuLNryzr3xeXeeXb7s9q3hBbe14UXXj+OtruetzbwJWy3rzFSfzbozzRXTWHdYz8VEmCpMXaYq1n3FJgNzO2Ki2BSkbXOw39ne2qLmQxZjZ7EpXvxndnnJC27h7HiZuvwOzowzg2BBt0ENtOpgkQIKUmAHqmE1tNGqaH2GAgooqApThblg6rLpMrUFR12CTNVpO3DDM3ZZ7BV4xEppsyhIiICAwRIICCjFyIPtLPtcOPxXb7r4Xd/2qw98ywx/c84AACAASURBVN3780Py2MKfAENgEcadse2cW7Stc2OWH3d28ZLPvHb1NVcvh49lGHfOTLZxPbPsE52eNd3LtclUYZpgmjtFYyo5mmE2TBWmLnPJUW1x1BpTjpjsTBXW65HlcAbnfVITO9vw8hdv8aLnniNTp20mtocBpw1xQmbmdCJkhlSgAhVSQAcqUEFhqKL1jgV0wNAdmCtselgXTAVSzJsZK8yGo1acvXnk+qftkBzS5omxGvaCBAwqESzAgIAyZ+DBdta7Dla//U2/8OCr//3dR790MNt5HOFPgK3GcMvOcNuz9hbP+PgLq09/zpnxhbdsrz7uvPPVVm9Fz/rogLE1N+sp06bTHMBwtCmOAuu5qBaOSg47bNLYGDZVbEqmvmCmMbNmUzDNIezBRpY5ZHtr5qX/H3vwHrXrXdd3/v39Xdd138/9HPYxyd7ZSTgaEZFDUVNACBMQMnS0FIonQlnaNeNMsJWuUaCrS+rYdjoeSKW1hVZptRYdyzgqVulpMaIMVc4gx0ASEg4J2Tt7Z+9nP89939f1+30/nwn4X9cs904IaNfar9fTjvLsJ3XE8jRqwYwNCh2kCSehClSQQYDACkKAgkgIQyQgvkwBElhgFaRgclDTTBLVprOJ0bR1AQamvsFOcvyxCza3hetIr4JliAAbVADjZr7MBkEtA+c3DuXb75ze/GN/tPfDt53LXf4UwZ+hAA7NYv7Y7e6qZxztn/ecY5s3ndhePKFPH97BzDTibCzHNZkZrRlHx7QyqQ7cszuu2e+TsYEDqmDVIIEmmBKqYXQwETTElNBq4GnGQEfvFU//i4e5/hlXsJi+SFf3ic5kS/quEGm6LJRWKK0DG2nNlwkQFAGCEJCAwARZ5lhgiRDIoslUJTWhGZQQFTQNZA6oT8bZyOGrC5ef2CA0wiSCwBGEjQ04cE1s/oRxLXPOL45OP//Bcz/yug8u/8XZ0Y0/RfBnZLOP7tE7/fFvPz678frL+xc/fkNP2ZkNxx1D2ViviTZRXRmnFrVBRLAaTROME0wNTM8YsEcyNaMIqsxYISnUNFXQ0qwHWBnGCRyFNhZmmuFpzXVPLdzwbcfoanJwvia8BAu7oQadoUuI7IgsWGAq4gGGEIQgEkhAgCAA0UMaC2xwmpSQIRMyYUpoCVYhW0FA7RqLw3D8kVuUmVBbQymUDMKmdUYl6NYi6JlKx9TsWbfp2/b0ydd9ePyf3/Lp9bvWiflTBF9jfcBli3LgG4/Mvv4Fj9i66duOdC8+2sfVl2kZW3VNVFEzqEQ0NdaTkaEKxgrrBk1QG9SEiWANTGkchXWaqUGlMAlqC5rFsoixwDgGJQY0QtTG4x5T+I7//ggHZ/vM2gHcztCVEQxhKAYSEITAAgwCxAMEJQFBJOCANGFAgAGBBCRIoIRQQTbZzCiYBBI4C8IoTLeAK67ZZjgQyPuYoGQBw9QDIfoxiTJj171r2Y7lynu/dtvyJ/7Jh1f/9J6l1lxA8DWy0VG6iG57iOGmazde+txrNr//2MGdpy7wxmW5YnO5y6xWlIpJQRJka4wTyFAF6wpjg2qoDWqDiWANTGlMYUqzblCjMCXUDJrNvkwdglqT8EBdNq44Ci/+jkdy4ojppz36XNN1a0yCoQhCgABBGEgwIIMNGEgoAgQhIAEHCJBBYIMTlCBBUUE2SjNmUA3KQAqMyRDM4LKrFiwO96T3KTKtdNQYGBL6nIAko9CGQz4Xh7jn7Opz/8d7z7381z+1/H1xYcHXwEZHuWanf8ShGYefd3X/rS9+1Pw1V2xvPIroYra3y5aSWa0RTTTBlEaA0h4nIg0tYV1hSqiCqUFtUANWhjHBBFOadUKjY0qoCdVmjIGpQK0joaDHPO/bD/H4x87YzJ6hJqW7jxKJCcImDKEAmVDgNBgwiAcYECAoGVg4RIQCZLBxgg0InKAEJQQdIcg01VAFzkAuCKNIpjBHT8zYvmxOep+SYuo71t2CzXVhmPZxl6yNc/MKTrcdvfvuvbf+1Lvv/5EPnJzu5CIEXwObffTXXzV/xk3Xzn/wKZeV5++UetllbuQ4MY+OkhHUihMyocnIkInHSqShKVhPZmzQHEwNWpoJWBnGBgqYEtYJ6cIkqAlVZupmrAVoQtU86Qk9Nz7/cmI6y6a26WqjzHeREhvCgIJiIE0IECAwIAMGBCEIgRPCAQIECGjGBgucYEEmdBQskEwK5CAVpAoGsiSrFIeP9xw8tkl6n6Kk9h1j2WY+BrP1Hi7NWsy4x0c4tR4+/6YPnXvNW27d+837VlpzEYKvoqEQB+dl++kn5tf+wBMO/th1R+MFXeT88HSe2bjGLtGqCRWcBouQsUCCZYWWUAVTQk0YG1QVpgaZMNosbWpCE0yCSVAdVEPNQpMZS9AY0JRsLSrf973HOLxzjpkLsQ6GaDhGHCBBGDCEg0gIgQ0hY4MV2AZDJITADcJBCJCxgAQDTkCBDShAgRVIRjZKsAupQhoUyUrJzrGeA5fPcZnAFVNINkn1DBrpW/V6Y4dzGqa33Vl/6Sffc/61t93fTpmLE3yV9AFX7XRHb3zMxvNfcu3GDz3myM51h5z9wf0zRB3BERJYQSjI1igWnYwTlLDfoCXUhKlBVTAKMgtjQmswWixtqqAlTIJqmBRUB1WQgjWiuVBkvuWbt7j+WUGvJaXN6JwEExhSYAIMIRMOQoAgDJbBoAQMGEIQCU5AEAqQQUCCDRgsQAUMVuAMbGMZpbEKqUISZIi1GzvHBraPznA30agMGZAbLPuBVsJl3TH2W/7MudVH3viR5d//zdtW/+7c6ImLFHwVdAGPOtgf/s5rFy/+rsctfvjEAZ5w0K3s7C9h1aDrIwELIk1JUGsUiRC4GSUsE1pCTZgaNAWTgprBlNASRpulRTPUhJowCaqD6qAqaDKtiFWFyw8GL3nJI9jZuodBouQAscZhbHAWsPmSEIQBQREgQGAbJWBAgKAInBACBAgwkIDBAhTYgAoIJLACUpBGDjI7MqCFmCLZObbB4siAy0ilMTQo6lgOg/f6LZoOs95fnvn1T+3981/++P6bPnW23tWEuUjBw6wvxNcfGY69+Os3vveFX7fxw1cc2HjkoW6Kjd37GKKLHE0mEAEpSoqS4CZCHcogEzLNlElLaAljg6agKmgqjA1qwmixQjRBTWiC0VAVNBdqBtWm2WSIZzzjME/7lgN4PM0QIlxRVLKAFaBCyIQBm+Ig0qAgZLCxAskgQICgCGiAAAchY0EIzAMSbMAdCKwCCRKgJFJIHVKhGVpnatc4cGyL4WAHZSJlegtcGcvgM/3l7OZ2/cM7d3/1lz589h9/6N7xk3uT1+LiBQ+jAK4+0B942RO3vv+lj5v/yHbP1QeGLjbaSN8qpS2jC9MaIFPSlIRIUAWrI7NnaoWUURudctSEsUFz0BTULEwNpjQVs0I0QU2YBJOhKmgu1AyaQATbh5Pv+p5rmJfzDOoJ7xNliYtp7nCIaEEIMIShGCIBQwiQsUHNhMACDEXghkMECjCEDAIbbAiBVUCBVZAgZCIT0kgdqY5GkNHIIdm5cotup4OSqAmXBjRbc86XbX3odPfeN3xg7++8/c7Vu86NmniQgofRoY3S/6Wv337OK775wE9ee6R/8ua0F/16n6Gfh7LRtxWhRAl2IaqhmUhQA6sjFUzNZDMpI0FNUxOqYGrQHLQ0U0IzLA1NQctgclAt1tUkkCqUMmPKNc9+7iEe9/gdum5N1pGuq+A1X2IHODDCNghQEAIyKA7IIAS2wQkCBCgIBW4isoACxAOMLEJgQySEAlRAAQISyIYTRs+Z2MQkfewxzMTsskDbA2MZaMOKULi0oyynw5waz935Cx/d+4m33Lr6zXv2ctc8eMHDoC9EXyJuvHbzL/zgdYduufbyrWdewV6Znz/JxtCHWocUlFxRMpEg1OFqaMatQAqrkIKpJS1BWUiZlmYSNAe1mipoCU0wGVZAU6G1QnWQmKpGA6SO1gqHL68898aj7ByYUbqRqe4xDAIn4cAGHCSJeYAgElAQGYQC3EECFrgRAgRhIAuqoqgDAQJsEoEhBCQUBaGALCCDgkzRFKRnpGZAQyyZb5uNKwY0BFMUYp5e1Y5aHsHZ3Xbmd+/YfcM/+9DZf3znbjvdxEMSPAyOLGLrqVfOvvF//NaDP/rkq7dfdHhQf+D83Wy4QZZQmSMF0Sa6NmEF4YKroRm3AimsQgqmlmQDuZAyNU1NaApqmqqgpWkJEzACqaBmTxM0Q4ukSiiCcTJP+ZYdnvr0AzjXEGtaW9H3pvAAg13AgSKxDQIURAahIDJAAQ6QQRUMIUCAAlcTCkIFBLaQDYYQIEBBUQEFJFiw9kDNjlkmQ6tkiD3E7PIFW1dskzpPUbVYcLocYZWefu/O8Vff/LHz//J9Xxzftztp5CEKvkJDoTzleH/t33ra5muf+YiNFx5Y9FvD/ik2s4bWUOYD6TkSdG2kaxUpCBdcDc24FUhhFVIwtSQbyIEEVaYlVAUtTVNQ07SECowBEtTsaCrUhBZmnQ16mG0Urn/elRw7sablGjMRNCJMEIQDu4ADkYBAgILIAgmhQihAgMCaCAMCFCBwNaECglBgC9lgQBCCEIQ6yACBBStvMOaMrbbHrE0oYH8O3bGj9AdnuO56oLJsV/CFcZ537O2/7xc/svf33n7X8p2r5tWqOXmIgq9AXygbfcz+xnWLm77/SfOfPrIohw/EijKuKamADrvHDIRE10aiJTKEOlwNzbgVSGEVUjC1JBuYQqZpaaqgCWpCKqgyLaEClUA22YKqjpqB+45lW8Mcjl29ybOedzXiTkofKCsljGQKD3ABFyCwhS0whCCyQAIqoCAU4ERqhABBCMhAzRQFqBACSyQmDAhCEIJQgQzIAMGknpqFeU4UNTJA24Xh8m2mWeeKKKVjPfWr994b7/m3n16+8e13rf7DF/barsxXJHiIAugL5cnHh0e99vqtn/0Lx4fvvKwfcRvprAhB0IE7UFBao6sjNGMe4A5XQzO0gjJxFlJQU1iQCSlIQRWkoCakCk2myVRgEliQgtYKVT2tFKZYUwd4xg2P4qrHVhT3EggwAdiAARdQAQKTYIEgFEQWnBAZoCAENuAKNiSQgApuJhQgCAW2kcSXOKEIwkGogAISELgKBKmguhCD6XZMv1PY73uf6w7SbxzQu28/87Zf+djyje/6wviue/ZzV+YrFjxEB+axeOSh/sqbnrT18u/8hu2/dc1iPNCtz6FuFrYJF8Kms+lTdLURrUKCHeCCq6EZtwIprKAlNAklpMCCltAEzUFNSAVN0GSaTTVgyIRWoXmOhhn7Os/saPCsG69m88gK+QzBnyiABRhwAQcQWIktcBCCosAtCAUoQBA2VgMbBDRAAQ3IIBwgsETahAFBCMIQWUAFEiyI1mACzeecU0+3KGwfDq/KxHrrCCfHIb+4O33kV/74/D/4nU8v/8PJfS3NwyN4iB55qD/60idt//XvesLm/3Jsu3v0oTzLQI3qDhNIUJz0KfpMSjMhQCCZUOBqaIZWsISz0GRaGss4IQ2Z0ARNUBWkg5amCZqh2WBQQtagak52Hee95Kpv3OKp1x/CG2exluCAgDDgAEMY7ACMJSyDIRQUBW6FUBACC8IGNWxDAglkQAIKIgEHlkmLMCBAUBQgCBXIwDKRiRPW9Kxmm3QHtjxtmHGjR3Vaf/SM3/NrH1u9/h13rt5+9/k8n+ZhEzxE33rV7DGveebB1z3tMQf/8k6eKxt1j84ZYNJgA5n0EkVAdsgz5IFoazolroZmaAVkrKAlNAklhCANLU0TNAVVkCo0mSaTDsQDLJTQatBywdqQm2ueeP0VHL9WqD+HSb4kCHCAA2zCBhsDzgQDBhSUDMgAdYQAgW1CFduQQEIocA0wIAiBZSRjQwjCgKBkgAIyQJAuJIXV1NzvbKGjR7mvG1hN4967P7/3W2+7ffXL7/zs+g9P7mvfPLyCh2DWEd/zTYsbXn394X95YlOPPKhdpBK9J0ITFkiAoAgQ4I7mBfJAafv0raE0VEMWIsEKMk3KWGBBCppMS5CDKYPmoKWRTDpoBULCCa0GjQ32JeZXmL/4gsfQ7dyLynlcgi9zQAAKMA8wYcBACmRQgAAFJQMUoAAZDGQFG2QigQQ3CAUYUGAZ21iAABWKCmSAwDK2GZmxzOJ+1hOLBeNsPt05lTv+6Av7v/tbnzr/K++9e/2x/epqHn7Bg9QFPOpwf/DHnr31v9/4dcMPHqqn+/lsFmN2DJ2ItgYDDkqCE0IBGSgL4YCskMYJJNCAhFBgBQgsmJotSqRAhjRMVTRDS0iZBLIPohoaNAfrAufCHPuGwzzx6UfJ7hQuezgSBThAFCI6woVQAReKglKTosAKkAkHakkIENgGARIhQSaREIIQxoQTEGBA4AycPWo9xQPZEjnphqBldY2OXc3J+UHc2u57Ttff/dXbV//8o/dNH/r8+bY/pWW+OoIH6fh2t/Pcaxc3vPLbDrz+xGZ71LF6EkqhMouuiKLJmAgFRYEboCASnIWwcTZIQOAEGpAQCiIDy9gwNSxHpEEOZJiqaA4yTUvTAtRBNKAGSbDszW4xT7j+BMe/bsDlNGgEgi9RBCbABRSEO0JBOCBX4AYGBBhIgwAZDDKsY0A2kUlJUQTFGJeQAikotWM29iDRlMiJDU7RUyhZ7AzODQe5q/Uep/qF959sv/Mbd65/8Y9PT398Zq2Rr7LgQegL8Q2XD4/6O8858pPXPfrAi46UZX+oniSU0WJO5kRHgiEUFAVugIJIcBbCxtlAYAEJkUAGoYAEp8FBbZBAysiBHNQm0oVMkxI1oBWICqX2tOhYdpX1Jjz1BY9mfmAXhjOEk4gCBkcBAgQoCAUIMA9o2AIZDAgQYCABAwpSAwhIEZkggwB1oIIU2ANqM0qOdLkimiFAEV6ziP2cuTT7vpHT77mf//yeU+3//dCp+t5bz7WP3z9qKfNVFzwIW0N03/XEjRtf+cxDP3f84OzRm/Usw3Q+NhDuZogEJRhCQVHgBiiIBGchbNQaXyYgoQhoAVlAxjJ20JqxIQ0pkINMSAeZJtPUMDUgWqHUGVkKe93I4uqeb7j+BJ6dhPk+DqCADQ4eEJAmDCEoBgxWj1WwwYYQOEUIENimCLqpQAJKSIGABDuwOqygUUgHfasMU5oMquacjwX7ZabVetq961z94O/f3f71b322/udTK58f0+NudeVrJHgQjm+X2d++fvM1L3ni4rWX9cvBmQ4Ts7aG6HBXUKvGRCgoCtwABZHgLISNsoEBQQgQ0IJQQAICG2rKFiGBDHKQClIm00hQDVNAqQVyRkawP1tz/CmHOfpNC7r5aTysUQfpgiOAHlywDDIdJiSKwRqwOsJgGQRqCQJkbFMEQ01ChhQIMEjFUonmjnQ45ChTs9THpDmZG3bN1T2r/t7bzq7f9857pt9478n63o+eybvOTW78GQgehG+5ajj+j16w/W+/+TjP2qj3R0aHGJjlCDIKMA8QhIKSgRWQEBk4g7Cwki+xAEEReAIUIAgFGNLCBgkkSAe1GgkkkKAaRkOXAbnBVBqrzcrjbriK/kSlbK5YtRWzYUDZAR1RZmQGFgRBZ1NsCsJZQUIpLMDGTSDAxjKhQGtRHGAoFEzBMZDqqSqMzaYGXRuoWfNMne3t7q4+89576r/7w3vqOz5+f37iM7t5ar850/yZCS7SoUUZ/vo3b77kf3raoZ+9Zms6tjmeJOlQDAxZCSUyOAABCooCMkBBJDgLWFiNLxMgCIEnCAUoQIFtbNkmJJBAgtpABgsyQQGTIWpHlA3WZQ1XBI/+764kD41ow6wzmZeOTondQcyQe1oCMiERFkiERMhgYwEyyJBgCctYPdY22SBTRHRQBqYWNIWzVotedVzt33tmvO3UXv3sf/nc+O8/err90cfua3fct9JqnYg/B4KL9OQrZ1f8+PMOvuEZj5z/la0ydvPpfsKGGAibkhPYKABBqBAZoICESHAWsMCNL7EAQSigGhSQAQYERlgggQ0StAY2WGBBEqzTUHvcFcbZxOKxC658+hFPWzXG2YLqTStN0Eh1NA00D/T9wlF6kJAbIZMTWAXbhACDaoLAMpYZ2grG1molp+bWspuqumlZPaZidebc7udOnRvv/sK59un/ctfyP95zvt19777OnVlrmebPleAivfCbFk/4iecfeuuVO8Nj5ozR54q5VgSFdM+Qa3BiHiBAhVBABiiIBLKAhKOBDQYnFBVcTWSAwQqwsYUMFjjBBiVYgAMZRGFs4NaTJO1A4+CTt73z+AV7c7HsD0LsMI6sT54+f+eZ3bx3OZW9deuWLft9uUxgwi6BezXAASYsG4PSQsayQiLcoo0tpknT/ujl/UufObWf955e5qlzy3bm7CpPTi3H/UnLL57P06tm8edUcBFmHfzAddv/w/96w5E3X73IQ62uPBTFrO6DO2opDG1NSHyJBSgoCshCKHACWcDGNMICA4JQoGYigxAgsANb2IDACRY4IQwWYEiC6o50Qa0xHpYPP/ORjJd1LKOt7j7v21dttvrU56f3/96Hzv/2Z7443b639u5Y3dbVtTVkTImIrhA2BF8WNg5ABhtjY0wJyqIvW7ZritZkravb2JxNzqmpVWH+GxBchO159H/7hu1XvvxbF3/vWGmb1oquVIogvaD2S+ZNRIIN2CCILIQKqBACFKDAqlgmbJAJBZYJBZZBEAYcWEAaBAjcAEEIEDhgKrAuHRvNPnm447LnX8fnz5z+3G9/9NTr/59PrN6+NxL37eY9d9wznarNlvmKBX/C/LctuAjHdsrWjz9v6+9+91M3X7k5ruZDl8hLBhfSm9R+ySxFJNjGCkIm1BEZhAoIUIADqYEMMiETCiwRCpBBgMEKIwIbBCSQEAIEGBzBnoPsBjuD3cu32D+0dffbT7a3vOmPTv+zT9wzfoYIS3aKS/4rwUV4/PH+in/0wgNveuZjh7/U7S272RCk9hgE9oKpXzM0CBnZoABDyQAVQkGogACB1MACQyQgQ0IYECCwDQm4gAwGBKQJAQIEWTr2mDEMM86P9tniM797ljf9+ufrr95+f/3MmWXuNWEu+f8VXISnPXr26J/6q0f+z8cfL9cdWO5HFBOxom8Ne07tJroMQoGcIAgFoSAUoI5QgACB1bANNqQpCkiDIQSWwaAEHIQhBDggTQiQQTDRsYw5fen44tjpvWfbb/7cHeu/+4H72yenROaSP01wASXged+48eT/7UVH/83XXeZvOrBaRSK6WDHUCTSj9o3OPaSxEgtwEArIoChAhUjAICXIYINNKKCJEITBMnZAgglCJhwgoJlwgASGSs9UNrALd+dG/Y3P7r/2dbcu/+npyftcckHBBcw64nuuWzznVS/Y/ldX7eQ1O5VopUDusmgTzp6cieIZTiMnCEJBCJwQWQiBFSCwEmwwhAwGN1ESQoDAPMDFOAIZZJChQThAJmQqhTEGr3LO6dad/fk71q94w22rt4xCXHJBwQUsZlH+5nM3v/cVNwxvODDUA5s5i9b1RO6yOY04C5oZvMBK7IodRAahwA1CBTIIBRjkBBtkQiYEThEKSBM2dmAVMGCDTFHgFEUBMggawX4MnJ82fftKH33dJ9Y/8O/vmd4vLrkYwQVsb0T3mu84+IPff/3O63d0ctjIRUzdjE67bE5ryEAzkDdxJnYFBygIBVQIBaiAgrCREywQkBAGmkAmDAgQ2MUWgUwYQkCa4oA02LRSfDYWcX89OL7tc7tvfMOnVv/w0+fzFJdclOACdhalf813Hr35+244dsvxdtvQ54KxzOnyLJvTGhI8gNhGSqxqTIQKCKIFFkQWUIABN2yDgYQi42awCYEFxUYqtgkEIROCECBAEDJTKZzpd3xqtXH6DZ84/8o33758y35z45KLElzAzqL0r/7Lx25+2bOP3XKk3D5sZOKcU3LNoBVWQBmweyxhJ18SGSAggYQQoAAbJGxjGRJCAQlhIAEHkYIUY8xozOhzYpYTxTCpw2wwSIz94E/FIT51avmOf/Lh8696z8nxA5Mwl1yU4AJ2FqV/9QuvvPllz7rylp35HcN27tJPM7pmXEYERC4IJ7axIQwIQoYG2CATCrCxhGVIY0GoQAahIDLAQAoyWZcFkxfMc8m8rUnB1M1w2aJbjt6db/M5turvf3b3F372A+d+/Av77bTMJRcpuIADi65/1V+58hUvu/7463bmdwxbucswzunSuIyYB+QGxcZOrMA2oSBsaAYBMtiEAinBgAwJZEAG4Y5IwIFlUhVrRmRPl42IiamAoiAvPLQZ95cdbt3Lu37pE+f+/lvv2P+102stueSiBRdwYNH1r3rRlT9007NP/MzO7LZhO3cZpjkljbsRKNA2CCfYWICNZUJBpECAABlsLIEDp0EmskAGxR1OCAc2TBkMrVKaMEGNQJFEMdKG17nD/dqY3nbn/ht/+db9f/XxM9Mn9psbl1y04AIObHb9j77oxA+97NlX/szO/PZhW+cYxjmRQDdigmgLCokkLLBNJGBDmkgIGRxYxm5YgCAyQEFkIVwIBZbBPW3q3GsvkGglWHnOYDO00blxgJPr3nfuxgd/+gP7r3jH3eMH96orlzwowQXsLLr+VX/1xCtuuuHE6w5s3D5strPM64LSjLsRXCDnBMJK7DAikAkBaZAJAWmwsYUFCEhAQWQQKqAAA9nBenDE+WhdsuwK8g4bSzHL6t3Zdpwcvft/f3r8mZ/78PJnv7jUvrnkwQouYGfR9a96yYmbb3rOVbfsbNw+bLazbLQFUQ3dGrsQ2iDcsI0UYIg0YSANacLgNNggYQMCZ4BMtCBUQAGCyEKsOtyvWM0aq9IRbYvtcW5PHafK4I+cWr7jDX+89xP/6bPjOydhLnnQggvYWXT9j373iZtveu6JWw7Mbx822zk22ibRDGWNiW9kGwAABgFJREFUCcgNioWdKANsUIBNJEQKBMjYxhIYEJCAgmiAOkKAgkiICbJLVp1oBNFm7nyIc9MGd5/bv/XNn9x//VvvWP5fnz2fZ8wlD0VwATubXf+j333VzTc998QtBzZuHzbrWea5SWmCbkR0lLZB0HCKVIBNyOAg0kQaZJzCNrYJBxaQEBm4QXEhsoB4gEg1khm0Qt+aVYIzs8v4wrnY/51P7v3DN3909+fv2m2nq7jkIQouYGez61/13Vfd/NJvP3HLgY07hs16P/PcJJqJfsQOIjcpbihFGhCEDDaREIJIYwnJgJEgBCQUBbQAASqgQDSWXXVXN2NzPbiMlWkG9/db4zvu0m+/8f17/+Ddd48fWzeLSx6y4AJ2Nrv+1d9z9c1/7flX3bIYPj3saJdZXVAIzBJTIBeEE9tIQciQJiQwFBnSIGNgpGAHXWt0TXTNMBkc4AKCGoVV1zO0dNlvxMZhplamP7hr+daf+9D44++4a7x1TMwlX5HgAnY2u/7V33v1zS9//tW3LGa3Dge0R1/ndHSIJXIhtEE4scGJQw4kSBMyxQYZZOyg1R4MoYlwJWzcAAXOGc4ZqUINOUphHQuWe+P4qXv9jje8f/Xa//SZ6f371eaSr1hwATubXf/q77vm5pc//6pbtmafHrZ9nn6a0dFhVogC2qBYWAlpkLGgpMAmBMhYJlRgX2BwSbKIjEAGZ4HaQfZ0Ki59z+ncZL2edt/5mfEtv/6R9S++63PT+0+vPHHJwyK4gJ3Nrn/NS6+++WU3Xn3L9vy2Ycd7dOuBjg7HCkdALggL1IgmPyCcJgQhg4EEDAi8WoMDPNCY02JABmcltHbniaBjNS64d1yc/73bp1/4F+9evu7jJ+u9U2IuedgEF3Bgq+tfc9M1P3TTjVf9zPbstmGHPfrVQCFwmXAUIjfACTlCyiiCNChAgAEFKAhDy8QCWgfqIDuUQTqdNOh4QPjMbp76vdvjd37+PdMtH7i7fnJsmEseVsEFHNzu+9e87BF/4+UvuOanN/pbh608x6wtoJkYKjaQGwSCnMAJClCACghyFE7oup4SA/trQzZmXtFltZtDMfM+Rzg/bdDaeveu+/bf9x8/Of3KH9zR/uDj9+qzZ9euXPKwCy7g4Hbfv+avPeJvvuwF1/zUov/ksK1dZrkFLYl+wg7IBUGDnEAGg1VABWdBDayCE1pNokBRpdTJWEQs+P/ag3veps4wDMD38573+DvKkoIoxKqqqhtLJzowtANCIMTQCamA1KFbJCb4DUz9Ad06denWgU7AwBCVqpXCt5PUTTGJHceJY/v4nPM+H/0JSYeEIJ/rmoQy9lKftHq6/LiV/fSwlT56vsWdUWashsIRIRxgvuH9vVvNpW+vNO9X/au4YSOUpQ5igbkUBgdIFWQM0wAzhakD1AHqoOJg4mDmAHUACKxTYzYErgGBLKQ8affTZ7//Iw9+fR5+/mMjX9ubmhgKR41wgPmG9/duN5duXm3er8Zv4oYMUdI6kCsQpVAiEFdBEJgGqBlMHUwdoB5mEZzFJuIozwTMgoRiUyUZ7eugtxNaT16Nf3n0OvvtxZa0e2NNRFE4JoQDzNWi6O6t5vffXT/zQ8V3S1UdoCwxISjIC9QimFZAJhBjMBSqHqYeprEFjsB5BC+Z5imnGSNd64WXq135600nrDxdy5ZbXV4fTCTJGILCsSIcIPZENy6dunjnxrkfP14of1YuTcjJEBEDHnOANSCIQTZBwkMdCxtrbGI1LeVp2N/Lt7d35e3uMKyvv0tXOgN+u7IR/lzv8btxqmGSWUiDKQrvBeEQFk+Xa998vXDt8oW525+crX1RL2UNTm2aJJVR4NrU1KnJmDs7/XZnd/pvklOSJDQcJzrY2MxX21v53xvbYbs/kiSwqSgMhROBcAhEwHzDR58vVs58eb7+1bmP/Kf9Qdhsb8rqYN+6ORsIVukPs+7OKOyImLJAWUxzNg1sJorCCUT4HyIHzNWjUqXkfB5UJlMNWTCNHMhH5FhMRWEofDAIhZlGKMw0QmGmEQozjVCYaYTCTPsPcF1CnJol0WEAAAAASUVORK5CYII=" alt=""><b>paytinno</b></div>
+    <nav id="nav"></nav>
+    <div class="side-foot">
+      <div class="envtoggle" role="group" aria-label="Colours"><button type="button" data-look="standard" data-short="Std" title="Standard colours">Standard</button><button type="button" data-look="light" data-short="Light" title="Light colours">Light</button></div>
+      <span id="sideFoot"></span>
+    </div>
+  </aside>
+  <main>
+    <div class="top">
+      <h1 id="pageTitle"></h1><span id="envTag"></span>
+      <div class="tools"><span id="pageTools"></span></div>
+      <div class="sub" id="pageSub"></div>
+    </div>
+    <div id="main"><p class="muted">Loading</p></div>
+  </main>
+</div>
+<script>
+/* Roles, permissions, limits, application status texts and the systems (lanes) behind the merchant portal.
+   Part of the intended design: the merchant-portal prototype runs on this file too.
+   Values in [brackets] are proposals for the CTO's review; nothing here is agreed yet.
+   Role names ONBOARDING_APPLICANT and MERCHANT_ADMIN come from WF02a/WF02b (v8.1); the others are proposed (MP-Q01). */
+window.CONFIG = (function () {
+  "use strict";
+
+  const ROLES = {
+    admin:     { label: "Admin",     code: "MERCHANT_ADMIN",       desc: "Runs the account: people, payout account, keys, everything below." },
+    finance:   { label: "Finance",   code: "MERCHANT_FINANCE",     desc: "Money: balances, payouts, statements, refunds and disputes." },
+    developer: { label: "Developer", code: "MERCHANT_DEVELOPER",   desc: "Integration: API keys, webhooks, test data. Reads payments." },
+    support:   { label: "Support",   code: "MERCHANT_SUPPORT",     desc: "Customer service: finds payments, refunds within a limit, answers disputes." },
+    viewer:    { label: "Viewer",    code: "MERCHANT_VIEWER",      desc: "Reads everything except keys. Changes nothing." },
+    applicant: { label: "Applicant", code: "ONBOARDING_APPLICANT", desc: "Before activation: fills in and follows the application only (WF02a step 11)." }
+  };
+
+  /* roles: who may start it. sca: needs SCA with dynamic linking (WF02a step 22, extended where marked).
+     second: who must approve as a second person, and from which amount (merchant-side dual control, MP-Q05). */
+  const PERMS = {
+    "payments.view":   { label: "See payments and refunds", roles: ["admin", "finance", "developer", "support", "viewer"] },
+    "refund.create":   { label: "Refund a payment", roles: ["admin", "finance", "support"], sca: true, second: { roles: ["admin", "finance"], from: 500 }, src: "WF02a 22, WF11 15" },
+    "dispute.view":    { label: "See disputes", roles: ["admin", "finance", "support", "viewer"] },
+    "dispute.respond": { label: "Escalate or accept a dispute", roles: ["admin", "finance", "support"], sca: true, src: "WF11 15 (money effect), not in WF02a 22 list (MP-Q14)" },
+    "funds.view":      { label: "See balances and payouts", roles: ["admin", "finance", "viewer"] },
+    "payout.create":   { label: "Pay out now", roles: ["admin", "finance"], sca: true, second: { roles: ["admin", "finance"], from: 10000 }, src: "One-pager S3 item 5" },
+    "payout.settings": { label: "Change payout schedule or keep funds", roles: ["admin", "finance"], second: { roles: ["admin"], from: 0 } },
+    "payout.account":  { label: "Change payout account", roles: ["admin"], sca: true, second: { roles: ["admin"], from: 0 }, src: "WF02b invariant, WF02a 22" },
+    "statements.view": { label: "Statements, invoices and fees", roles: ["admin", "finance", "viewer"] },
+    "keys.view":       { label: "See API keys (masked)", roles: ["admin", "developer"] },
+    "keys.manage":     { label: "Create, roll or revoke API keys", roles: ["admin", "developer"], sca: true, src: "WF02a 22" },
+    "webhooks.manage": { label: "Webhook endpoints and secrets", roles: ["admin", "developer"], sca: true, src: "Proposed: a webhook secret is a key (MP-Q11)" },
+    "team.view":       { label: "See team", roles: ["admin", "finance", "developer", "support", "viewer"] },
+    "team.manage":     { label: "Invite, change or remove users", roles: ["admin"], sca: true, src: "WF02a 22 (role above threshold)" },
+    "business.edit":   { label: "Change business details, people, documents", roles: ["admin"] },
+    "closure.request": { label: "Close the account", roles: ["admin"], sca: true, second: { roles: ["admin"], from: 0 } },
+    "messages":        { label: "Messages with Paytinno", roles: ["admin", "finance", "developer", "support", "viewer", "applicant"] },
+    "application":     { label: "Fill in the application", roles: ["admin", "applicant"] }
+  };
+
+  /* limits a role carries by default (mandates in S6, MP-Q05). Admin can lower them per person. */
+  const MANDATE = {
+    admin:   { refund: 5000, payout: 50000 },
+    finance: { refund: 5000, payout: 50000 },
+    support: { refund: 100,  payout: 0 }
+  };
+
+  /* systems (lanes in the workflow diagrams), CTO architecture v8.1 names */
+  const LANES = {
+    MER:  ["Merchant", "user"],
+    S3:   ["Portal", "S3"],
+    S18:  ["Gateway, BFF", "S18"],
+    S19:  ["Identity, SCA", "S19"],
+    S6:   ["Onboarding", "S6"],
+    S4:   ["Admin", "S4"],
+    OPS:  ["Paytinno staff", "OPS"],
+    S21:  ["Core", "S21, S5"],
+    S7:   ["Fees", "S7 M008"],
+    S10:  ["BPC", "S10 via A09"],
+    S11:  ["IDV, AML", "S11 via A01"],
+    S17:  ["Messages", "S17"],
+    S13:  ["Reconciliation", "S13"],
+    EXT:  ["Outside", "bank, scheme"]
+  };
+
+  /* the application's status line: fixed portal texts per state (MP-Q09, contract P7: no free text, no tipping off) */
+  const APP_STATES = [
+    { k: "DRAFT",           label: "Draft",                   text: "Not sent yet. Your answers are saved as you go." },
+    { k: "STARTED",         label: "Received",                text: "We have your application." },
+    { k: "KYB_PENDING",     label: "Checking documents",      text: "We are checking your company, documents and the people you listed." },
+    { k: "INFO_REQUESTED",  label: "We need something",       text: "We need more information from you. See Messages." },
+    { k: "MANUAL_REVIEW",   label: "In review",               text: "We are reviewing your application." },
+    { k: "UNDERWRITING",    label: "Risk assessment",         text: "We are setting your limits and terms." },
+    { k: "AWAITING_DEPOSIT",label: "Waiting for the deposit", text: "Approved. Please transfer the guarantee deposit to start." },
+    { k: "PROVISIONING",    label: "Setting up",              text: "Approved. We are setting up your account and keys." },
+    { k: "ACTIVE",          label: "Active",                  text: "You can take live payments." },
+    { k: "CLOSED_REJECTED", label: "Not approved",            text: "We cannot offer you the service. This decision is final." },
+    { k: "WITHDRAWN",       label: "Withdrawn",               text: "You withdrew the application." }
+  ];
+
+  const LIMITS = {
+    sessionHours: 8, idleMinutes: "[30]", refreshDays: 30, scaMinutes: 5, codeMinutes: 10,
+    payoutCutoff: "[14:00 EET]", minPayout: "[€100]", reserveDays: 180, kybHigh: 12, kybStd: 36,
+    keyOverlapHours: "[24]", inviteDays: "[7]"
+  };
+
+  return { ROLES, PERMS, MANDATE, LANES, APP_STATES, LIMITS };
+})();
+
+</script>
+<script>
+/* Merchant portal (S3) workflows: the intended design, for review before the CTO's team builds it.
+   This file is the source of truth. docs/ is generated from it (tools/build-docs.ps1); the viewer (index.html) reads it;
+   the merchant-portal prototype loads it for its "Behind this screen" panel.
+
+   status: "v81" = in v8.1 as written; "part" = in v8.1 with gaps we fill; "new" = not in v8.1, proposed here.
+   step: [from, to, text, opts]  opts: {api, ref, sla, sca, fail, rule, gap}
+   group row: ["#", "title"].  from === to means work inside one system.
+   lanes: system codes from src/model.js LANES. */
+window.WF = (function () {
+  "use strict";
+  const list = [];
+  const W = (id, o) => list.push(Object.assign({ id }, o));
+
+  /* ================= ACCESS ================= */
+  W("MP-01", {
+    title: "Register and create a passkey", area: "Access", status: "v81", source: "WF02a steps 1 to 12",
+    trigger: "A representative opens the portal for the first time.", object: "PortalUser (S19 realm merchant), person in S6",
+    screens: ["register"], lanes: ["MER", "S3", "S18", "S19", "S17", "S6"],
+    summary: "No passwords. The person proves an email and a phone, saves a passkey, and gets the applicant role. Company data comes later in the application.",
+    steps: [
+      ["#", "Register"],
+      ["MER", "S3", "Enters business email, mobile number and name, and accepts the portal terms. No company data yet.", { ref: "WF02a 1" }],
+      ["S3", "S18", "Sends the registration. Not signed in, behind the I4 rate limit and bot protection.", { api: "POST /v1/portal/users/register {email, phone, name, consentVersion}", sla: "2 s", fail: "429 on rate limit", gap: "v8.1 answers 409 when the email exists. That tells anyone which emails are registered (MP-Q02).", ref: "WF02a 2" }],
+      ["S18", "S19", "Creates the user in realm merchant with status PENDING_VERIFICATION.", { fail: "S19 down: 503, nothing is stored", ref: "WF02a 3" }],
+      ["S19", "S17", "Sends one code by email and another by SMS. Valid 10 min, 5 attempts, resend at most 3 times an hour.", { sla: "delivery 30 s", ref: "WF02a 4" }],
+      ["S17", "MER", "Codes arrive.", { ref: "WF02a 5" }],
+      ["MER", "S3", "Types both codes.", { ref: "WF02a 6" }],
+      ["S3", "S18", "Sends the codes.", { api: "POST /v1/portal/users/verify {userId, emailCode, smsCode}", fail: "attempts used up: register again", ref: "WF02a 7" }],
+      ["S18", "S19", "Marks email and phone verified (VERIFIED).", { ref: "WF02a 8" }],
+      ["#", "Passkey"],
+      ["S19", "S3", "Passkey creation options: rpId = portal, resident key and user verification required.", { fail: "browser without WebAuthn: message, no password fallback", ref: "WF02a 9" }],
+      ["S3", "S19", "The browser creates the passkey (platform or security key). Attestation is checked against policy but is not a condition for access.", { sla: "60 s", fail: "authenticator refused: try another", ref: "WF02a 10" }],
+      ["S19", "S3", "Tokens through PKCE (amr webauthn). Role ONBOARDING_APPLICANT. Session 8 h, refresh 30 days.", { ref: "WF02a 11" }],
+      ["S18", "S6", "First call with the token registers the person in S6 and returns a person ID. No merchant yet.", { fail: "S6 down: 503, the token stays valid", ref: "WF02a 12" }],
+      ["S3", "MER", "Offers to add a second passkey now, so a lost device does not mean recovery.", { gap: "Proposed, not in v8.1 (MP-Q04)" }]
+    ],
+    states: [["", "registration", "PENDING_VERIFICATION"], ["PENDING_VERIFICATION", "both codes right", "VERIFIED"], ["VERIFIED", "passkey saved", "ACTIVE (applicant)"], ["ACTIVE (applicant)", "merchant activated (MP-09)", "ACTIVE (business roles)"], ["ACTIVE (business roles)", "removed by the merchant's admin", "DISABLED"]],
+    rules: ["Realms share no users, sessions or passkeys.", "The account belongs to the person; one person can work for several merchants.", "KYC of the person happens in the application (MP-06), not here.", "S19 events go to SEC2."],
+    questions: [
+      { id: "MP-Q02", q: "Registration with an email that already exists returns 409 in v8.1. That is an account lookup for anyone.", prop: "Always answer 202 \"if the address can be used, we sent codes\". If the email exists, send that person an email saying someone tried to register with it.", owner: "CTO" },
+      { id: "MP-Q03", q: "The BNB has not confirmed a passkey with dynamic linking as SCA on the web. For the portal it is the only method (no password, no push to the app).", prop: "Ask the BNB in writing before build. Allow platform passkeys and security keys. Keep the design open for a push to S1 for people who have the app.", owner: "Compliance" },
+      { id: "MP-Q04", q: "One passkey per person makes lost phones a frequent recovery case.", prop: "Prompt for a second passkey at registration. Require two for Admin and Finance after activation.", owner: "Product" }
+    ]
+  });
+
+  W("MP-02", {
+    title: "Sign in, switch business and check rights", area: "Access", status: "part", source: "WF02a steps 13 to 21",
+    trigger: "A person opens the portal without a valid session, or makes any request.", object: "Session (S19), roles and mandates (S6)",
+    screens: ["home", "team"], lanes: ["MER", "S3", "S18", "S19", "S6"],
+    summary: "Passkey sign-in. Roles are not in the token: S18 asks S6 on every request which merchants and rights the person has.",
+    steps: [
+      ["MER", "S3", "Opens the portal.", { ref: "WF02a 13" }],
+      ["S3", "S18", "OIDC request with PKCE and state, realm merchant.", { sla: "1 s", ref: "WF02a 14" }],
+      ["S18", "S19", "Sign-in screen. The email only hints which passkey to use.", { ref: "WF02a 15" }],
+      ["S19", "S3", "Passkey request options, discoverable credential. Challenge valid 2 min.", { ref: "WF02a 16" }],
+      ["S3", "S19", "The browser signs with user verification. S19 checks signature, counter and origin.", { fail: "5 failures: locked 15 min and an email (MP-04). A phishing domain fails on rpId.", ref: "WF02a 17" }],
+      ["S19", "S3", "New session. Roles are not in the token.", { ref: "WF02a 18" }],
+      ["#", "Every request"],
+      ["S3", "S18", "Every call carries the token and the business it is for.", { api: "Authorization: Bearer, X-Merchant-Id: M-…", gap: "v8.1 does not say how the portal names the business when a person works for several (MP-Q07).", ref: "WF02a 19" }],
+      ["S18", "S18", "Checks the token against cached keys: expiry, realm, audience.", { sla: "5 ms", fail: "invalid: 401, refresh, then sign in", ref: "WF02a 19" }],
+      ["S18", "S6", "Reads roles, mandates and merchants for the person. Cached per session with a short TTL.", { sla: "20 ms", fail: "no right: 403. No merchant yet: only application endpoints.", ref: "WF02a 20" }],
+      ["S18", "S3", "Answer. Every refusal is logged to SEC2 with person, merchant and action.", { ref: "WF02a 21" }],
+      ["#", "Session end"],
+      ["S3", "S3", "Signs out after [30] min without activity and after 8 h in any case. Shows a warning 2 min before.", { gap: "Idle timeout not in v8.1 (MP-Q06)" }]
+    ],
+    states: [["", "passkey sign-in", "SESSION"], ["SESSION", "8 h or [30] min idle", "ENDED"], ["SESSION", "role removed in S6", "403 on next call"]],
+    rules: ["The menu shows only what the role can use; S18 still checks every call (the screen is not the control).", "A person with several businesses picks one in the sidebar; data never mixes on one screen.", "Portal requests: 1 s p95 (depends on the BPC API)."],
+    questions: [
+      { id: "MP-Q06", q: "No idle timeout is defined (only 8 h session and 30 day refresh).", prop: "[30] min idle, 8 h absolute, refresh only while active. Money actions need SCA anyway.", owner: "CTO" },
+      { id: "MP-Q07", q: "How does a call say which business it is for, when one person serves several?", prop: "Header X-Merchant-Id on every call; S18 checks it against S6. The sidebar business switcher sets it.", owner: "CTO" }
+    ]
+  });
+
+  W("MP-03", {
+    title: "Strong customer authentication for actions", area: "Access", status: "part", source: "WF02a steps 22 to 26",
+    trigger: "A user starts an action that moves money or changes who gets it or who can act.", object: "SCA challenge (S19), evidence ID",
+    screens: ["payment", "payouts", "developers", "team", "disputes"], lanes: ["MER", "S3", "S18", "S19", "S6"],
+    summary: "The passkey signs exactly what the user sees (amount and payee, or the key, or the person). S18 matches the evidence to the command before sending it on.",
+    steps: [
+      ["MER", "S3", "Starts the action: refund, payout to an external account, payout account change, API key roll, invitation with a role above the threshold.", { ref: "WF02a 22", gap: "The v8.1 list misses dispute answers, webhook secrets and account closure (MP-Q14, MP-Q11)." }],
+      ["S3", "S18", "Sends the command with an Idempotency-Key. S18 answers that SCA is needed.", { api: "POST /v1/… → 202 {scaRequired, challengeId}" }],
+      ["S18", "S6", "Checks the role and the person's mandate for this amount. Over the mandate, the command becomes an approval request (MP-23).", { rule: "Mandates in S6" }],
+      ["S18", "S19", "Asks for a challenge bound to amount and payee, or to the key or person. Valid 5 min.", { ref: "WF02a 23", sca: true }],
+      ["S19", "S3", "The web SDK shows what is being signed. The challenge holds a hash of it.", { ref: "WF02a 24", sca: true, fail: "user declines: nothing is sent" }],
+      ["S3", "S19", "The browser signs with biometrics or PIN. S19 checks signature and binding.", { ref: "WF02a 25", sca: true }],
+      ["S19", "S18", "ScaCompleted {evidenceId}.", { ref: "WF02a 26", sca: true }],
+      ["S18", "S18", "Matches the evidence to the command (same hash) and sends the command on to A09, M0391 or S6.", { gap: "WF02a 26 points to WF10 step 14 and WF11 step 7. Both are wrong (MP-Q08).", fail: "challenge expired: start again; hash differs: 409, logged" }],
+      ["S18", "S3", "Result shown to the user. Evidence kept 5 years.", { rule: "SCA evidence retention 5 years" }]
+    ],
+    states: [["", "action started", "SCA_REQUIRED"], ["SCA_REQUIRED", "signed", "SUBMITTED"], ["SCA_REQUIRED", "declined or 5 min", "CANCELLED"], ["SCA_REQUIRED", "over mandate", "AWAITING_APPROVAL (MP-23)"]],
+    rules: ["Dynamic linking: changing the amount or payee after signing voids the signature.", "For an approval, the requester signs the request and the approver signs the approval; it runs after both.", "One evidence ID per command; reuse is refused."],
+    questions: [
+      { id: "MP-Q08", q: "WF02a step 26 continues to \"WF10 step 14, WF11 step 7\". WF10 14 is a read and WF11 7 is issuing.", prop: "Refund continues to WF11 step 16; payout to MP-14; payout account to MP-15; key roll to MP-20. Fix in v8.2.", owner: "CTO" },
+      { id: "MP-Q14", q: "Accepting a dispute is final and costs money, but it is not on the SCA list in WF02a 22. WF11 15 says SCA for actions with a money effect.", prop: "Require SCA for Accept and Escalate. Add to the WF02a 22 list.", owner: "CTO" }
+    ]
+  });
+
+  W("MP-04", {
+    title: "Lockout and lost passkey", area: "Access", status: "part", source: "WF02a steps 17 and 27",
+    trigger: "Five failed signatures, or a person who lost every passkey.", object: "PortalUser LOCKED or RECOVERY",
+    screens: ["security"], lanes: ["MER", "S3", "S18", "S19", "S17", "S4", "OPS"],
+    summary: "Recovery re-proves email and phone. For an admin of a live merchant, another admin approves; otherwise Paytinno staff check identity.",
+    steps: [
+      ["S19", "S17", "After 5 failed signatures: lock for 15 min and email the person.", { ref: "WF02a 17" }],
+      ["#", "Recovery"],
+      ["MER", "S3", "Chooses \"I lost my passkey\" and enters the email.", { ref: "WF02a 27" }],
+      ["S18", "S19", "New email and SMS codes, as in registration.", { sla: "codes 10 min" }],
+      ["S18", "S6", "Is the person an admin of an active merchant?", {}],
+      ["S6", "S3", "Yes, and there is a second admin: an approval request goes to that admin (MP-23).", { rule: "Second admin approves" }],
+      ["S6", "S4", "Yes, and there is no second admin: a case for Paytinno staff.", {}],
+      ["OPS", "S4", "Checks identity with a new IDV selfie check against the stored result, then approves with four eyes.", { gap: "v8.1 says \"after an identity check\" without saying how (MP-Q05b)." }],
+      ["S3", "S19", "New passkey registered; all old passkeys revoked; sessions ended.", {}],
+      ["S19", "S17", "Email to the person and to every admin of each merchant the person works for.", { gap: "Proposed" }],
+      ["#", "No access to email or phone"],
+      ["MER", "S4", "Asks through support. Staff change email or phone with four eyes after an IDV check.", { ref: "WF02a 27" }]
+    ],
+    states: [["ACTIVE", "5 failures", "LOCKED"], ["LOCKED", "15 min", "ACTIVE"], ["ACTIVE", "recovery started", "RECOVERY"], ["RECOVERY", "new passkey", "ACTIVE"]],
+    rules: ["Recovery never restores the old passkey.", "A recovered admin cannot change the payout account for [24 h] (account takeover pattern)."],
+    questions: [
+      { id: "MP-Q05b", q: "How do staff check identity in recovery without a second admin?", prop: "IDV selfie check matched to the face from onboarding (no new documents), then four eyes in S4. Block payout account changes for [24 h] after.", owner: "Compliance" }
+    ]
+  });
+
+  /* ================= ONBOARDING ================= */
+  W("MP-05", {
+    title: "Fill in and send the application", area: "Onboarding", status: "part", source: "WF02b steps 1 to 4; admin spec application.submitted",
+    trigger: "An applicant (MP-01) starts an application.", object: "Application (draft in S18), OnboardingCase (S6, type MERCHANT)",
+    screens: ["application"], lanes: ["MER", "S3", "S18", "S6", "S4"],
+    summary: "Six steps: company, people, business, documents, payout account, review. Saved as a draft on every step; sent once complete.",
+    steps: [
+      ["#", "Draft"],
+      ["MER", "S3", "Enters the company ID (EIK).", {}],
+      ["S3", "S18", "Looks up the company in the Commercial Register to fill in name, form, address and managers.", { api: "GET /v1/registry/companies/{eik}", gap: "No register lookup for the portal in v8.1; the KYB connector has one (MP-Q15).", fail: "not found: the applicant types it" }],
+      ["S3", "S18", "Saves the draft after every step.", { api: "PUT /v1/merchants/applications/drafts/{draftId}", gap: "v8.1 has no draft; the application is sent in one call (MP-Q16)." }],
+      ["MER", "S3", "People: the representative and the legal basis; every owner of 25% or more; managers. Each becomes a personRef.", { rule: "Owners listed must explain 100% of ownership or say why not" }],
+      ["MER", "S3", "Business: what it sells (MCC), websites, channels, expected monthly volume, average and largest payment, customer countries, whether the company is a micro-enterprise.", { gap: "Micro-enterprise status decides the notice periods for tariff changes (MP-19). Not collected in v8.1." }],
+      ["MER", "S3", "Uploads documents to the vault. PDF, JPG or PNG up to 10 MB, scanned for malware.", { api: "POST /v1/documents (multipart) → {docRef}", rule: "Documents stay in the vault; the admin sees references only" }],
+      ["MER", "S3", "Payout account: IBAN, holder name, bank statement.", { rule: "Checked in MP-15 rules: in the merchant's name" }],
+      ["MER", "S3", "Review and three statements: information is true; I may act for the company; I accept the merchant terms.", {}],
+      ["#", "Send"],
+      ["S3", "S18", "Sends the application. Needs permission application:create.", { api: "POST /v1/merchants/applications {legalName, eik, representativeRole, ubos[], mcc, expectedVolume, channels[], documents[]}", sla: "2 s", fail: "401, 403, 4xx", ref: "WF02b 2" }],
+      ["S18", "S6", "Opens the case for the person in the token. The representative in the body is data, not proof of who applies.", { ref: "WF02b 3" }],
+      ["S6", "S6", "Creates the customer ID for the company; links the person and the owners. State STARTED.", { ref: "WF02b 4" }],
+      ["S6", "S4", "The application appears in the admin. Until S6 exists, the admin stands in for it.", { api: "webhook application.submitted", ref: "admin spec 6" }],
+      ["S4", "S3", "Status line STARTED.", { api: "POST /admin/v1/applications/{appId}/status", ref: "admin spec 5.1" }]
+    ],
+    states: [["", "first save", "DRAFT"], ["DRAFT", "sent", "STARTED"], ["DRAFT", "[90] days untouched", "deleted"], ["STARTED and later", "withdrawn by the applicant", "WITHDRAWN"]],
+    rules: ["No acceptance before the whole onboarding is done.", "Sales do not send applications for merchants at launch.", "The applicant can withdraw until a decision is made."],
+    questions: [
+      { id: "MP-Q15", q: "Should the portal pre-fill from the Commercial Register?", prop: "Yes. S18 calls the same register lookup the KYB connector uses. Pre-filled fields are marked and kept as the register said.", owner: "CTO" },
+      { id: "MP-Q16", q: "Where is the draft kept before it is sent? v8.1 starts the case only at submission.", prop: "Draft in S18 (or S6) keyed by person, kept [90] days. Documents uploaded to the draft are deleted with it.", owner: "CTO" },
+      { id: "MP-Q17", q: "Who must do an identity check: only the representative (v8.1), or every owner (the design prototype)?", prop: "Representative always. Owners are screened from data; an IDV check for owners only for high-risk merchants or when the register and the declaration disagree.", owner: "Compliance" }
+    ]
+  });
+
+  W("MP-06", {
+    title: "Company checks, identity and screening", area: "Onboarding", status: "v81", source: "WF02b steps 5 to 9",
+    trigger: "An application is sent (MP-05).", object: "OnboardingCase KYB_PENDING",
+    screens: ["application"], lanes: ["MER", "S3", "S18", "S6", "S11", "S4"],
+    summary: "The representative does an IDV check inside the portal. The company and owners are checked and screened. The portal only ever says \"Checking documents\" or \"In review\".",
+    steps: [
+      ["S6", "S11", "Starts KYB and owner checks; issues an IDV token for the representative.", { ref: "WF02b 5", sla: "async" }],
+      ["S6", "S3", "Token for the IDV web SDK, through S18.", {}],
+      ["MER", "S3", "The representative does the ID document and selfie check in the portal.", { ref: "WF02b 5" }],
+      ["S11", "S6", "Results come back as webhooks: identity verified, company verified, owners screened. Bad signature: quarantine and SEC2.", { ref: "WF02b 6 to 8" }],
+      ["S6", "S11", "AML system: risk and PEP or sanctions screening of the company, representative and every owner.", { sla: "1 s per person, 3 attempts", ref: "WF02b 9" }],
+      ["S6", "S4", "Any hit, or the identity does not match the role: manual review case.", { rule: "A hit makes manual review mandatory" }],
+      ["S4", "S3", "Status line KYB_PENDING, then UNDERWRITING or MANUAL_REVIEW.", { api: "application.status", rule: "Fixed texts, never the reason" }]
+    ],
+    states: [["STARTED", "IDs recorded", "KYB_PENDING"], ["KYB_PENDING", "checks clear", "UNDERWRITING"], ["KYB_PENDING", "hit or review", "MANUAL_REVIEW"], ["KYB_PENDING", "information missing", "INFO_REQUESTED (MP-07)"]],
+    rules: ["No tipping off: the portal never names a screening hit, PEP, sanctions, MATCH or VMAS.", "The portal maps each state to its own fixed text (CONFIG.APP_STATES); the admin's label is a hint only."],
+    questions: [
+      { id: "MP-Q09", q: "Should the portal show the admin's free-text status label, or its own fixed text per state? (admin spec P7)", prop: "Fixed texts per state in the portal, in Bulgarian and English. Free text only inside an RFI, which staff write knowingly.", owner: "Compliance" }
+    ]
+  });
+
+  W("MP-07", {
+    title: "Request for information and the answer", area: "Onboarding", status: "part", source: "Admin spec 5.2 rfi.send and merchant.message; not a v8.1 workflow",
+    trigger: "Staff need a document or an answer, during onboarding or for a live merchant.", object: "RFI (S4), message thread",
+    screens: ["messages", "application"], lanes: ["MER", "S3", "S18", "S4", "OPS", "S17"],
+    summary: "Staff ask, the merchant answers in the portal with text and documents. The application status shows \"We need something\" while it is open.",
+    steps: [
+      ["OPS", "S4", "Writes the request: what is needed (item codes and plain text), due date.", {}],
+      ["S4", "S18", "Sends the request; for an application also the status INFO_REQUESTED.", { api: "POST /admin/v1/rfi {appId | merchantId, text, items[], dueAt}", ref: "admin spec 5.2" }],
+      ["S18", "S17", "Email: \"We need something from you\" with a link only. The request itself is not in the email.", { gap: "Proposed: no content in emails" }],
+      ["MER", "S3", "Opens Messages, writes an answer, attaches documents.", {}],
+      ["S3", "S18", "Sends the answer.", { api: "POST /v1/messages {inReplyTo: rfiId, text, attachments[docRef]}" }],
+      ["S18", "S4", "The answer arrives in the admin.", { api: "webhook merchant.message", ref: "admin spec 6" }],
+      ["OPS", "S4", "Accepts it and closes the RFI, or asks again.", {}],
+      ["S4", "S3", "Status back to where it was.", { api: "application.status" }],
+      ["S17", "MER", "Reminder 3 days before the due date.", { api: "merchant.notify rfi_reminder" }]
+    ],
+    states: [["", "sent", "OPEN"], ["OPEN", "merchant answers", "ANSWERED"], ["ANSWERED", "staff accept", "CLOSED"], ["ANSWERED", "staff ask again", "OPEN"], ["OPEN", "due date passes", "OVERDUE"]],
+    rules: ["The merchant is told not to type ID or card numbers in messages; documents are attached as files.", "Text up to 4,000 characters."],
+    questions: [
+      { id: "MP-Q18", q: "What happens when an RFI is overdue?", prop: "Onboarding: application paused, withdrawn after [30] days with notice. Live merchant: reminder, then a restriction decision in S4 (MP-26), never automatic.", owner: "Compliance" }
+    ]
+  });
+
+  W("MP-08", {
+    title: "Underwriting decision and the offer", area: "Onboarding", status: "part", source: "WF02b steps 10 to 12",
+    trigger: "Checks are complete (MP-06).", object: "Underwriting case (S4), offer",
+    screens: ["application"], lanes: ["MER", "S3", "S18", "S6", "S4", "OPS", "S17"],
+    summary: "Staff set limits, tariff, reserve and deposit with four eyes. Proposed: the merchant sees the offer and accepts it with SCA before set-up starts.",
+    steps: [
+      ["S6", "S4", "Underwriting case. MCC 7995 gets extra sector checks.", { ref: "WF02b 10" }],
+      ["OPS", "S4", "MATCH and VMAS checks; limits, tariff, rolling reserve %, guarantee deposit, MCC.", { sla: "2 business days", rule: "Four eyes above a threshold or for high-risk MCCs", ref: "WF02b 11" }],
+      ["S4", "S6", "Approved with conditions, or rejected. Approver differs from preparer.", { ref: "WF02b 12" }],
+      ["S4", "S3", "Rejected: status CLOSED_REJECTED and a neutral notice.", { api: "merchant.notify application_rejected", fail: "No reason is given in the portal" }],
+      ["#", "Offer (proposed)"],
+      ["S4", "S3", "Approved: the offer appears: tariff, reserve %, deposit, limits, payout schedule, the agreement.", { gap: "v8.1 has no step where the merchant agrees to the terms (MP-Q19)." }],
+      ["MER", "S3", "The admin applicant accepts with SCA. The agreement version and evidence are stored.", { sca: true }],
+      ["S3", "S18", "Acceptance.", { api: "POST /v1/merchants/applications/{appId}/offer/accept" }],
+      ["S18", "S6", "Moves on to AWAITING_DEPOSIT or PROVISIONING (MP-09).", {}]
+    ],
+    states: [["UNDERWRITING", "approved", "OFFER_SENT"], ["OFFER_SENT", "accepted", "AWAITING_DEPOSIT or PROVISIONING"], ["OFFER_SENT", "[14] days", "WITHDRAWN"], ["UNDERWRITING", "rejected", "CLOSED_REJECTED"]],
+    rules: ["The rejection text is the same whatever the reason.", "The decision record keeps rationale, policy version, tariff, reserve and approvers (WF02b 18)."],
+    questions: [
+      { id: "MP-Q19", q: "Where does the merchant agree to the tariff, reserve and agreement? v8.1 goes from approval straight to set-up.", prop: "Add OFFER_SENT: the offer in the portal, accepted with SCA by the applicant who is the representative. Qualified e-signature only if Legal requires it.", owner: "Legal" }
+    ]
+  });
+
+  W("MP-09", {
+    title: "Deposit, set-up and activation", area: "Onboarding", status: "part", source: "WF02b steps 13 to 17; PRD WF11 AWAITING_DEPOSIT; admin spec 5.4 access.grant",
+    trigger: "The offer is accepted (MP-08).", object: "OnboardingCase PROVISIONING to ACTIVE",
+    screens: ["application", "home"], lanes: ["MER", "S3", "S18", "S6", "S4", "S21", "S10", "S13", "S17"],
+    summary: "If a deposit is required, the merchant transfers it first. Then accounts in OraSYS and the merchant in BPC. Only when both confirm is the merchant active and the full portal opens.",
+    steps: [
+      ["#", "Deposit (when the offer has one)"],
+      ["S3", "MER", "Shows the deposit amount, our IBAN and the payment reference.", { gap: "AWAITING_DEPOSIT is in the PRD but not in the WF02b states (MP-Q20)." }],
+      ["MER", "EXT", "Transfers from the company's account.", {}],
+      ["S21", "S21", "Credits the rolling reserve account.", {}],
+      ["S13", "S6", "Reconciled: deposit received in full from an account in the merchant's name.", { rule: "S10 is not activated before the deposit is in and reconciled" }],
+      ["#", "Set-up"],
+      ["S6", "S21", "Merchant in M001; settlement, reserve and control accounts; payout account on the verified list.", { api: "A05 / M0391", ref: "WF02b 13" }],
+      ["S6", "S10", "BPC merchant onboarding: acquirer merchant ID, terminals, hosted page and SDK keys.", { api: "IF45 via A09", sla: "10 s, 3 attempts, idempotent", fail: "persistent error: COMPENSATING and an S4 case", ref: "WF02b 14" }],
+      ["S6", "S6", "Records the ID mapping and waits for both confirmations.", { ref: "WF02b 15" }],
+      ["S6", "S21", "Accounts ACTIVE; tariff set in M008.", { ref: "WF02b 16" }],
+      ["#", "Access"],
+      ["S6", "S18", "The person gets MERCHANT_ADMIN on the merchant.", { api: "POST /admin/v1/merchants/{merchantId}/access/grant", ref: "WF02b 17, admin spec 5.4" }],
+      ["S18", "S17", "Welcome notice.", { api: "merchant.notify welcome" }],
+      ["S3", "MER", "The full portal opens: test keys, team, payouts. Live keys after the go-live check (MP-10).", { ref: "WF02b 17" }]
+    ],
+    states: [["OFFER_SENT", "accepted, deposit needed", "AWAITING_DEPOSIT"], ["AWAITING_DEPOSIT", "reconciled", "PROVISIONING"], ["PROVISIONING", "S5 and S10 both confirm", "ACTIVE"], ["PROVISIONING", "one fails", "COMPENSATING, S4 case"]],
+    rules: ["No acceptance until both OraSYS and BPC confirm.", "The deposit is paid by transfer only, never taken from settlements."],
+    questions: [
+      { id: "MP-Q20", q: "AWAITING_DEPOSIT (PRD WF11) is not in the WF02b state machine.", prop: "Add it between the offer and PROVISIONING. Show the deposit IBAN and reference in the portal. Unpaid after [30] days: offer lapses.", owner: "CTO" }
+    ]
+  });
+
+  W("MP-10", {
+    title: "Go live: from test to live payments", area: "Onboarding", status: "new", source: "WF02b 17 (\"sandbox first\"); module spec v7.1 sandbox with test cards",
+    trigger: "The merchant is active and wants live keys, or a new website is added.", object: "Go-live checklist",
+    screens: ["developers", "home"], lanes: ["MER", "S3", "S18", "S10", "S4", "OPS"],
+    summary: "The developer proves the integration with test cards; staff check the website; then live keys are issued.",
+    steps: [
+      ["S18", "S10", "Test keys for the BPC sandbox, issued at activation.", { gap: "Does BPC give a sandbox per merchant? (CTO question 21, MP-Q21)" }],
+      ["MER", "S10", "The developer runs payments with test cards: success, decline, 3-D Secure challenge, refund, webhook.", {}],
+      ["S3", "S18", "The checklist ticks itself from test data.", { api: "GET /v1/golive/checklist" }],
+      ["MER", "S3", "Admin asks for live.", {}],
+      ["S18", "S4", "Go-live request.", {}],
+      ["OPS", "S4", "Website check: terms, refund policy, prices in EUR, contact details, card logos, what is sold matches the MCC.", { rule: "Scheme rules require a website review" }],
+      ["S4", "S18", "Approved: live keys can be created (MP-20). Rejected: what to fix, as an RFI.", {}],
+      ["S3", "MER", "First live payment is marked on Home.", {}]
+    ],
+    states: [["ACTIVE (test only)", "checklist done and asked", "GO_LIVE_REVIEW"], ["GO_LIVE_REVIEW", "approved", "LIVE"], ["GO_LIVE_REVIEW", "changes needed", "ACTIVE (test only)"]],
+    rules: ["Live keys are never issued before the website check."],
+    questions: [
+      { id: "MP-Q21", q: "Can test keys be given as soon as the application is sent, so developers start during review (as the design prototype shows)?", prop: "Yes, if BPC offers a sandbox merchant without onboarding. Otherwise at activation as v8.1 says.", owner: "CTO" }
+    ]
+  });
+
+  /* ================= PAYMENTS ================= */
+  W("MP-11", {
+    title: "See payments and one payment", area: "Payments", status: "v81", source: "WF10 steps 13 to 16",
+    trigger: "A user opens Payments or a payment.", object: "AcquiringTransaction (BPC), balances (S5)",
+    screens: ["payments", "payment", "home"], lanes: ["MER", "S3", "S18", "S10", "S21"],
+    summary: "Payment records come from BPC through A09 (masked). Money comes from OraSYS through M0391. Each part says when it was last updated; when they disagree, OraSYS wins.",
+    steps: [
+      ["MER", "S3", "Opens Payments, filters by date, status, card brand, amount; searches by payment ID, order reference or last 4 digits.", { ref: "WF10 13" }],
+      ["S3", "S18", "Rights checked on every call.", { api: "GET /v1/payments?from&to&status&q&cursor", sla: "1 s p95", ref: "WF10 14" }],
+      ["S18", "S10", "Payments, settlements and disputes, masked card data only.", { api: "IF45 via A09", ref: "WF10 15", fail: "BPC down: the portal says payment data is unavailable; payments still work" }],
+      ["S18", "S21", "Money state: pending, available, paid, reserve; fees by IFR Art. 12 from S7.", { api: "A05 / M0391", sla: "500 ms p95", ref: "WF10 16" }],
+      ["S18", "S3", "Combined view with a \"last updated\" time for each source.", { rule: "S5 wins over BPC (R09)" }]
+    ],
+    states: [["AUTHORISED", "captured", "CAPTURED"], ["CAPTURED", "cleared and settled D+1", "PAYABLE"], ["PAYABLE", "reserve taken, eligible", "AVAILABLE"], ["AVAILABLE", "payout sent", "PAID_OUT"], ["CAPTURED or PAYABLE", "chargeback", "DISPUTED"]],
+    rules: ["An authorisation is not money in the balance.", "D+1 is a service level, not a guarantee.", "A09 never reads balances and never writes the ledger.", "No full card number ever reaches the portal (SEC4 checks responses)."],
+    questions: [
+      { id: "MP-Q22", q: "Cache payment data in S18 when BPC is slow or down? (CTO question 22)", prop: "Yes, a read copy of the last [90] days refreshed every [5] min, always shown with its time. Search beyond 90 days goes to BPC live.", owner: "CTO" },
+      { id: "MP-Q23", q: "Can the BPC API search by order reference, card last 4 and amount?", prop: "Confirm with BPC (question 21). If not, search runs on the S18 read copy only.", owner: "BPC" }
+    ]
+  });
+
+  W("MP-12", {
+    title: "Refund a payment", area: "Payments", status: "part", source: "WF11 steps 15 to 17; PRD refund link to disputes",
+    trigger: "A user refunds all or part of a captured payment.", object: "Refund (BPC), posting through NC2",
+    screens: ["payment", "refunds"], lanes: ["MER", "S3", "S18", "S6", "S4", "S19", "S10", "S21"],
+    summary: "Checks before sending: refundable amount, open dispute, the user's mandate. SCA binds amount and payment. The ledger effect comes only from NC2.",
+    steps: [
+      ["MER", "S3", "Refund on the payment page: full or part, and a reason.", { ref: "WF11 15" }],
+      ["S3", "S18", "Asks what can be refunded.", { api: "GET /v1/payments/{id}/refundable" }],
+      ["S18", "S4", "Is there an open dispute on this payment? If so, refused.", { gap: "PRD puts this block in S21a; v8.1 refunds never pass the core first (MP-Q24).", rule: "No refund on a payment with an open dispute" }],
+      ["S18", "S6", "Role and mandate. Over the person's refund limit: approval request (MP-23).", {}],
+      ["S18", "S19", "SCA bound to amount, payment ID and card last 4.", { sca: true }],
+      ["S3", "S18", "Sends the refund.", { api: "POST /v1/payments/{id}/refunds {amount, reason} + Idempotency-Key", sla: "2 s", ref: "WF11 16" }],
+      ["S18", "S10", "Refund through A09.", { api: "IF45 via A09", ref: "WF11 17", fail: "answer lost: retry with the same key" }],
+      ["S10", "S21", "Refund posting through NC2: reduces what we owe the merchant.", { ref: "WF11 12" }],
+      ["S18", "S3", "Refund shown as sent; then as done when BPC confirms.", {}],
+      ["S13", "S13", "Refunds reconciled against the journal.", { ref: "R08" }]
+    ],
+    states: [["", "requested", "REQUESTED"], ["REQUESTED", "over mandate", "AWAITING_APPROVAL"], ["REQUESTED", "SCA done", "SENT"], ["SENT", "BPC confirms", "DONE"], ["SENT", "BPC refuses", "FAILED"]],
+    rules: ["Total refunds never exceed the captured amount.", "A payment not yet captured is cancelled, not refunded.", "The card holder sees the money in 5 to 10 business days (bank dependent)."],
+    questions: [
+      { id: "MP-Q24", q: "Where does the \"no refund while disputed\" check run? The PRD says S21a; in v8.1 portal refunds go S18 to A09 to BPC.", prop: "S18 asks S4 synchronously (DisputeCase by payment) before the A09 call. S4 also re-checks on every stage change (PRD).", owner: "CTO" },
+      { id: "MP-Q25", q: "What if the merchant's balance is lower than the refund?", prop: "Allowed up to available plus pending; above that, refused with \"top up by transfer\". Never a negative balance.", owner: "Finance" },
+      { id: "MP-Q26", q: "Cancelling an authorisation that is not captured is not described anywhere.", prop: "A \"Cancel\" action on authorised payments through A09, same rights as refund, no SCA (no money leaves).", owner: "CTO" }
+    ]
+  });
+
+  /* ================= DISPUTES ================= */
+  W("MP-16", {
+    title: "Answer a chargeback", area: "Disputes", status: "part", source: "WF11 steps 11 to 17; PRD WF11 Acquiring v6",
+    trigger: "A card holder's bank disputes a payment.", object: "DisputeCase (S4)",
+    screens: ["disputes", "dispute"], lanes: ["EXT", "S10", "S21", "S4", "S17", "MER", "S3", "S18", "OPS"],
+    summary: "The money moves to a dispute account at once. The merchant gets a deadline, can upload documents, then escalates or accepts. Silence by the deadline means lost.",
+    steps: [
+      ["EXT", "S10", "Chargeback from Visa or Mastercard.", { ref: "WF11 11" }],
+      ["S10", "S21", "Through NC2: the amount moves from the balance to the dispute account; any shortfall from the reserve; plus the chargeback fee.", { ref: "WF11 12 to 13", rule: "The balance is never negative" }],
+      ["S21", "S4", "Opens the DisputeCase; deadline and reason code read through A09.", { ref: "WF11 14" }],
+      ["S4", "S17", "Notice and webhook chargeback.created to the merchant.", { ref: "PRD notifications" }],
+      ["MER", "S3", "Sees the case, the reason, days left and staff comments; uploads documents.", { ref: "WF11 15" }],
+      ["#", "Merchant decides"],
+      ["MER", "S3", "Escalate: reason \"Refund issued\" or \"See attached documents\" (at least one document unless refunded); amount up to the disputed amount, the rest accepted.", { sca: true, ref: "PRD Escalate" }],
+      ["MER", "S3", "Or Accept: final, the case is lost.", { sca: true, ref: "PRD Accept" }],
+      ["S3", "S18", "Sends the decision.", { api: "POST /v1/disputes/{caseId}/escalate | /accept + Idempotency-Key", sla: "2 s", ref: "WF11 16" }],
+      ["S18", "S4", "Decision recorded on the case.", { gap: "v8.1 sends it to BPC through A09; the PRD sends it to S4 and staff (MP-Q12)." }],
+      ["OPS", "EXT", "Staff submit in Visa VROL or Mastercom, or refuse to escalate weak evidence.", { ref: "PRD" }],
+      ["#", "Outcome"],
+      ["S10", "S21", "Won: money back by origin. Lost: the dispute account is cleared.", {}],
+      ["S4", "S17", "Every stage change and the result; reminders 72, 48 and 24 h before the merchant deadline.", { ref: "PRD notifications" }],
+      ["S4", "S4", "No answer by the deadline: LOST automatically.", { fail: "Silence means loss" }]
+    ],
+    states: [["", "chargeback", "OPEN"], ["OPEN", "escalated", "SUBMITTED"], ["OPEN", "accepted or deadline", "LOST"], ["SUBMITTED", "issuer accepts or window passes", "WON"], ["SUBMITTED", "pre-arbitration", "OPEN"], ["SUBMITTED", "arbitration lost", "LOST"]],
+    rules: ["Internal deadline = scheme deadline minus 3 days.", "Visa: 22 days for the merchant; Mastercard: 37 days for second presentment, 22 for pre-arbitration (PRD timers).", "Escalate and Accept are possible only while the stage waits for the merchant and the deadline has not passed.", "Staff comments are shown; internal notes are not."],
+    questions: [
+      { id: "MP-Q12", q: "The PRD and v8.1 WF11 disagree: states (PRD stages vs OPEN/SUBMITTED/WON/LOST), channel (staff in VROL/Mastercom vs A09 to BPC), ledger (CB sub-account vs reserve and receivable).", prop: "Use the PRD for the merchant side and update WF11 in v8.2. The portal shows PRD stages and maps them to the v8.1 states for reporting.", owner: "CTO" },
+      { id: "MP-Q13", q: "Who works disputes at launch? (CTO question 29)", prop: "Paytinno chargeback analysts in S4 (PRD), with the merchant answering in the portal.", owner: "COO" }
+    ]
+  });
+
+  W("MP-17", {
+    title: "Rolling reserve and reserve top-up", area: "Disputes", status: "new", source: "PRD WF11 (RR, RR_TOPUP); WF10 reserve release 180 days (proposed)",
+    trigger: "Each settlement; a dispute larger than what is held; a Risk decision.", object: "Reserve account (S21), RR_TOPUP request (S4)",
+    screens: ["balances", "messages"], lanes: ["S21", "S4", "OPS", "S17", "MER", "S3", "EXT", "S13"],
+    summary: "A share of each settlement is held for [180] days and released day by day. If Risk asks for more, the merchant transfers it; it is never taken from settlements.",
+    steps: [
+      ["S21", "S21", "Holds the reserve % from each settlement; releases each day's amount after [180] days.", { rule: "Reserve % set in underwriting (MP-08)" }],
+      ["S3", "MER", "Balances show the reserve and the release calendar.", {}],
+      ["#", "Top-up"],
+      ["OPS", "S4", "Risk sets a top-up amount and deadline (RR_TOPUP).", { ref: "PRD" }],
+      ["S4", "S3", "Request in Messages with amount, IBAN and reference.", { api: "POST /admin/v1/rfi + merchant.notify" }],
+      ["MER", "EXT", "Transfers from the company's account.", {}],
+      ["S13", "S4", "Reconciled; request closed.", {}],
+      ["S4", "OPS", "Not paid by the deadline: escalated to Risk; possible suspension (MP-26).", { fail: "Top-up overdue" }]
+    ],
+    states: [["", "requested", "TOPUP_OPEN"], ["TOPUP_OPEN", "reconciled", "PAID"], ["TOPUP_OPEN", "deadline", "ESCALATED"]],
+    rules: ["The main balance is never negative.", "Top-ups only by transfer from the merchant."],
+    questions: [
+      { id: "MP-Q27", q: "Reserve release: v8.1 proposes 180 days; the PRD says \"on schedule\" with no number.", prop: "180 days rolling, daily release, per merchant override set in underwriting.", owner: "CRO" }
+    ]
+  });
+
+  /* ================= MONEY ================= */
+  W("MP-13", {
+    title: "Balances, settlement and automatic payouts", area: "Money", status: "v81", source: "WF10 steps 4 to 12",
+    trigger: "Daily settlement and payout cycle.", object: "MerchantPayout (S21)",
+    screens: ["balances", "payouts", "home"], lanes: ["S10", "S21", "S7", "EXT", "S13", "S4", "S3", "MER"],
+    summary: "Captured payments become payable after settlement, available after the reserve, and are paid out to the verified account on the merchant's schedule, if reconciliation is clean.",
+    steps: [
+      ["S10", "S21", "Authorisation, capture and clearing as separate states; one money effect even for late or duplicate files.", { ref: "WF10 4 to 5" }],
+      ["S21", "S7", "MDR split into interchange, scheme and our fee (IFR Art. 12), applied once.", { ref: "WF10 6" }],
+      ["EXT", "S21", "Scheme net settlement D+1 to our bank; files by 07:00.", { ref: "WF10 8 to 9" }],
+      ["S13", "S4", "Reconciliation by 09:00. A difference holds the day's payouts (S4 through M0391, four eyes).", { ref: "WF10 10", fail: "Merchant sees \"Held while we check\"" }],
+      ["S21", "S21", "Pays out only when eligible, before cut-off, with funds available and a verified account. Otherwise \"pending\".", { ref: "WF10 11" }],
+      ["S21", "EXT", "SEPA credit transfer through BORICA (NC3). No retry; unknown result goes to status inquiry.", { ref: "WF10 12", fail: "Returned by the bank: the amount is back in available and the account is marked for check (MP-15)" }],
+      ["S3", "MER", "Payouts list with what each payout contains (payments, refunds, fees, reserve).", {}]
+    ],
+    states: [["", "cycle", "SCHEDULED"], ["SCHEDULED", "reconciliation difference", "HELD"], ["SCHEDULED", "sent", "IN_TRANSIT"], ["IN_TRANSIT", "confirmed", "PAID"], ["IN_TRANSIT", "returned", "RETURNED"]],
+    rules: ["Payouts only to a verified account in the merchant's name.", "Every money figure shows when it was last updated."],
+    questions: [
+      { id: "MP-Q28", q: "Which payout schedules does M0391 support (daily, weekly, monthly, minimum amount)?", prop: "Daily on business days as default; weekly and monthly as options; minimum [€100].", owner: "OraSYS" }
+    ]
+  });
+
+  W("MP-14", {
+    title: "Pay out now, and payout settings", area: "Money", status: "new", source: "One-pager S3 item 5 (\"payout to an external account through M0391\"); WF10 12 (\"funds stay with us by choice\")",
+    trigger: "A user pays out available funds outside the schedule, or changes the schedule.", object: "Payout order (S21)",
+    screens: ["balances", "payouts", "approvals"], lanes: ["MER", "S3", "S18", "S6", "S19", "S21", "EXT"],
+    summary: "Only to the verified payout account, only from available funds, with SCA. Over the person's limit a second person approves.",
+    steps: [
+      ["MER", "S3", "Pay out now: amount up to available.", {}],
+      ["S18", "S6", "Role and mandate. Over [€10,000] or the person's limit: approval (MP-23).", {}],
+      ["S18", "S19", "SCA bound to amount and the masked IBAN.", { sca: true }],
+      ["S3", "S18", "Payout order.", { api: "POST /v1/payouts {amount, accountRef} + Idempotency-Key" }],
+      ["S18", "S21", "Through M0391; S21 checks eligibility and cut-off.", { api: "A05 / M0391", fail: "after cut-off: next business day, shown before signing" }],
+      ["S21", "EXT", "SEPA credit transfer.", {}],
+      ["#", "Settings"],
+      ["MER", "S3", "Changes schedule, minimum amount, or chooses to keep funds with us.", {}],
+      ["S18", "S6", "Second admin approves (MP-23).", {}],
+      ["S18", "S21", "Settings stored for the next cycle.", { api: "PUT /v1/payouts/settings" }]
+    ],
+    states: [["", "requested", "REQUESTED"], ["REQUESTED", "over limit", "AWAITING_APPROVAL"], ["REQUESTED", "signed", "SCHEDULED"], ["SCHEDULED", "sent", "IN_TRANSIT"], ["IN_TRANSIT", "confirmed", "PAID"]],
+    rules: ["Never to any account other than the verified payout account.", "No payout while a reconciliation hold is on."],
+    questions: [
+      { id: "MP-Q29", q: "\"Funds stay with us by choice\" (WF10 12): is that allowed, for how long, and how are those funds safeguarded?", prop: "Allowed up to [30] days, safeguarded like other client funds, shown as \"kept\". Longer needs a payment account under a separate agreement.", owner: "Compliance" }
+    ]
+  });
+
+  W("MP-15", {
+    title: "Change the payout account", area: "Money", status: "new", source: "WF02b invariant (verified account in the merchant's name, SCA); admin spec payout.account.changed",
+    trigger: "An admin adds a new payout account.", object: "Payout account (S6, S21 verified list)",
+    screens: ["payout-account", "approvals"], lanes: ["MER", "S3", "S18", "S6", "S19", "S4", "OPS", "S21", "S17"],
+    summary: "The highest-risk change in the portal. Name check, second admin, staff check, then a cooling-off period before the first payout. The old account stays in use until then.",
+    steps: [
+      ["MER", "S3", "Admin enters IBAN and holder name and uploads a bank statement.", {}],
+      ["S18", "S18", "IBAN format and SEPA reach; Verification of Payee name check: match, close match, no match.", { gap: "v8.1 does not say how \"in the merchant's name\" is checked (MP-Q30)." }],
+      ["S18", "S19", "SCA bound to the new masked IBAN.", { sca: true }],
+      ["S18", "S6", "Second admin approves, if there is one (MP-23).", {}],
+      ["S18", "S4", "Change sent to the admin; payouts to the new account stopped until verified.", { api: "webhook payout.account.changed {accountRef, ibanMasked, holderMatches, verified, scaEvidenceId}", ref: "admin spec 6" }],
+      ["OPS", "S4", "Checks the statement and the name; four eyes when the name check was not a match.", {}],
+      ["S4", "S21", "Account on the verified list; becomes primary after [24 h].", { api: "M0391" }],
+      ["S17", "MER", "Notice to every admin and to the company email: \"Your payout account was changed\".", { api: "merchant.notify payout_account_verified" }]
+    ],
+    states: [["", "added", "REQUESTED"], ["REQUESTED", "SCA and approval", "VERIFYING"], ["VERIFYING", "staff verify", "VERIFIED (cooling-off)"], ["VERIFIED (cooling-off)", "[24 h]", "PRIMARY"], ["VERIFYING", "refused", "REJECTED"]],
+    rules: ["Payouts go only to a verified account in the merchant's name.", "No change for [24 h] after passkey recovery (MP-04).", "The old account stays primary until the new one is."],
+    questions: [
+      { id: "MP-Q30", q: "How is \"account in the merchant's name\" verified?", prop: "Verification of Payee name check plus a bank statement; no test transfer. A \"no match\" needs four eyes.", owner: "Compliance" },
+      { id: "MP-Q31", q: "Cooling-off before the first payout to a new account?", prop: "[24 h], with notices to all admins so an account takeover is noticed in time.", owner: "CRO" }
+    ]
+  });
+
+  W("MP-18", {
+    title: "Statements, invoices and fees", area: "Money", status: "new", source: "One-pager S3 item 3; S7 \"fee breakdown to S3\" (IFR Art. 12); S17 statements",
+    trigger: "Month end; or a user opens fees for a period.", object: "Statement (S7), invoice (S15)",
+    screens: ["statements"], lanes: ["S7", "S21", "S18", "S3", "MER", "S17"],
+    summary: "Monthly statement and invoice, and the fee for every payment split into interchange, scheme fee and our fee.",
+    steps: [
+      ["S7", "S7", "Month-end: fees per payment by IFR Art. 12 (interchange, scheme, ours), by brand and card category.", { gap: "Whether M008 can split per payment was open in v7.1 (MP-Q32)." }],
+      ["S7", "S21", "Totals posted; invoice from ERP (S15).", {}],
+      ["S18", "S3", "Statement and invoice available; daily fee report too.", { api: "GET /v1/statements, GET /v1/statements/{id}.pdf|csv" }],
+      ["S17", "MER", "\"Your statement is ready\" with a link.", {}],
+      ["MER", "S3", "Downloads; questions go to Messages.", {}]
+    ],
+    states: [["", "month closed", "ISSUED"], ["ISSUED", "correction", "REPLACED (new version)"]],
+    rules: ["Kept 5 years.", "Merchants may ask for the fee split aggregated by brand and category (IFR Art. 12)."],
+    questions: [
+      { id: "MP-Q32", q: "Can M008 give the IFR Art. 12 split per payment?", prop: "Confirm with OraSYS. If not, S7 calculates it from the BPC clearing file.", owner: "OraSYS" }
+    ]
+  });
+
+  W("MP-19", {
+    title: "Tariff change notice", area: "Money", status: "new", source: "S17 regulatory notices (\"tariff change\"); admin spec template tariff_change",
+    trigger: "Paytinno changes a merchant's tariff.", object: "Tariff version (S7)",
+    screens: ["messages", "statements"], lanes: ["OPS", "S4", "S7", "S18", "S17", "MER", "S3"],
+    summary: "The new version is scheduled with a notice period; the merchant sees old and new side by side and the right to end the agreement.",
+    steps: [
+      ["OPS", "S7", "New tariff version with an effective date; Legal approves the notice.", {}],
+      ["S4", "S18", "Notice to the merchant.", { api: "merchant.notify tariff_change {tariff, effectiveAt}" }],
+      ["S17", "MER", "Email and portal notice.", {}],
+      ["MER", "S3", "Reads the change, old and new rates, the date, and the right to end the agreement free of charge before it applies.", {}],
+      ["S7", "S7", "On the date the new version applies; statements show the version used.", {}]
+    ],
+    states: [["", "scheduled", "NOTIFIED"], ["NOTIFIED", "effective date", "APPLIED"], ["NOTIFIED", "merchant ends agreement", "CLOSURE (MP-27)"]],
+    rules: ["Micro-enterprises: at least 2 months' notice (payment services rules); others as the agreement says."],
+    questions: [
+      { id: "MP-Q33", q: "Notice periods differ for micro-enterprises, but onboarding does not ask whether the merchant is one.", prop: "Ask in the application (MP-05) and keep it in S6; S7 refuses an effective date shorter than the notice period.", owner: "Legal" }
+    ]
+  });
+
+  /* ================= DEVELOPERS ================= */
+  W("MP-20", {
+    title: "API keys: create, roll, revoke", area: "Developers", status: "new", source: "One-pager S3 item 6; WF10 3 (keys through S3, S4 operator until the BPC API covers it)",
+    trigger: "A developer needs a key, or a key may be exposed.", object: "Gateway key (BPC)",
+    screens: ["developers"], lanes: ["MER", "S3", "S18", "S19", "S10", "S4", "OPS", "S17"],
+    summary: "Secrets are shown once and never kept by Paytinno. Rolling keeps the old key working for [24 h] so the merchant can switch without downtime.",
+    steps: [
+      ["MER", "S3", "Create a key (test or live) with a label, or roll or revoke one.", {}],
+      ["S18", "S19", "SCA bound to the key label and action.", { sca: true, ref: "WF02a 22" }],
+      ["S3", "S18", "Command.", { api: "POST /v1/keys {mode, label} | POST /v1/keys/{id}/roll | DELETE /v1/keys/{id}" }],
+      ["S18", "S10", "Through A09.", { gap: "BPC API coverage for keys is open (questions 21, 33). Until then an S4 operator does it (MP-Q10).", api: "IF45 via A09" }],
+      ["S10", "S3", "The secret, once. The portal shows it and forgets it.", { rule: "Shown once" }],
+      ["S10", "S10", "Roll: the old key works for [24 h] more, then stops. Revoke: stops now.", {}],
+      ["S17", "MER", "Email to admins and developers for every create, roll and revoke.", {}]
+    ],
+    states: [["", "created", "ACTIVE"], ["ACTIVE", "rolled", "EXPIRING"], ["EXPIRING", "time", "REVOKED"], ["ACTIVE", "revoked", "REVOKED"]],
+    rules: ["Live keys only after go-live (MP-10).", "Secrets never in email, messages or logs."],
+    questions: [
+      { id: "MP-Q10", q: "If BPC cannot create keys through its API, how does the secret reach the merchant without staff seeing it?", prop: "Do not launch key self-service with an operator in the middle. Either BPC API support, or BPC's own console link for the first key. Confirm with BPC before build.", owner: "BPC" }
+    ]
+  });
+
+  W("MP-21", {
+    title: "Webhooks", area: "Developers", status: "part", source: "WF10 3 (BPC webhooks); PRD WF11 (chargeback webhooks through S17); module spec v7.1",
+    trigger: "A developer adds an endpoint; an event happens.", object: "Endpoint, delivery",
+    screens: ["developers"], lanes: ["MER", "S3", "S18", "S10", "S4", "S17"],
+    summary: "Two senders today: BPC for payment events, Paytinno (S17) for chargebacks. Different signatures and retries. Proposed: one scheme for the merchant.",
+    steps: [
+      ["MER", "S3", "Adds an HTTPS endpoint and chooses events.", {}],
+      ["S18", "S19", "SCA to see or roll the signing secret.", { sca: true, gap: "Proposed (MP-Q11)" }],
+      ["S18", "S10", "Payment events: endpoint registered at BPC through A09.", { gap: "BPC API coverage open" }],
+      ["S18", "S4", "Chargeback events: endpoint stored in S4.", { ref: "PRD" }],
+      ["S17", "MER", "Delivery signed X-Paytinno-Signature = HMAC-SHA256(timestamp.body); success is 2xx in 10 s.", { ref: "PRD" }],
+      ["S17", "S17", "Retry once a day, up to 3 times (PRD); v7.1 says backoff for 24 h then pull.", { gap: "Two retry policies (MP-Q34)" }],
+      ["MER", "S3", "Sees deliveries; ReNotify resends the same event ID.", { ref: "PRD ReNotify" }]
+    ],
+    states: [["", "added", "ACTIVE"], ["ACTIVE", "[5] days failing", "DISABLED, admins told"]],
+    rules: ["The merchant rejects messages older than 5 min.", "Event IDs are unique; resends keep the ID."],
+    questions: [
+      { id: "MP-Q11", q: "Is a webhook signing secret a key needing SCA? It lets anyone fake events to the merchant.", prop: "Yes: SCA to reveal or roll.", owner: "CTO" },
+      { id: "MP-Q34", q: "Two signing schemes and retry policies (BPC payment webhooks and Paytinno chargeback webhooks).", prop: "Merchant sees one: Paytinno relays BPC payment events through S17 with the same signature, retries with backoff for 24 h, then pull through the API.", owner: "CTO" }
+    ]
+  });
+
+  W("MP-28", {
+    title: "Reports and exports", area: "Developers", status: "new", source: "Not in v8.1",
+    trigger: "A user exports payments, payouts or a reconciliation file.", object: "Export job",
+    screens: ["payments", "payouts"], lanes: ["MER", "S3", "S18", "S10", "S21"],
+    summary: "Small exports download at once; large ones run as a job and are ready to download in the portal.",
+    steps: [
+      ["MER", "S3", "Export with the current filters: CSV or Excel.", {}],
+      ["S3", "S18", "Up to [10,000] rows at once; above that a job.", { api: "POST /v1/exports {type, filters} → {exportId}" }],
+      ["S18", "S10", "Payments from BPC; money from S21.", {}],
+      ["S18", "S3", "Ready: download link valid [24 h], logged.", {}]
+    ],
+    states: [["", "asked", "RUNNING"], ["RUNNING", "done", "READY"], ["READY", "[7] days", "DELETED"]],
+    rules: ["Masked card data only.", "The payout reconciliation file lists every payment, refund, fee and reserve in a payout."],
+    questions: []
+  });
+
+  /* ================= TEAM ================= */
+  W("MP-22", {
+    title: "Invite, change and remove users", area: "Team", status: "new", source: "One-pager S3 item 7; WF02b 17 (\"invites its other users with roles\"); WF02a 22 (role above threshold)",
+    trigger: "An admin manages the team.", object: "Person to merchant link (S6)",
+    screens: ["team"], lanes: ["MER", "S3", "S18", "S19", "S6", "S17"],
+    summary: "Invitations by email, accepted through the normal registration. Roles that can move money need SCA to grant.",
+    steps: [
+      ["MER", "S3", "Admin invites: email, role, limits.", {}],
+      ["S18", "S19", "SCA when the role is Admin or Finance.", { sca: true, ref: "WF02a 22" }],
+      ["S18", "S6", "Invitation stored, valid [7] days.", { api: "POST /v1/team/invitations {email, role, mandate}" }],
+      ["S17", "MER", "Email with a link.", {}],
+      ["MER", "S19", "Invitee registers (MP-01) or signs in if they already have a portal account.", {}],
+      ["S6", "S6", "Accepting links the person to the merchant with the role. Admins are told.", {}],
+      ["#", "Change or remove"],
+      ["MER", "S3", "Change role (SCA when raising it) or remove. The last admin cannot be removed.", {}],
+      ["S6", "S19", "Removal: sessions for this merchant end at the next call; the person keeps other merchants.", {}]
+    ],
+    states: [["", "invited", "INVITED"], ["INVITED", "accepted", "ACTIVE"], ["INVITED", "[7] days or cancelled", "EXPIRED"], ["ACTIVE", "removed", "REMOVED"]],
+    rules: ["At least one admin; two recommended (recovery, approvals).", "Every change is in the team history."],
+    questions: [
+      { id: "MP-Q35", q: "Do people with money roles (Admin, Finance) need an identity check?", prop: "Yes: IDV inside the portal when accepting an Admin or Finance invitation.", owner: "Compliance" },
+      { id: "MP-Q01", q: "v8.1 names only ONBOARDING_APPLICANT and MERCHANT_ADMIN. There is no role list or permission table.", prop: "Admin, Finance, Developer, Support, Viewer with the table under Roles and rights.", owner: "Product" }
+    ]
+  });
+
+  W("MP-23", {
+    title: "Approvals by a second person", area: "Team", status: "new", source: "One-pager S3 item 7 (\"business roles, mandates and approvals\"); not modelled in v8.1",
+    trigger: "An action over a person's limit, or one that always needs two people.", object: "Approval request (S6)",
+    screens: ["approvals"], lanes: ["MER", "S3", "S18", "S6", "S19", "S17"],
+    summary: "The merchant's own four eyes. The request waits until someone else with the right role approves with SCA.",
+    steps: [
+      ["MER", "S3", "Starts the action; signs the request.", { sca: true }],
+      ["S18", "S6", "Over the limit: approval request, valid [48 h].", { api: "POST /v1/approvals" }],
+      ["S17", "MER", "Notice to everyone who can approve.", {}],
+      ["MER", "S3", "Another person approves or declines, with SCA.", { sca: true, rule: "Approver is never the requester" }],
+      ["S18", "S18", "Runs the original command with its first Idempotency-Key.", {}]
+    ],
+    states: [["", "requested", "PENDING"], ["PENDING", "approved", "DONE"], ["PENDING", "declined", "DECLINED"], ["PENDING", "[48 h] or cancelled", "EXPIRED"]],
+    rules: ["Always two people: payout account change, payout settings, closure, a new admin.", "Over the limit: refunds, payouts."],
+    questions: [
+      { id: "MP-Q05", q: "Who sets limits, and are there defaults?", prop: "Defaults per role (Support refunds up to [€100]); an admin can lower a person's limit, not raise it above the merchant's limit set by Paytinno.", owner: "Product" }
+    ]
+  });
+
+  /* ================= BUSINESS ================= */
+  W("MP-24", {
+    title: "Business details, owners and periodic review", area: "Business", status: "new", source: "WF02b invariants (KYB refresh 12 or 36 months; owner change opens a case); admin spec application.updated",
+    trigger: "The merchant changes details; a review date comes; a document expires.", object: "Change request (S6), review case (S4)",
+    screens: ["business", "messages"], lanes: ["MER", "S3", "S18", "S6", "S11", "S4", "OPS"],
+    summary: "Contact details change at once. Legal name, address, owners, representative, what is sold and new websites are requests that staff check first.",
+    steps: [
+      ["MER", "S3", "Changes contact email or phone: applied at once.", {}],
+      ["MER", "S3", "Asks to change legal details, owners, representative, MCC, or add a website.", {}],
+      ["S3", "S18", "Change request with documents.", { api: "POST /v1/merchant/changes → webhook application.updated" }],
+      ["S6", "S11", "New owners screened; new representative does IDV in the portal.", {}],
+      ["OPS", "S4", "Reviews; new website goes through the website check (MP-10).", {}],
+      ["#", "Periodic review"],
+      ["S6", "S4", "Review due: 12 months high risk, 36 others.", { ref: "WF02b invariant" }],
+      ["S4", "S3", "RFI listing what to confirm or upload (MP-07).", {}],
+      ["MER", "S3", "Confirms details, uploads documents.", {}]
+    ],
+    states: [["", "asked", "REQUESTED"], ["REQUESTED", "approved", "APPLIED"], ["REQUESTED", "refused", "REFUSED"]],
+    rules: ["Ongoing sanctions screening runs in the AML system; the merchant sees nothing of it.", "Documents with an expiry date get reminders 30 days before."],
+    questions: [
+      { id: "MP-Q36", q: "What happens when a periodic review is overdue?", prop: "Reminders, then an S4 decision on restrictions (MP-26). Never automatic.", owner: "Compliance" }
+    ]
+  });
+
+  W("MP-25", {
+    title: "Messages and notices", area: "Business", status: "part", source: "S17; admin spec 5.3 merchant.notify templates",
+    trigger: "Paytinno sends a notice; a user writes to Paytinno.", object: "Notice, conversation",
+    screens: ["messages", "settings"], lanes: ["MER", "S3", "S18", "S4", "OPS", "S17"],
+    summary: "One inbox for requests, notices and support. Emails carry a link, not the content.",
+    steps: [
+      ["S4", "S18", "Notice from a fixed template.", { api: "merchant.notify {template, data}", ref: "admin spec 5.3" }],
+      ["S17", "MER", "Email (and portal) in Bulgarian or English.", {}],
+      ["MER", "S3", "Writes to support.", { api: "POST /v1/messages → webhook merchant.message" }],
+      ["OPS", "S4", "Answers.", { gap: "Where support conversations live is not decided (MP-Q37)." }],
+      ["MER", "S3", "Sets which notices to get by email. Regulatory notices cannot be turned off.", {}]
+    ],
+    states: [],
+    rules: ["Templates: welcome, application received, application rejected, RFI reminder, tariff change, acceptance suspended, acceptance reactivated, account closing, payout account verified (admin spec P5)."],
+    questions: [
+      { id: "MP-Q37", q: "Where are support conversations handled? The admin has no case management for them.", prop: "A simple inbox in S4 for phase 1; a help desk tool later.", owner: "COO" }
+    ]
+  });
+
+  W("MP-26", {
+    title: "Suspension and restricted access", area: "Business", status: "new", source: "Admin spec 5.4 access.revoke and P6; WF11 rule (chargeback ratio above 1%)",
+    trigger: "Scheme programme, AML decision, unpaid top-up, overdue review.", object: "Merchant access",
+    screens: ["home"], lanes: ["S4", "OPS", "S10", "S18", "S3", "MER", "S17"],
+    summary: "Staff decide with four eyes. New payments stop; what the merchant can still do is limited but disputes stay answerable.",
+    steps: [
+      ["OPS", "S4", "Decision with four eyes.", {}],
+      ["S4", "S10", "Acceptance profile suspended.", {}],
+      ["S4", "S18", "Portal access restricted.", { api: "POST /admin/v1/merchants/{id}/access/revoke", ref: "admin spec 5.4" }],
+      ["S17", "MER", "Notice acceptance_suspended, neutral text.", {}],
+      ["S3", "MER", "Banner. Still possible: read payments and statements, answer disputes, messages. Not possible: refunds, payouts, keys, changes.", { gap: "admin spec 5.4 stops all actions; dispute answers must continue (MP-Q38)." }]
+    ],
+    states: [["ACTIVE", "suspended", "RESTRICTED"], ["RESTRICTED", "lifted", "ACTIVE"], ["RESTRICTED", "terminated", "CLOSING (MP-27)"]],
+    rules: ["Text never says why when the reason is AML."],
+    questions: [
+      { id: "MP-Q38", q: "If revoked access stops every action, disputes go unanswered and are lost.", prop: "Two levels: RESTRICTED (disputes and messages work) and REVOKED (read-only, after closure).", owner: "CTO" }
+    ]
+  });
+
+  W("MP-27", {
+    title: "Close the account", area: "Business", status: "new", source: "S6 lifecycle and S4 closure (one-pager); admin spec P6 (5 years read access)",
+    trigger: "The merchant asks to close, or Paytinno ends the agreement.", object: "Merchant lifecycle CLOSING to CLOSED",
+    screens: ["settings"], lanes: ["MER", "S3", "S18", "S6", "S4", "OPS", "S10", "S21", "S17"],
+    summary: "Acceptance stops on the date, the balance is paid out, the reserve is kept for the chargeback tail, and the portal stays readable.",
+    steps: [
+      ["MER", "S3", "Admin asks to close: date and reason; SCA and a second admin.", { sca: true }],
+      ["S18", "S4", "Closure case: open disputes, reserve, last statement.", {}],
+      ["S4", "S10", "Acceptance stops on the date.", {}],
+      ["S21", "S21", "Final payout of available funds; reserve kept [180] days then released.", {}],
+      ["S17", "MER", "Notice account_closing with dates.", {}],
+      ["S3", "MER", "Read-only: statements, payments, documents for [5] years; disputes still answerable until the tail ends.", {}]
+    ],
+    states: [["ACTIVE", "requested", "CLOSING"], ["CLOSING", "reserve released and no open disputes", "CLOSED (read-only)"]],
+    rules: ["Paytinno-initiated closure follows the agreement's notice, or immediately for cause."],
+    questions: [
+      { id: "MP-Q39", q: "Who keeps read access after closure, and for how long?", prop: "Admins and Finance, 5 years (AML record keeping), then the users are disabled.", owner: "Legal" }
+    ]
+  });
+
+  /* portal screens a workflow runs on (ids are the prototype's routes: merchant-portal, #/<id>) */
+  const SCREENS = {
+    register: "Registration", application: "Application", home: "Home", payments: "Payments", payment: "One payment", refunds: "Refunds",
+    disputes: "Disputes", dispute: "One dispute", balances: "Balances", payouts: "Payouts", "payout-account": "Payout account",
+    statements: "Statements and fees", business: "Business", messages: "Messages", settings: "Settings", developers: "Developers",
+    team: "Team", approvals: "Approvals", security: "Security"
+  };
+  const SOURCES = [
+    "CTO architecture v8.1, 13 Oct 2026: one-page modules and workflows; low-level workflows WF02a, WF02b, WF10, WF11",
+    "Module specs (file still v7.1, 2 Oct 2026; its S3 page describes the old bought portal)",
+    "PRD WF11 Acquiring v6, V. Tulev, 15 Oct 2026",
+    "Admin and merchant portal message spec v0.1, 15 Oct 2026 (paytinno-admin/docs/portal-connector.md)",
+    "Merchant portal design boards, 14 Oct 2026 (screens only, no workflows)"
+  ];
+  const CONTRADICTIONS = [
+    "The module spec file is v7.1 and still describes S3 as a portal bought from BPC. v8.1 has the portal built in house; there is no v8.1 S3 page.",
+    "WF02a step 26 points to the wrong steps (MP-Q08).",
+    "WF02b step 17 says the portal talks only to S18; WF02a has the portal talk to S19 directly through the web SDK (IF05 rows). Both can be true: S19's SDK for the passkey, S18 for everything else. Say so in v8.2.",
+    "PRD WF11 and v8.1 WF11 disagree on dispute states, the channel to the schemes and the ledger accounts (MP-Q12). The PRD also uses component names S21a, S21b, S21c that v7.1 dropped.",
+    "Chargeback ratio: v8.1 opens an underwriting case above about 1%; Visa VAMP and Mastercard ECP thresholds in the admin are different and still placeholders.",
+    "Webhooks: payment events from BPC, dispute events from S17, with different signatures and retries (MP-Q34).",
+    "The admin's access.revoke stops every action; WF11 needs dispute answers to keep working (MP-Q38)."
+  ];
+  const VERSION = "0.1";
+  const AREAS = ["Access", "Onboarding", "Payments", "Disputes", "Money", "Developers", "Team", "Business"];
+  const STATUS = { v81: ["v81", "In v8.1"], part: ["part", "v8.1 with gaps"], new: ["new", "Proposed"] };
+  const byId = id => list.find(w => w.id === id);
+  const forScreen = s => list.filter(w => (w.screens || []).includes(s));
+  const questions = () => { const out = []; list.forEach(w => (w.questions || []).forEach(q => out.push(Object.assign({ wf: w.id, wfTitle: w.title }, q)))); return out.sort((a, b) => parseFloat(a.id.slice(4)) - parseFloat(b.id.slice(4))); };
+  list.sort((a, b) => AREAS.indexOf(a.area) - AREAS.indexOf(b.area) || a.id.localeCompare(b.id));
+  return { list, AREAS, STATUS, SCREENS, SOURCES, CONTRADICTIONS, VERSION, byId, forScreen, questions };
+})();
+
+</script>
+<script>
+/* Viewer for the workflow catalogue: list, one workflow with its lane diagram, open questions, roles and rights,
+   sources, and a full spec to print. Reads src/workflows.js (WF) and src/model.js (CONFIG). No build step. */
+(function () {
+  "use strict";
+  const PORTAL = "http://localhost:8771/#/";   // the merchant-portal prototype, for "Portal screens" links
+  const esc = s => String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  const eur = n => new Intl.NumberFormat("en-GB", { style: "currency", currency: "EUR", maximumFractionDigits: 0 }).format(n);
+  const st = (cls, t) => '<span class="st ' + cls + '">' + esc(t) + "</span>";
+  const wfb = s => { const x = WF.STATUS[s] || ["", s]; return '<span class="wfb ' + x[0] + '">' + esc(x[1]) + "</span>"; };
+  const strip = items => '<div class="strip">' + items.map(([l, v, cls]) => '<div><div class="l">' + esc(l) + '</div><div class="v ' + (cls || "") + '">' + v + "</div></div>").join("") + "</div>";
+  function table(cols, rows, opts) {
+    opts = opts || {};
+    if (!rows.length) return '<p class="empty">' + esc(opts.empty || "Nothing here.") + "</p>";
+    return '<div class="tw"><table' + (opts.cls ? ' class="' + opts.cls + '"' : "") + "><thead><tr>" + cols.map(c => "<th" + (c.r ? ' class="r"' : "") + ">" + esc(c.h) + "</th>").join("") + "</tr></thead><tbody>" +
+      rows.map(r => "<tr" + (opts.href ? ' class="click" data-href="' + esc(opts.href(r)) + '"' : "") + ">" + cols.map(c => "<td" + (c.r ? ' class="r"' : "") + ">" + c.v(r) + "</td>").join("") + "</tr>").join("") + "</tbody></table></div>";
+  }
+  const ICON = {
+    workflows: '<rect x="3" y="4" width="6" height="5" rx="1"/><rect x="15" y="4" width="6" height="5" rx="1"/><rect x="9" y="15" width="6" height="5" rx="1"/><path d="M6 9v3h12V9M12 12v3"/>',
+    questions: '<circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.6V14M12 17.5v.01"/>',
+    roles: '<rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 10h16M10 4v16"/>',
+    sources: '<path d="M4 5h7v15H4zM13 5h7v15h-7z"/>',
+    spec: '<path d="M5 4h11l3 3v13H5z"/><path d="M9 10h6M9 14h6"/>',
+    portal: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18M7 15h4"/>'
+  };
+  const icon = k => '<svg viewBox="0 0 24 24" aria-hidden="true">' + (ICON[k] || "") + "</svg>";
+
+  function lanesOf(w) {
+    const ids = w.lanes.slice();
+    w.steps.forEach(s => { if (s[0] !== "#") [s[0], s[1]].forEach(l => { if (!ids.includes(l)) ids.push(l); }); });
+    return ids;
+  }
+
+  /* lane diagram: one column per system, one row per step, an arrow from sender to receiver */
+  function diagram(w) {
+    const L = lanesOf(w); const cols = "grid-template-columns:repeat(" + L.length + ",minmax(62px,78px)) minmax(320px,1fr)";
+    let n = 0;
+    const head = '<div class="row hd" style="' + cols + '">' + L.map(l => "<div>" + esc(CONFIG.LANES[l][0]) + "<small>" + esc(CONFIG.LANES[l][1]) + "</small></div>").join("") + '<div class="txt">Step</div></div>';
+    const rows = w.steps.map(s => {
+      if (s[0] === "#") return '<div class="row grp" style="' + cols + '">' + L.map(() => '<div class="c"></div>').join("") + '<div class="t">' + esc(s[1]) + "</div></div>";
+      n++; const [from, to, text, o] = [s[0], s[1], s[2], s[3] || {}];
+      const i = L.indexOf(from), j = L.indexOf(to); const lo = Math.min(i, j), hi = Math.max(i, j);
+      const cells = L.map((_, k) => {
+        if (i === j) return '<div class="c">' + (k === i ? '<span class="nr">' + n + "</span>" : "") + "</div>";
+        let cls = "c"; let inner = "";
+        if (k >= lo && k <= hi) cls += " ln" + (k === lo ? " from" : "") + (k === hi ? " to" : "");
+        if (k === i) inner += '<span class="nr">' + n + "</span>";
+        if (k === j) inner += '<span class="hd2 ' + (j > i ? "r" : "l") + '"></span>';
+        return '<div class="' + cls + '">' + inner + "</div>";
+      }).join("");
+      const tags = [];
+      if (o.ref) tags.push('<span class="tg">' + esc(o.ref) + "</span>");
+      if (o.sla) tags.push('<span class="tg">' + esc(o.sla) + "</span>");
+      if (o.sca) tags.push('<span class="tg sca">SCA</span>');
+      if (o.rule) tags.push('<span class="tg rule">' + esc(o.rule) + "</span>");
+      return '<div class="row' + (o.sca ? " sca" : "") + '" style="' + cols + '">' + cells + '<div class="t">' + esc(text) + (o.api ? '<span class="api">' + esc(o.api) + "</span>" : "") +
+        (o.fail ? '<span class="if">If it fails: ' + esc(o.fail) + "</span>" : "") +
+        (o.gap ? '<span class="if" style="color:var(--amber)">Gap: ' + esc(o.gap) + "</span>" : "") +
+        (tags.length ? '<span class="tags">' + tags.join("") + "</span>" : "") + "</div></div>";
+    }).join("");
+    return '<div class="lanes">' + head + rows + '</div><div class="legend"><span><b>1</b>step, starts at the sender</span><span><i></i>call or message</span><span><i class="sca"></i>signed with SCA</span><span style="color:var(--red)">If it fails</span><span style="color:var(--amber)">Gap in v8.1</span></div>';
+  }
+
+  function qcard(q, withWf) {
+    return '<div class="q" id="' + esc(q.id) + '"><div class="qh"><b>' + esc(q.id) + "</b><span>" + esc(q.q) + '</span><span class="r"><span class="chip">' + esc(q.owner) + "</span>" + (withWf ? '<a class="wfid" href="#/workflow/' + q.wf + '">' + q.wf + "</a>" : "") + '</span></div><p class="prop"><b>Proposed:</b> ' + esc(q.prop) + "</p></div>";
+  }
+
+  function detail(w, print) {
+    const screens = (w.screens || []).map(s => '<a class="chip" href="' + PORTAL + s + '" target="_blank" rel="noopener">' + esc(WF.SCREENS[s] || s) + "</a>").join(" ");
+    return '<dl class="facts mb"><dt>Status</dt><dd>' + wfb(w.status) + "</dd><dt>Area</dt><dd>" + esc(w.area) + "</dd><dt>Source</dt><dd>" + esc(w.source) + "</dd><dt>Starts when</dt><dd>" + esc(w.trigger) + "</dd><dt>Object</dt><dd>" + esc(w.object) + "</dd><dt>Portal screens</dt><dd>" + (screens || "None") + (print ? "" : ' <span class="small muted">open in the prototype</span>') + "</dd></dl>" +
+      "<section><h2>Steps</h2>" + diagram(w) + "</section>" +
+      '<div class="cols"><section><h2>States</h2>' + (w.states.length ? table([{ h: "From", v: s => '<span class="mono">' + esc(s[0] || "start") + "</span>" }, { h: "When", v: s => esc(s[1]) }, { h: "To", v: s => '<span class="mono">' + esc(s[2]) + "</span>" }], w.states) : '<p class="empty">No states of its own.</p>') + "</section>" +
+      "<section><h2>Rules</h2>" + (w.rules.length ? '<ul class="list">' + w.rules.map(r => '<li><span class="what">' + esc(r) + "</span></li>").join("") + "</ul>" : '<p class="empty">None.</p>') + "</section></div>" +
+      "<section><h2>Open questions</h2>" + (w.questions.length ? '<div class="qs">' + w.questions.map(q => qcard(Object.assign({ wf: w.id }, q))).join("") + "</div>" : '<p class="empty">None.</p>') + "</section>";
+  }
+
+  const pages = {};
+  pages.workflows = {
+    nav: "Workflows", icon: "workflows", title: "Merchant portal workflows",
+    render(_, q) {
+      const f = q.get("s") || ""; const all = WF.list; const rows = all.filter(w => !f || w.status === f); const qs = WF.questions();
+      return {
+        sub: "The intended workflows behind the Paytinno merchant portal (S3), for review with the CTO's team before build. Each says what the merchant does, which systems take part, what each call is, and what is still open. Proposed means not in the CTO's architecture v8.1 and needs the team's agreement.",
+        tools: '<a class="btn" href="#/spec">Full spec to print</a>',
+        html: strip([["Workflows", String(all.length)], ["In v8.1", String(all.filter(w => w.status === "v81").length)], ["v8.1 with gaps", String(all.filter(w => w.status === "part").length), "amber"], ["Proposed", String(all.filter(w => w.status === "new").length)], ["Open questions", String(qs.length), "amber"]]) +
+          '<div class="tabs">' + [["", "All"], ["v81", "In v8.1"], ["part", "v8.1 with gaps"], ["new", "Proposed"]].map(([k, l]) => '<a href="#/workflows' + (k ? "?s=" + k : "") + '"' + (f === k ? ' aria-current="page"' : "") + ">" + l + "<span>" + all.filter(w => !k || w.status === k).length + "</span></a>").join("") + "</div>" +
+          WF.AREAS.map(a => { const ws = rows.filter(w => w.area === a); if (!ws.length) return ""; return "<section><h2>" + esc(a) + "</h2>" + table([
+            { h: "ID", v: w => '<span class="wfid">' + w.id + "</span>" },
+            { h: "Workflow", v: w => '<a href="#/workflow/' + w.id + '">' + esc(w.title) + '</a><span class="sub">' + esc(w.summary) + "</span>" },
+            { h: "Status", v: w => wfb(w.status) },
+            { h: "Source", v: w => '<span class="small">' + esc(w.source) + "</span>" },
+            { h: "Steps", r: 1, v: w => String(w.steps.filter(s => s[0] !== "#").length) },
+            { h: "Questions", r: 1, v: w => w.questions.length ? '<span class="warn">' + w.questions.length + "</span>" : "0" }
+          ], ws, { href: w => "#/workflow/" + w.id }) + "</section>"; }).join("") +
+          '<section><h2>Systems in the diagrams</h2><div class="card small">' + Object.entries(CONFIG.LANES).map(([, v]) => "<b>" + esc(v[0]) + "</b> " + esc(v[1])).join(". ") + ". A01 and A05 are client libraries in S18 and S6; A09 is the BPC API library, which never writes the ledger.</div></section>"
+      };
+    }
+  };
+  pages.workflow = {
+    nav: "Workflow", parent: "workflows", title: "Workflow",
+    render(params) {
+      const w = WF.byId(params[0]); if (!w) return { html: '<p class="empty">Not found.</p>' };
+      const i = WF.list.indexOf(w); const prev = WF.list[i - 1], next = WF.list[i + 1];
+      return {
+        title: w.id + " " + w.title, sub: esc(w.summary),
+        tools: (prev ? '<a class="btn" href="#/workflow/' + prev.id + '" title="' + esc(prev.title) + '">Previous</a>' : "") + (next ? '<a class="btn" href="#/workflow/' + next.id + '" title="' + esc(next.title) + '">Next</a>' : "") + '<a class="btn" href="#/workflows">All workflows</a>',
+        html: detail(w)
+      };
+    }
+  };
+  pages.questions = {
+    nav: "Open questions", icon: "questions", title: "Open questions",
+    badge: () => WF.questions().length,
+    render(_, q) {
+      const own = q.get("o") || ""; const all = WF.questions(); const owners = [...new Set(all.map(x => x.owner))].sort();
+      const rows = all.filter(x => !own || x.owner === own);
+      return {
+        sub: "Decisions the portal needs before build. Each has a proposed answer to agree or change. CTO question numbers refer to the v8.1 question list.",
+        html: '<div class="tabs"><a href="#/questions"' + (!own ? ' aria-current="page"' : "") + ">All<span>" + all.length + "</span></a>" + owners.map(o => '<a href="#/questions?o=' + encodeURIComponent(o) + '"' + (own === o ? ' aria-current="page"' : "") + ">" + esc(o) + "<span>" + all.filter(x => x.owner === o).length + "</span></a>").join("") + "</div>" +
+          '<div class="qs">' + rows.map(x => qcard(x, true)).join("") + "</div>"
+      };
+    }
+  };
+  pages.roles = {
+    nav: "Roles and rights", icon: "roles", title: "Roles and rights",
+    render() {
+      const R = Object.keys(CONFIG.ROLES);
+      const cell = (p, r) => { if (!p.roles.includes(r)) return '<span class="no">No</span>'; let t = '<span class="y">Yes</span>'; if (p.sca) t += ' <span class="s">SCA</span>'; if (p.second) t += ' <span class="a">' + (p.second.from ? "2nd from " + eur(p.second.from) : "2nd") + "</span>"; return t; };
+      const L = CONFIG.LIMITS;
+      return {
+        sub: "Proposed (MP-Q01). v8.1 names only ONBOARDING_APPLICANT and MERCHANT_ADMIN. Roles live in S6; S18 checks them on every call. The screens hide what a role cannot do, but S18 is the control.",
+        html: '<section><h2>Who can do what</h2>' + table([{ h: "Action", v: x => esc(x[1].label) + '<span class="sub mono">' + esc(x[0]) + "</span>" + (x[1].src ? '<span class="sub">' + esc(x[1].src) + "</span>" : "") }].concat(R.map(r => ({ h: CONFIG.ROLES[r].label, v: x => cell(x[1], r) }))), Object.entries(CONFIG.PERMS), { cls: "matrix" }) + '<p class="note"><span class="s">SCA</span> the person signs with a passkey (dynamic linking). <span class="a">2nd</span> a second person approves (MP-23), always or from the amount shown.</p></section>' +
+          '<div class="cols"><section><h2>Roles</h2>' + table([{ h: "Role", v: r => "<b>" + esc(CONFIG.ROLES[r].label) + '</b><span class="sub mono">' + CONFIG.ROLES[r].code + "</span>" }, { h: "For", v: r => esc(CONFIG.ROLES[r].desc) }], R) + "</section>" +
+          "<section><h2>Default limits per person</h2>" + table([{ h: "Role", v: r => esc(CONFIG.ROLES[r].label) }, { h: "Refund", r: 1, v: r => eur(CONFIG.MANDATE[r].refund) }, { h: "Payout", r: 1, v: r => CONFIG.MANDATE[r].payout ? eur(CONFIG.MANDATE[r].payout) : "None" }], Object.keys(CONFIG.MANDATE)) + '<p class="note">An admin can lower a person\'s limit. Paytinno sets the business\'s maximum in underwriting (MP-Q05).</p>' +
+          '<h2 style="font-size:14px;margin:18px 0 10px">Timers and limits</h2><dl class="facts">' + [["Session", L.sessionHours + " h, idle " + L.idleMinutes + " min"], ["Refresh token", L.refreshDays + " days"], ["SCA challenge", L.scaMinutes + " min"], ["Verification codes", L.codeMinutes + " min, 5 attempts"], ["Payout cut-off", L.payoutCutoff], ["Minimum payout", L.minPayout], ["Reserve", L.reserveDays + " days"], ["KYB review", L.kybHigh + " months high risk, " + L.kybStd + " others"], ["Old key after roll", L.keyOverlapHours + " h"], ["Invitation", L.inviteDays + " days"]].map(([a, b]) => "<dt>" + esc(a) + "</dt><dd>" + esc(b) + "</dd>").join("") + '</dl><p class="note">Values in [brackets] are proposals.</p></section></div>' +
+          '<section><h2>Application status texts</h2><p class="small muted mb">The portal shows its own fixed text for each state, never free text from staff (MP-Q09, no tipping off).</p>' + table([{ h: "State", v: s => '<span class="mono">' + s.k + "</span>" }, { h: "Label", v: s => esc(s.label) }, { h: "Text", v: s => esc(s.text) }], CONFIG.APP_STATES) + "</section>"
+      };
+    }
+  };
+  pages.sources = {
+    nav: "Sources", icon: "sources", title: "Sources and contradictions",
+    render() {
+      return {
+        sub: "What the workflows are built from, and where those sources disagree.",
+        html: '<section><h2>Sources</h2><ul class="list">' + WF.SOURCES.map(s => '<li><span class="what">' + esc(s) + "</span></li>").join("") + "</ul></section>" +
+          '<section><h2>Contradictions found in the sources</h2><ul class="list">' + WF.CONTRADICTIONS.map(s => '<li><span class="what">' + esc(s) + "</span></li>").join("") + "</ul></section>"
+      };
+    }
+  };
+  pages.spec = {
+    nav: "Full spec", icon: "spec", title: "Merchant portal workflows",
+    render() {
+      const qs = WF.questions();
+      return {
+        sub: "Paytinno merchant portal (S3): workflows for review, version " + WF.VERSION + ". Based on CTO architecture v8.1, PRD WF11 Acquiring v6 and the admin-portal message spec v0.1.",
+        tools: '<button class="btn primary" type="button" onclick="window.print()">Print or save as PDF</button>',
+        html: '<section><h2>Contents</h2><div class="toc card">' + WF.list.map(w => '<a href="#/spec" data-go="' + w.id + '"><span class="wfid">' + w.id + '</span><span class="tt">' + esc(w.title) + "</span> " + wfb(w.status) + "</a>").join("") + "</div></section>" +
+          WF.list.map(w => '<section id="s-' + w.id + '" style="margin-top:36px"><h2 style="font-size:17px">' + w.id + " " + esc(w.title) + '</h2><p class="mb">' + esc(w.summary) + "</p>" + detail(w, true) + "</section>").join("") +
+          '<section style="margin-top:36px"><h2 style="font-size:17px">All open questions (' + qs.length + ')</h2><div class="qs">' + qs.map(x => qcard(x, true)).join("") + "</div></section>",
+        after(root) { root.querySelectorAll("[data-go]").forEach(a => a.onclick = e => { e.preventDefault(); document.getElementById("s-" + a.dataset.go).scrollIntoView(); }); }
+      };
+    }
+  };
+
+  const NAV = ["workflows", "questions", "roles", "sources", "spec"];
+  let current = null;
+  function render() {
+    const h = location.hash.replace(/^#\/?/, "") || "workflows";
+    const [path, query] = h.split("?"); const parts = path.split("/").map(decodeURIComponent);
+    const id = pages[parts[0]] ? parts[0] : "workflows"; const page = pages[id];
+    let out; try { out = page.render(parts.slice(1), new URLSearchParams(query || "")) || {}; } catch (e) { console.error(e); out = { html: '<p class="bad">This page could not be drawn: ' + esc(e.message) + "</p>" }; }
+    document.getElementById("pageTitle").textContent = out.title || page.title;
+    document.getElementById("pageSub").innerHTML = out.sub || ""; document.getElementById("pageSub").classList.toggle("hide", !out.sub);
+    document.getElementById("pageTools").innerHTML = out.tools || "";
+    document.getElementById("envTag").innerHTML = '<span class="tag" style="background:var(--blue-bg);color:var(--blue)">Draft ' + esc(WF.VERSION) + "</span>";
+    document.getElementById("main").innerHTML = out.html || "";
+    document.title = (out.title || page.title) + " - Paytinno";
+    if (out.after) out.after(document.querySelector("main"));
+    const parent = page.parent || id;
+    document.getElementById("nav").innerHTML = NAV.map(k => { const p = pages[k]; const b = p.badge ? p.badge() : null; return '<a href="#/' + k + '" title="' + esc(p.nav) + '" aria-label="' + esc(p.nav) + '"' + (parent === k ? ' aria-current="page"' : "") + '><span class="ico">' + icon(p.icon) + "</span>" + esc(p.nav) + (b ? '<span class="n">' + b + "</span>" : "") + "</a>"; }).join("") +
+      '<div class="grp">Prototype</div><a href="' + PORTAL + 'home" target="_blank" rel="noopener" title="Merchant portal prototype" aria-label="Merchant portal prototype"><span class="ico">' + icon("portal") + "</span>Merchant portal</a>";
+    window.scrollTo(0, current === location.hash ? window.scrollY : 0); current = location.hash;
+  }
+  function setLook(look, save) {
+    const el = document.documentElement;
+    if (look === "light") { el.dataset.look = "light"; el.dataset.theme = "light"; } else { delete el.dataset.look; if (el.dataset.theme === "light") delete el.dataset.theme; }
+    document.querySelectorAll(".envtoggle button[data-look]").forEach(x => x.setAttribute("aria-pressed", String(x.dataset.look === look)));
+    if (save) try { localStorage.setItem("mpw.look", look); } catch (e) { /* private window */ }
+  }
+  setLook(document.documentElement.dataset.look || "standard");
+  document.querySelectorAll(".envtoggle button[data-look]").forEach(b => b.onclick = () => setLook(b.dataset.look, true));
+  document.addEventListener("click", e => { const tr = e.target.closest("tr[data-href]"); if (tr && !e.target.closest("a,button")) location.hash = tr.dataset.href; });
+  window.addEventListener("hashchange", render);
+  render();
+})();
+
+</script>
+</body>
+</html>

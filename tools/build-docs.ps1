@@ -34,3 +34,6 @@ foreach ($prop in $files.PSObject.Properties) {
   $n++
 }
 Write-Output "Wrote $n files to docs\"
+
+# the same content as one self-contained HTML file
+& (Join-Path $PSScriptRoot 'build-html.ps1') -Root $Root

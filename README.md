@@ -25,6 +25,7 @@ Every workflow has:
 | `src/workflows.js` | **The source of truth.** All workflows, steps, states, rules, open questions, sources and contradictions |
 | `src/model.js` | Roles, permissions, SCA and second-person rules, limits, timers, application status texts, the systems (lanes) |
 | `docs/` | Markdown generated from `src/`, readable on GitHub (Mermaid diagrams). Do not edit by hand |
+| `dist/merchant-portal-workflows.html` | **The whole viewer in one file** (about 160 KB) for sharing: it opens offline and can be emailed, put on Drive or added to a Claude project. Generated; do not edit |
 | `index.html`, `viewer/` | A viewer with lane diagrams, filters and a full spec to print or save as PDF |
 | `tools/` | The docs generator (`build-docs.ps1`, `md.js`, `build.html`) |
 
@@ -35,8 +36,8 @@ Every workflow has:
    ```
    powershell -NoProfile -ExecutionPolicy Bypass -File tools\build-docs.ps1
    ```
-   The generator runs in headless Microsoft Edge, so it needs no Node or Python.
-3. Commit `src/` and `docs/` together.
+   The generator runs in headless Microsoft Edge, so it needs no Node or Python. It also rebuilds `dist/merchant-portal-workflows.html`.
+3. Commit `src/`, `docs/` and `dist/` together.
 
 Reviewers who only read can comment on the Markdown in `docs/`. Changes go into `src/`.
 
