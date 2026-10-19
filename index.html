@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/png" href="viewer/paytinno-icon.png">
+<title>Merchant Portal Workflows</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="viewer/base.css">
+<link rel="stylesheet" href="viewer/viewer.css">
+<script>try { if (localStorage.getItem("mpw.look") === "light") { document.documentElement.dataset.look = "light"; document.documentElement.dataset.theme = "light"; } } catch (e) {}</script>
+</head>
+<body>
+<div class="app">
+  <aside>
+    <div class="brand"><img src="viewer/paytinno-mark.png" alt=""><b>paytinno</b></div>
+    <nav id="nav"></nav>
+    <div class="side-foot">
+      <div class="envtoggle" role="group" aria-label="Colours"><button type="button" data-look="standard" data-short="Std" title="Standard colours">Standard</button><button type="button" data-look="light" data-short="Light" title="Light colours">Light</button></div>
+      <span id="sideFoot"></span>
+    </div>
+  </aside>
+  <main>
+    <div class="top">
+      <h1 id="pageTitle"></h1><span id="envTag"></span>
+      <div class="tools"><span id="pageTools"></span></div>
+      <div class="sub" id="pageSub"></div>
+    </div>
+    <div id="main"><p class="muted">Loading</p></div>
+  </main>
+</div>
+<script src="src/model.js"></script>
+<script src="src/workflows.js"></script>
+<script src="viewer/viewer.js"></script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>build docs</title></head>
+<body>
+<pre id="out"></pre>
+<script src="../src/model.js"></script>
+<script src="../src/workflows.js"></script>
+<script src="md.js"></script>
+<script>
+  /* build-docs.ps1 reads the base64 between the markers; base64 keeps the text safe from HTML escaping */
+  const M = "@" + "@"; /* split so the markers appear only in the output, not in this source */
+  try {
+    const json = JSON.stringify(window.buildDocs());
+    const bytes = new TextEncoder().encode(json); let bin = "";
+    for (let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000));
+    document.getElementById("out").textContent = M + "B64" + M + btoa(bin) + M + "END" + M;
+  } catch (e) { document.getElementById("out").textContent = M + "ERR" + M + e.message + M + "END" + M; }
+</script>
+</body></html>
