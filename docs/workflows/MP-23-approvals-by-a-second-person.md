@@ -2,13 +2,14 @@
 
 # MP-23 Approvals by a second person
 
-[All workflows](../README.md) | Previous: [MP-22 Invite, change and remove users](MP-22-invite-change-and-remove-users.md) | Next: [MP-24 Business details, owners and periodic review](MP-24-business-details-owners-and-periodic-review.md)
+[All workflows](../README.md) | Previous: [MP-22 Invite, change and remove users](MP-22-invite-change-and-remove-users.md) | Next: [MP-34 Activity log](MP-34-activity-log.md)
 
 The merchant's own four eyes. The request waits until someone else with the right role approves with SCA.
 
 | | |
 |---|---|
 | Status | Proposed |
+| For | Every merchant |
 | Area | Team |
 | Source | One-pager S3 item 7 ("business roles, mandates and approvals"); not modelled in v8.1 |
 | Starts when | An action over a person's limit, or one that always needs two people. |

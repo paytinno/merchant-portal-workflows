@@ -9,6 +9,7 @@ If a deposit is required, the merchant transfers it first. Then accounts in OraS
 | | |
 |---|---|
 | Status | v8.1, gaps closed |
+| For | Every merchant |
 | Area | Onboarding |
 | Source | WF02b steps 13 to 17; PRD WF11 AWAITING_DEPOSIT; admin spec 5.4 access.grant |
 | Starts when | The offer is accepted (MP-08). |

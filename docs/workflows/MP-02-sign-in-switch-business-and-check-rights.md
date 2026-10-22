@@ -9,6 +9,7 @@ Passkey sign-in. Roles are not in the token: S18 asks S6 on every request which 
 | | |
 |---|---|
 | Status | v8.1, gaps closed |
+| For | Every merchant |
 | Area | Access |
 | Source | WF02a steps 13 to 21 |
 | Starts when | A person opens the portal without a valid session, or makes any request. |

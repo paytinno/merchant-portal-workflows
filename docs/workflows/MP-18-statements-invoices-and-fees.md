@@ -9,6 +9,7 @@ Monthly statement and invoice, and the fee for every payment split into intercha
 | | |
 |---|---|
 | Status | Proposed |
+| For | Every merchant |
 | Area | Money |
 | Source | One-pager S3 item 3; S7 "fee breakdown to S3" (IFR Art. 12); S17 statements |
 | Starts when | Month end; or a user opens fees for a period. |

@@ -2,13 +2,14 @@
 
 # MP-17 Rolling reserve and reserve top-up
 
-[All workflows](../README.md) | Previous: [MP-16 Answer a chargeback](MP-16-answer-a-chargeback.md) | Next: [MP-13 Balances, settlement and automatic payouts](MP-13-balances-settlement-and-automatic-payouts.md)
+[All workflows](../README.md) | Previous: [MP-16 Answer a chargeback](MP-16-answer-a-chargeback.md) | Next: [MP-35 Fraud and dispute ratio warnings](MP-35-fraud-and-dispute-ratio-warnings.md)
 
 A share of each settlement is held for [180] days and released day by day. If Risk asks for more, the merchant transfers it; it is never taken from settlements.
 
 | | |
 |---|---|
 | Status | Proposed |
+| For | Every merchant |
 | Area | Disputes |
 | Source | PRD WF11 (RR, RR_TOPUP); WF10 reserve release 180 days (proposed) |
 | Starts when | Each settlement; a dispute larger than what is held; a Risk decision. |

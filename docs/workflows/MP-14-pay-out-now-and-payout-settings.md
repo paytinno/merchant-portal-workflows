@@ -9,6 +9,7 @@ Only to the verified payout account, only from available funds, with SCA. Over t
 | | |
 |---|---|
 | Status | Proposed |
+| For | Every merchant |
 | Area | Money |
 | Source | One-pager S3 item 5 ("payout to an external account through M0391"); WF10 12 ("funds stay with us by choice") |
 | Starts when | A user pays out available funds outside the schedule, or changes the schedule. |

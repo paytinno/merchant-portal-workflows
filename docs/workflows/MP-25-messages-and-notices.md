@@ -9,6 +9,7 @@ One inbox for requests, notices and support. Emails carry a link, not the conten
 | | |
 |---|---|
 | Status | v8.1, gaps closed |
+| For | Every merchant |
 | Area | Business |
 | Source | S17; admin spec 5.3 merchant.notify templates |
 | Starts when | Paytinno sends a notice; a user writes to Paytinno. |

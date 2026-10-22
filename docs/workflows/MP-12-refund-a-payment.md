@@ -2,13 +2,14 @@
 
 # MP-12 Refund a payment
 
-[All workflows](../README.md) | Previous: [MP-11 See payments and one payment](MP-11-see-payments-and-one-payment.md) | Next: [MP-16 Answer a chargeback](MP-16-answer-a-chargeback.md)
+[All workflows](../README.md) | Previous: [MP-11 See payments and one payment](MP-11-see-payments-and-one-payment.md) | Next: [MP-29 Payment links and QR codes](MP-29-payment-links-and-qr-codes.md)
 
 Checks before sending: refundable amount, open dispute, the user's mandate. SCA binds amount and payment. The ledger effect comes only from NC2.
 
 | | |
 |---|---|
 | Status | v8.1, gaps closed |
+| For | Every merchant |
 | Area | Payments |
 | Source | WF11 steps 15 to 17; PRD refund link to disputes |
 | Starts when | A user refunds all or part of a captured payment. |

@@ -41,6 +41,16 @@ SCA: the person signs with a passkey (dynamic linking). 2nd: a second person app
 | Close the account `closure.request` | Yes, SCA, 2nd | No | No | No | No | No |  |
 | Messages with Paytinno `messages` | Yes | Yes | Yes | Yes | Yes | Yes |  |
 | Fill in the application `application` | Yes | No | No | No | No | Yes |  |
+| Create and cancel payment links `links.create` | Yes | Yes | No | Yes | No | No | MP-29 |
+| Capture an authorised payment `payment.capture` | Yes | Yes | No | Yes | No | No | MP-31 |
+| Order, replace or return terminals `terminals.order` | Yes | No | No | No | No | No | MP-30 |
+| Block a lost or stolen terminal `terminals.block` | Yes | Yes | No | Yes | No | No | MP-30 |
+| Approve payouts to players (gambling) `players.payout` | Yes, SCA, 2nd from €2,000 | Yes, SCA, 2nd from €2,000 | No | No | No | No | MP-33 |
+| See and delete saved cards `cards.manage` | Yes | No | No | Yes | No | No | MP-39 |
+| Set up Apple Pay and Google Pay `wallets.manage` | Yes | No | Yes | No | No | No | MP-40 |
+| See every user's activity `activity.view` | Yes | Yes | No | No | No | No | MP-34 (others see their own) |
+| Ask for higher limits or new services `requests.create` | Yes | Yes | No | No | No | No | MP-38 |
+| Make a complaint `complaints` | Yes | Yes | Yes | Yes | Yes | Yes | MP-32 |
 
 ## Default limits per person
 

@@ -20,6 +20,7 @@
     roles: '<rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 10h16M10 4v16"/>',
     sources: '<path d="M4 5h7v15H4zM13 5h7v15h-7z"/>',
     changes: '<path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13 7l4 4"/>',
+    types: '<path d="M4 6h16M4 12h10M4 18h6"/><circle cx="18" cy="16" r="3"/>',
     spec: '<path d="M5 4h11l3 3v13H5z"/><path d="M9 10h6M9 14h6"/>',
     portal: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18M7 15h4"/>'
   };
@@ -69,9 +70,17 @@
   }
   const listBox = (title, items, note) => items && items.length ? "<section><h2>" + esc(title) + "</h2>" + (note ? '<p class="small muted mb">' + esc(note) + "</p>" : "") + '<ul class="list">' + items.map(t => '<li><span class="what">' + esc(t) + "</span></li>").join("") + "</ul></section>" : "";
 
+  /* which merchants a workflow is for: every merchant, or only some merchant types */
+  function forTypes(w, long) {
+    const s = w.segments || [];
+    if (!s.length) return long ? "Every merchant" : "";
+    return s.map(k => '<a class="chip fortype" href="#/types" title="' + esc(WF.SEGMENTS[k][1]) + '">Only: ' + esc(WF.SEGMENTS[k][0]) + "</a>").join(" ") + (long ? '<span class="sub">' + esc(s.map(k => WF.SEGMENTS[k][1]).join("; ")) + ". " + esc(WF.SCOPE) + "</span>" : "");
+  }
+
   function detail(w, print) {
     const screens = (w.screens || []).map(s => '<a class="chip" href="' + PORTAL + s + '" target="_blank" rel="noopener">' + esc(WF.SCREENS[s] || s) + "</a>").join(" ");
-    return '<dl class="facts mb"><dt>Status</dt><dd>' + wfb(w.status) + "</dd><dt>Area</dt><dd>" + esc(w.area) + "</dd><dt>Source</dt><dd>" + esc(w.source) + "</dd><dt>Starts when</dt><dd>" + esc(w.trigger) + "</dd><dt>Object</dt><dd>" + esc(w.object) + "</dd><dt>Portal screens</dt><dd>" + (screens || "None") + (print ? "" : ' <span class="small muted">open in the prototype</span>') + "</dd></dl>" +
+    const where = screens ? screens + (print ? "" : ' <span class="small muted">open in the prototype</span>') : "Not in the prototype yet." + (w.placement ? '<span class="sub">Would sit on: ' + esc(w.placement) + "</span>" : "");
+    return '<dl class="facts mb"><dt>Status</dt><dd>' + wfb(w.status) + "</dd><dt>For</dt><dd>" + forTypes(w, true) + "</dd><dt>Area</dt><dd>" + esc(w.area) + "</dd><dt>Source</dt><dd>" + esc(w.source) + "</dd><dt>Starts when</dt><dd>" + esc(w.trigger) + "</dd><dt>Object</dt><dd>" + esc(w.object) + "</dd><dt>Portal screens</dt><dd>" + where + "</dd></dl>" +
       "<section><h2>Steps</h2>" + diagram(w) + "</section>" +
       '<div class="cols"><section><h2>States</h2>' + (w.states.length ? table([{ h: "From", v: s => '<span class="mono">' + esc(s[0] || "start") + "</span>" }, { h: "When", v: s => esc(s[1]) }, { h: "To", v: s => '<span class="mono">' + esc(s[2]) + "</span>" }], w.states) : '<p class="empty">No states of its own.</p>') + "</section>" +
       "<section><h2>Rules</h2>" + (w.rules.length ? '<ul class="list">' + w.rules.map(r => '<li><span class="what">' + esc(r) + "</span></li>").join("") + "</ul>" : '<p class="empty">None.</p>') + "</section></div>" +
@@ -83,21 +92,21 @@
   const pages = {};
   pages.workflows = {
     nav: "Workflows", icon: "workflows", title: "Merchant portal workflows",
-    render(_, q) {
-      const f = q.get("s") || ""; const all = WF.list; const rows = all.filter(w => !f || w.status === f); const qs = WF.questions().filter(x => !x.decided);
-      const tabs = [["", "All"]].concat(Object.keys(WF.STATUS).filter(k => all.some(w => w.status === k)).map(k => [k, WF.STATUS[k][1]]));
+    render() {
+      const all = WF.list; const qs = WF.questions().filter(x => !x.decided);
+      const used = Object.keys(WF.STATUS).filter(k => all.some(w => w.status === k));
       return {
-        sub: "The intended workflows behind the Paytinno merchant portal (S3), for review with the CTO's team before build. Each says what the merchant does, which systems take part, what each call is, and what is still open. Proposed means not in the CTO's architecture v8.1 and needs the team's agreement.",
+        sub: "The intended workflows behind the Paytinno merchant portal (S3), for review with the CTO's team before build. Each says what the merchant does, which systems take part, what each call is, and what is still open. The badge on each row says how it relates to the CTO's architecture v8.1.",
         tools: '<a class="btn" href="#/spec">Full spec to print</a>',
-        html: strip([["Workflows", String(all.length)]].concat(tabs.slice(1).map(([k, l]) => [l, String(all.filter(w => w.status === k).length), k === "part" ? "amber" : ""])).concat([["Open questions", String(qs.length), "amber"], ["Decided, awaiting sign-off", String(WF.questions().length - qs.length)]])) +
-          '<div class="tabs">' + tabs.map(([k, l]) => '<a href="#/workflows' + (k ? "?s=" + k : "") + '"' + (f === k ? ' aria-current="page"' : "") + ">" + l + "<span>" + all.filter(w => !k || w.status === k).length + "</span></a>").join("") + "</div>" +
-          WF.AREAS.map(a => { const ws = rows.filter(w => w.area === a); if (!ws.length) return ""; return "<section><h2>" + esc(a) + "</h2>" + table([
+        html: strip([["Workflows", String(all.length)]].concat(used.map(k => [WF.STATUS[k][1], String(all.filter(w => w.status === k).length), k === "part" ? "amber" : ""])).concat([["Open questions", String(qs.length), "amber"], ["Decided, awaiting sign-off", String(WF.questions().length - qs.length)]])) +
+          '<p class="small muted mb">' + used.map(k => wfb(k) + " " + esc({ v81: "as v8.1 writes it", part: "in v8.1, gaps still open", amended: "in v8.1, every gap closed by a decision", new: "not in v8.1, needs the CTO team's agreement" }[k])).join("&nbsp;&nbsp; ") + "</p>" +
+          WF.AREAS.map(a => { const ws = all.filter(w => w.area === a); if (!ws.length) return ""; return "<section><h2>" + esc(a) + "</h2>" + table([
             { h: "ID", v: w => '<span class="wfid">' + w.id + "</span>" },
-            { h: "Workflow", v: w => '<a href="#/workflow/' + w.id + '">' + esc(w.title) + '</a><span class="sub">' + esc(w.summary) + "</span>" },
+            { h: "Workflow", v: w => '<a href="#/workflow/' + w.id + '">' + esc(w.title) + "</a>" + ((w.segments || []).length ? " " + forTypes(w) : "") + '<span class="sub">' + esc(w.summary) + "</span>" },
             { h: "Status", v: w => wfb(w.status) },
             { h: "Source", v: w => '<span class="small">' + esc(w.source) + "</span>" },
             { h: "Steps", r: 1, v: w => String(w.steps.filter(s => s[0] !== "#").length) },
-            { h: "Questions", r: 1, v: w => w.questions.length ? '<span class="warn">' + w.questions.length + "</span>" : "0" }
+            { h: "Questions", r: 1, v: w => { const o = w.questions.filter(x => !x.decided).length, d = w.questions.length - o; return (o ? '<span class="warn">' + o + " open</span>" : d ? "" : "None") + (d ? '<span class="sub">' + d + " decided</span>" : ""); } }
           ], ws, { href: w => "#/workflow/" + w.id }) + "</section>"; }).join("") +
           '<section><h2>Systems in the diagrams</h2><div class="card small">' + Object.entries(CONFIG.LANES).map(([, v]) => "<b>" + esc(v[0]) + "</b> " + esc(v[1])).join(". ") + ". A01 and A05 are client libraries in S18 and S6; A09 is the BPC API library, which never writes the ledger.</div></section>"
       };
@@ -189,7 +198,23 @@
     }
   };
 
-  const NAV = ["workflows", "questions", "changes", "roles", "sources", "spec"];
+  pages.types = {
+    nav: "Merchant types", icon: "types", title: "Merchant types",
+    render() {
+      const keys = Object.keys(WF.SEGMENTS); const every = WF.list.filter(w => !(w.segments || []).length);
+      return {
+        sub: "Most workflows apply to every merchant. Some are only needed for certain kinds of merchant. " + esc(WF.SCOPE) + " A type left out of scope drops its workflows from the build.",
+        html: table([
+          { h: "Merchant type", v: k => "<b>" + esc(WF.SEGMENTS[k][0]) + '</b><span class="sub">' + esc(WF.SEGMENTS[k][1]) + "</span>" },
+          { h: "Workflows only for them", v: k => WF.forSegment(k).map(w => '<a href="#/workflow/' + w.id + '"><span class="wfid">' + w.id + "</span> " + esc(w.title) + "</a>").join("<br>") },
+          { h: "Year-one scope", v: () => st("amber", "To decide") }
+        ], keys) +
+          '<p class="note">' + every.length + " of " + WF.list.length + " workflows apply to every merchant.</p>"
+      };
+    }
+  };
+
+  const NAV = ["workflows", "questions", "changes", "types", "roles", "sources", "spec"];
   let current = null;
   function render() {
     const h = location.hash.replace(/^#\/?/, "") || "workflows";

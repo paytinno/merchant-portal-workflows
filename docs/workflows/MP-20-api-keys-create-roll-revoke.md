@@ -2,13 +2,14 @@
 
 # MP-20 API keys: create, roll, revoke
 
-[All workflows](../README.md) | Previous: [MP-19 Tariff change notice](MP-19-tariff-change-notice.md) | Next: [MP-21 Webhooks](MP-21-webhooks.md)
+[All workflows](../README.md) | Previous: [MP-37 Money the merchant owes](MP-37-money-the-merchant-owes.md) | Next: [MP-21 Webhooks](MP-21-webhooks.md)
 
 Secrets are shown once and never kept by Paytinno. Rolling keeps the old key working for [24 h] so the merchant can switch without downtime.
 
 | | |
 |---|---|
 | Status | Proposed |
+| For | Every merchant |
 | Area | Developers |
 | Source | One-pager S3 item 6; WF10 3 (keys through S3, S4 operator until the BPC API covers it) |
 | Starts when | A developer needs a key, or a key may be exposed. |

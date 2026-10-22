@@ -9,6 +9,7 @@ No passwords. The person proves an email and a phone, saves a passkey, and gets 
 | | |
 |---|---|
 | Status | In v8.1 |
+| For | Every merchant |
 | Area | Access |
 | Source | WF02a steps 1 to 12 |
 | Starts when | A representative opens the portal for the first time. |

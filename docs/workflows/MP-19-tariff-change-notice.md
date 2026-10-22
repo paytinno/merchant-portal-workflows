@@ -2,13 +2,14 @@
 
 # MP-19 Tariff change notice
 
-[All workflows](../README.md) | Previous: [MP-18 Statements, invoices and fees](MP-18-statements-invoices-and-fees.md) | Next: [MP-20 API keys: create, roll, revoke](MP-20-api-keys-create-roll-revoke.md)
+[All workflows](../README.md) | Previous: [MP-18 Statements, invoices and fees](MP-18-statements-invoices-and-fees.md) | Next: [MP-33 Payouts to players](MP-33-payouts-to-players.md)
 
 The new version is scheduled with a notice period; the merchant sees old and new side by side and the right to end the agreement.
 
 | | |
 |---|---|
 | Status | Proposed |
+| For | Every merchant |
 | Area | Money |
 | Source | S17 regulatory notices ("tariff change"); admin spec template tariff_change |
 | Starts when | Paytinno changes a merchant's tariff. |

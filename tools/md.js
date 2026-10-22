@@ -48,6 +48,7 @@ window.buildDocs = function () {
   function qblock(q, link) {
     return "### " + q.id + "\n\n" + q.q + "\n\n" + (q.decided ? "**Decision:** " : "**Proposed:** ") + q.prop + "\n\n" + (q.decided ? "Decided, awaiting sign-off by: " : "Owner: ") + q.owner + (link ? ". Workflow: [" + q.wf + " " + q.wfTitle + "](" + link + ")" : "") + "\n";
   }
+  const forText = w => (w.segments || []).length ? "Only " + w.segments.map(k => W.SEGMENTS[k][0] + " (" + W.SEGMENTS[k][1] + ")").join(", ") + ". " + W.SCOPE : "Every merchant";
   const bullets = (title, items, note) => items && items.length ? "## " + title + "\n\n" + (note ? note + "\n\n" : "") + items.map(t => "- " + t).join("\n") + "\n\n" : "";
 
   /* ---------- one file per workflow ---------- */
@@ -66,7 +67,7 @@ window.buildDocs = function () {
       "# " + w.id + " " + w.title + "\n\n" +
       "[All workflows](../README.md)" + (prev ? " | Previous: [" + prev.id + " " + prev.title + "](" + slug(prev) + ".md)" : "") + (next ? " | Next: [" + next.id + " " + next.title + "](" + slug(next) + ".md)" : "") + "\n\n" +
       w.summary + "\n\n" +
-      "| | |\n|---|---|\n| Status | " + status(w.status) + " |\n| Area | " + w.area + " |\n| Source | " + cell(w.source) + " |\n| Starts when | " + cell(w.trigger) + " |\n| Object | " + cell(w.object) + " |\n| Systems | " + cell(lanesOf(w).map(lane).join(", ")) + " |\n| Portal screens | " + cell((w.screens || []).map(s => W.SCREENS[s] || s).join(", ")) + " |\n\n" +
+      "| | |\n|---|---|\n| Status | " + status(w.status) + " |\n| For | " + cell(forText(w)) + " |\n| Area | " + w.area + " |\n| Source | " + cell(w.source) + " |\n| Starts when | " + cell(w.trigger) + " |\n| Object | " + cell(w.object) + " |\n| Systems | " + cell(lanesOf(w).map(lane).join(", ")) + " |\n| Portal screens | " + cell((w.screens || []).length ? w.screens.map(s => W.SCREENS[s] || s).join(", ") : "Not in the prototype yet." + (w.placement ? " Would sit on: " + w.placement : "")) + " |\n\n" +
       "## Sequence\n\n" + sequence(w) + "\n\n" +
       "## Steps\n\n| # | From | To | Step | Call | Notes |\n|---|---|---|---|---|---|\n" + rows.join("\n") + "\n\n" +
       "## States\n\n" + (states(w) || "No states of its own.") + "\n\n" +
@@ -84,8 +85,8 @@ window.buildDocs = function () {
     "# Merchant portal workflows\n\n" +
     "Version " + W.VERSION + ". The intended workflows behind the Paytinno merchant portal (S3), for review with the CTO's team before build.\n\n" +
     "| Status | Meaning | Workflows |\n|---|---|---|\n" + Object.keys(W.STATUS).filter(k => count(k)).map(k => "| " + status(k) + " | " + MEANING[k] + " | " + count(k) + " |").join("\n") + "\n\n" +
-    "Also: [Questions](open-questions.md) (" + qOpen.length + " open, " + qDone.length + " decided and awaiting sign-off), [Changes to v8.1](changes-to-v8.1.md), [Roles and rights](roles-and-rights.md), [Systems](systems.md), [Sources and contradictions](sources.md).\n\n" +
-    W.AREAS.map(a => { const ws = W.list.filter(w => w.area === a); return ws.length ? "## " + a + "\n\n| ID | Workflow | Status | Source | Steps | Questions |\n|---|---|---|---|---|---|\n" + ws.map(w => "| " + w.id + " | [" + cell(w.title) + "](" + file(w) + ")<br>" + cell(w.summary) + " | " + status(w.status) + " | " + cell(w.source) + " | " + steps(w).length + " | " + w.questions.length + " |").join("\n") + "\n" : ""; }).join("\n");
+    "Also: [Questions](open-questions.md) (" + qOpen.length + " open, " + qDone.length + " decided and awaiting sign-off), [Changes to v8.1](changes-to-v8.1.md), [Merchant types](merchant-types.md), [Roles and rights](roles-and-rights.md), [Systems](systems.md), [Sources and contradictions](sources.md).\n\n" +
+    W.AREAS.map(a => { const ws = W.list.filter(w => w.area === a); return ws.length ? "## " + a + "\n\n| ID | Workflow | Status | Source | Steps | Questions |\n|---|---|---|---|---|---|\n" + ws.map(w => "| " + w.id + " | [" + cell(w.title) + "](" + file(w) + ")" + ((w.segments || []).length ? " *(only: " + w.segments.map(k => W.SEGMENTS[k][0]).join(", ") + ")*" : "") + "<br>" + cell(w.summary) + " | " + status(w.status) + " | " + cell(w.source) + " | " + steps(w).length + " | " + w.questions.length + " |").join("\n") + "\n" : ""; }).join("\n");
 
   /* ---------- open questions ---------- */
   const qtable = list => "| ID | Question | Owner | Workflow |\n|---|---|---|---|\n" + list.map(q => { const w = W.byId(q.wf); return "| [" + q.id + "](#" + q.id.toLowerCase() + ") | " + cell(q.q) + " | " + q.owner + " | [" + q.wf + "](" + file(w) + ") |"; }).join("\n") + "\n\n";
@@ -95,6 +96,13 @@ window.buildDocs = function () {
     "## Open\n\nDecisions the portal still needs. Each has a proposed answer to agree or change.\n\n" + qtable(qOpen) + byOwner(qOpen) +
     "## Decided, awaiting sign-off\n\nAnswers adopted as the design to close gaps in v8.1. Each owner signs off or changes it.\n\n" + qtable(qDone) + byOwner(qDone) +
     "## Details\n\n" + qs.map(q => qblock(q, file(W.byId(q.wf)))).join("\n");
+
+  /* ---------- merchant types ---------- */
+  files["docs/merchant-types.md"] = generated +
+    "# Merchant types\n\n[All workflows](README.md)\n\nMost workflows apply to every merchant. Some are only needed for certain kinds of merchant. " + W.SCOPE + " A type left out of scope drops its workflows from the build.\n\n" +
+    "| Merchant type | Who | Workflows only for them | Year-one scope |\n|---|---|---|---|\n" +
+    Object.keys(W.SEGMENTS).map(k => "| " + W.SEGMENTS[k][0] + " | " + cell(W.SEGMENTS[k][1]) + " | " + W.forSegment(k).map(w => "[" + w.id + " " + cell(w.title) + "](" + file(w) + ")").join("<br>") + " | To decide |").join("\n") +
+    "\n\n" + W.list.filter(w => !(w.segments || []).length).length + " of " + W.list.length + " workflows apply to every merchant.\n";
 
   /* ---------- changes to v8.1 ---------- */
   const deps = []; W.list.forEach(w => (w.deps || []).forEach(d => deps.push("- " + d + " ([" + w.id + "](" + file(w) + "))")));

@@ -9,6 +9,7 @@ Staff decide with four eyes. New payments stop; what the merchant can still do i
 | | |
 |---|---|
 | Status | Proposed |
+| For | Every merchant |
 | Area | Business |
 | Source | Admin spec 5.4 access.revoke and P6; WF11 rule (chargeback ratio above 1%) |
 | Starts when | Scheme programme, AML decision, unpaid top-up, overdue review. |

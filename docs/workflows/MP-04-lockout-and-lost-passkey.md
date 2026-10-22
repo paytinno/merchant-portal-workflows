@@ -9,6 +9,7 @@ Recovery re-proves email and phone. For an admin of a live merchant, another adm
 | | |
 |---|---|
 | Status | v8.1, gaps closed |
+| For | Every merchant |
 | Area | Access |
 | Source | WF02a steps 17 and 27 |
 | Starts when | Five failed signatures, or a person who lost every passkey. |

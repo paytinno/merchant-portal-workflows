@@ -9,6 +9,7 @@ Staff set limits, tariff, reserve and deposit with four eyes. Then the merchant 
 | | |
 |---|---|
 | Status | v8.1, gaps closed |
+| For | Every merchant |
 | Area | Onboarding |
 | Source | WF02b steps 10 to 12 |
 | Starts when | Checks are complete (MP-06). |

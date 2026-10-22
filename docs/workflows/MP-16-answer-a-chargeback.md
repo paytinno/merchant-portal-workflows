@@ -2,13 +2,14 @@
 
 # MP-16 Answer a chargeback
 
-[All workflows](../README.md) | Previous: [MP-12 Refund a payment](MP-12-refund-a-payment.md) | Next: [MP-17 Rolling reserve and reserve top-up](MP-17-rolling-reserve-and-reserve-top-up.md)
+[All workflows](../README.md) | Previous: [MP-39 Saved cards and recurring payments](MP-39-saved-cards-and-recurring-payments.md) | Next: [MP-17 Rolling reserve and reserve top-up](MP-17-rolling-reserve-and-reserve-top-up.md)
 
 The money moves to a dispute account at once. The merchant gets a deadline, can upload documents, then escalates or accepts. Silence by the deadline means lost.
 
 | | |
 |---|---|
 | Status | v8.1, gaps closed |
+| For | Every merchant |
 | Area | Disputes |
 | Source | WF11 steps 11 to 17; PRD WF11 Acquiring v6 |
 | Starts when | A card holder's bank disputes a payment. |

@@ -141,3 +141,6 @@ ul.plain{margin:0;padding-left:18px} ul.plain li{padding:2px 0}
 .lanes .t .tg.add{background:var(--grey-bg);color:var(--ink-2);border:1px dashed var(--ink-3)}
 .q.decided{border-left:3px solid var(--green)}
 .q p.prop b{color:var(--blue)} .q.decided p.prop b{color:var(--green)}
+/* merchant types */
+.chip.fortype{background:var(--accent-soft);border-color:transparent;color:var(--ink);text-decoration:none;font-weight:500}
+.chip.fortype:hover{text-decoration:underline}

@@ -2,13 +2,14 @@
 
 # MP-13 Balances, settlement and automatic payouts
 
-[All workflows](../README.md) | Previous: [MP-17 Rolling reserve and reserve top-up](MP-17-rolling-reserve-and-reserve-top-up.md) | Next: [MP-14 Pay out now, and payout settings](MP-14-pay-out-now-and-payout-settings.md)
+[All workflows](../README.md) | Previous: [MP-35 Fraud and dispute ratio warnings](MP-35-fraud-and-dispute-ratio-warnings.md) | Next: [MP-14 Pay out now, and payout settings](MP-14-pay-out-now-and-payout-settings.md)
 
 Captured payments become payable after settlement, available after the reserve, and are paid out to the verified account on the merchant's schedule, if reconciliation is clean.
 
 | | |
 |---|---|
 | Status | In v8.1 |
+| For | Every merchant |
 | Area | Money |
 | Source | WF10 steps 4 to 12 |
 | Starts when | Daily settlement and payout cycle. |

@@ -2,13 +2,14 @@
 
 # MP-28 Reports and exports
 
-[All workflows](../README.md) | Previous: [MP-21 Webhooks](MP-21-webhooks.md) | Next: [MP-22 Invite, change and remove users](MP-22-invite-change-and-remove-users.md)
+[All workflows](../README.md) | Previous: [MP-21 Webhooks](MP-21-webhooks.md) | Next: [MP-40 Apple Pay and Google Pay](MP-40-apple-pay-and-google-pay.md)
 
 Small exports download at once; large ones run as a job and are ready to download in the portal.
 
 | | |
 |---|---|
 | Status | Proposed |
+| For | Every merchant |
 | Area | Developers |
 | Source | Not in v8.1 |
 | Starts when | A user exports payments, payouts or a reconciliation file. |

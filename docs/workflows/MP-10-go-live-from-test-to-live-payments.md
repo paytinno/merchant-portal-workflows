@@ -9,6 +9,7 @@ The developer proves the integration with test cards; staff check the website; t
 | | |
 |---|---|
 | Status | Proposed |
+| For | Every merchant |
 | Area | Onboarding |
 | Source | WF02b 17 ("sandbox first"); module spec v7.1 sandbox with test cards |
 | Starts when | The merchant is active and wants live keys, or a new website is added. |

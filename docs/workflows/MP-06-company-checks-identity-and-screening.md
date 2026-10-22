@@ -9,6 +9,7 @@ The representative does an IDV check inside the portal. The company and owners a
 | | |
 |---|---|
 | Status | In v8.1 |
+| For | Every merchant |
 | Area | Onboarding |
 | Source | WF02b steps 5 to 9 |
 | Starts when | An application is sent (MP-05). |

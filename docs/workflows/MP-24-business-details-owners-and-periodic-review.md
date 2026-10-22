@@ -2,13 +2,14 @@
 
 # MP-24 Business details, owners and periodic review
 
-[All workflows](../README.md) | Previous: [MP-23 Approvals by a second person](MP-23-approvals-by-a-second-person.md) | Next: [MP-25 Messages and notices](MP-25-messages-and-notices.md)
+[All workflows](../README.md) | Previous: [MP-34 Activity log](MP-34-activity-log.md) | Next: [MP-25 Messages and notices](MP-25-messages-and-notices.md)
 
 Contact details change at once. Legal name, address, owners, representative, what is sold and new websites are requests that staff check first.
 
 | | |
 |---|---|
 | Status | Proposed |
+| For | Every merchant |
 | Area | Business |
 | Source | WF02b invariants (KYB refresh 12 or 36 months; owner change opens a case); admin spec application.updated |
 | Starts when | The merchant changes details; a review date comes; a document expires. |

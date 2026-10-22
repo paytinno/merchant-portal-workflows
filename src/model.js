@@ -34,7 +34,18 @@ window.CONFIG = (function () {
     "business.edit":   { label: "Change business details, people, documents", roles: ["admin"] },
     "closure.request": { label: "Close the account", roles: ["admin"], sca: true, second: { roles: ["admin"], from: 0 } },
     "messages":        { label: "Messages with Paytinno", roles: ["admin", "finance", "developer", "support", "viewer", "applicant"] },
-    "application":     { label: "Fill in the application", roles: ["admin", "applicant"] }
+    "application":     { label: "Fill in the application", roles: ["admin", "applicant"] },
+    /* added with MP-29 to MP-41 */
+    "links.create":    { label: "Create and cancel payment links", roles: ["admin", "finance", "support"], src: "MP-29" },
+    "payment.capture": { label: "Capture an authorised payment", roles: ["admin", "finance", "support"], src: "MP-31" },
+    "terminals.order": { label: "Order, replace or return terminals", roles: ["admin"], src: "MP-30" },
+    "terminals.block": { label: "Block a lost or stolen terminal", roles: ["admin", "finance", "support"], src: "MP-30" },
+    "players.payout":  { label: "Approve payouts to players (gambling)", roles: ["admin", "finance"], sca: true, second: { roles: ["admin", "finance"], from: 2000 }, src: "MP-33" },
+    "cards.manage":    { label: "See and delete saved cards", roles: ["admin", "support"], src: "MP-39" },
+    "wallets.manage":  { label: "Set up Apple Pay and Google Pay", roles: ["admin", "developer"], src: "MP-40" },
+    "activity.view":   { label: "See every user's activity", roles: ["admin", "finance"], src: "MP-34 (others see their own)" },
+    "requests.create": { label: "Ask for higher limits or new services", roles: ["admin", "finance"], src: "MP-38" },
+    "complaints":      { label: "Make a complaint", roles: ["admin", "finance", "developer", "support", "viewer", "applicant"], src: "MP-32" }
   };
 
   /* limits a role carries by default (mandates in S6, MP-Q05). Admin can lower them per person. */
@@ -59,7 +70,11 @@ window.CONFIG = (function () {
     S11:  ["IDV, AML", "S11 via A01"],
     S17:  ["Messages", "S17"],
     S13:  ["Reconciliation", "S13"],
-    EXT:  ["Outside", "bank, scheme"]
+    EXT:  ["Outside", "bank, scheme"],
+    CH:   ["Card holder", "customer"],
+    TMS:  ["Terminal supplier", "devices, TMS"],
+    WAL:  ["Apple, Google", "wallets"],
+    SHOP: ["Shop platform", "WooCommerce etc."]
   };
 
   /* the application's status line: fixed portal texts per state (MP-Q09, contract P7: no free text, no tipping off) */

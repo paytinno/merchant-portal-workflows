@@ -4,7 +4,7 @@
 
 [All workflows](README.md)
 
-20 open, 20 decided and awaiting sign-off. CTO question numbers refer to the v8.1 question list.
+40 open, 20 decided and awaiting sign-off. CTO question numbers refer to the v8.1 question list.
 
 ## Open
 
@@ -32,8 +32,28 @@ Decisions the portal still needs. Each has a proposed answer to agree or change.
 | [MP-Q36](#mp-q36) | What happens when a periodic review is overdue? | Compliance | [MP-24](workflows/MP-24-business-details-owners-and-periodic-review.md) |
 | [MP-Q38](#mp-q38) | If revoked access stops every action, disputes go unanswered and are lost. | CTO | [MP-26](workflows/MP-26-suspension-and-restricted-access.md) |
 | [MP-Q39](#mp-q39) | Who keeps read access after closure, and for how long? | Legal | [MP-27](workflows/MP-27-close-the-account.md) |
+| [MP-Q40](#mp-q40) | Should Paytinno send payment links to the merchant's customers by email or SMS? | Legal | [MP-29](workflows/MP-29-payment-links-and-qr-codes.md) |
+| [MP-Q41](#mp-q41) | Which web address do links use: BPC's hosted page domain or one of ours? | CTO | [MP-29](workflows/MP-29-payment-links-and-qr-codes.md) |
+| [MP-Q42](#mp-q42) | Who supplies, ships and supports terminals, and do merchants rent or buy them? | COO | [MP-30](workflows/MP-30-card-terminals.md) |
+| [MP-Q43](#mp-q43) | Should shop staff be able to refund on the terminal? | CRO | [MP-30](workflows/MP-30-card-terminals.md) |
+| [MP-Q44](#mp-q44) | Can an order that ships in parts be captured in several parts? | CTO | [MP-31](workflows/MP-31-capture-later-or-in-part.md) |
+| [MP-Q45](#mp-q45) | Which capture mode do new merchants get? | Product | [MP-31](workflows/MP-31-capture-later-or-in-part.md) |
+| [MP-Q46](#mp-q46) | Who handles complaints and approves the answers? | Compliance | [MP-32](workflows/MP-32-complaints.md) |
+| [MP-Q47](#mp-q47) | Which escalation routes do we give merchants: the BNB, an out-of-court body, and later the UK ombudsman? | Legal | [MP-32](workflows/MP-32-complaints.md) |
+| [MP-Q48](#mp-q48) | Do our licence and the merchant agreement cover paying players from the operator's acquiring balance, and does that make the balance a payment account? | Legal | [MP-33](workflows/MP-33-payouts-to-players.md) |
+| [MP-Q49](#mp-q49) | Payouts sent through the API cannot be signed with SCA one by one. Is a payout-only key with an IP allow list and daily limits enough? | Compliance | [MP-33](workflows/MP-33-payouts-to-players.md) |
+| [MP-Q50](#mp-q50) | Must payouts go back to the card or account the player deposited from? | CRO | [MP-33](workflows/MP-33-payouts-to-players.md) |
+| [MP-Q51](#mp-q51) | Where does the merchant activity log live, and for how long? | CTO | [MP-34](workflows/MP-34-activity-log.md) |
+| [MP-Q52](#mp-q52) | At what level do we warn merchants, and which scheme fines do we pass on? | CRO | [MP-35](workflows/MP-35-fraud-and-dispute-ratio-warnings.md) |
+| [MP-Q53](#mp-q53) | Is the status page public or only for signed-in merchants, and who approves the texts? | COO | [MP-36](workflows/MP-36-incident-and-maintenance-notices.md) |
+| [MP-Q54](#mp-q54) | May we take what a merchant owes from its next payouts, and do we charge late interest? | Legal | [MP-37](workflows/MP-37-money-the-merchant-owes.md) |
+| [MP-Q55](#mp-q55) | Who decides these requests, and how fast? | CRO | [MP-38](workflows/MP-38-ask-for-higher-limits-or-new-services.md) |
+| [MP-Q56](#mp-q56) | Do we offer only saved cards and merchant-initiated payments, or also a subscription engine (plans, schedules, retries)? | Product | [MP-39](workflows/MP-39-saved-cards-and-recurring-payments.md) |
+| [MP-Q57](#mp-q57) | Who registers merchant domains with Apple: BPC as the processor, or Paytinno as a payment platform? | CTO | [MP-40](workflows/MP-40-apple-pay-and-google-pay.md) |
+| [MP-Q58](#mp-q58) | Who builds and maintains the plugins, and for which platforms first? | Product | [MP-41](workflows/MP-41-shop-plugins.md) |
+| [MP-Q59](#mp-q59) | Can BPC issue keys limited to payments and refunds? | CTO | [MP-41](workflows/MP-41-shop-plugins.md) |
 
-By owner: BPC 2, CRO 2, CTO 4, Compliance 6, Legal 1, OraSYS 2, Product 3.
+By owner: BPC 2, COO 2, CRO 6, CTO 9, Compliance 8, Legal 5, OraSYS 2, Product 6.
 
 ## Decided, awaiting sign-off
 
@@ -385,3 +405,163 @@ Who keeps read access after closure, and for how long?
 **Proposed:** Admins and Finance, 5 years (AML record keeping), then the users are disabled.
 
 Owner: Legal. Workflow: [MP-27 Close the account](workflows/MP-27-close-the-account.md)
+
+### MP-Q40
+
+Should Paytinno send payment links to the merchant's customers by email or SMS?
+
+**Proposed:** Not in phase 1; the merchant shares the link itself. Sending would make Paytinno process the merchant's customer data, and messages with payment links from a payment company are a common phishing pattern.
+
+Owner: Legal. Workflow: [MP-29 Payment links and QR codes](workflows/MP-29-payment-links-and-qr-codes.md)
+
+### MP-Q41
+
+Which web address do links use: BPC's hosted page domain or one of ours?
+
+**Proposed:** Our own sub-domain (for example pay.paytinno.com) in front of the BPC hosted page, so customers see a name they can check.
+
+Owner: CTO. Workflow: [MP-29 Payment links and QR codes](workflows/MP-29-payment-links-and-qr-codes.md)
+
+### MP-Q42
+
+Who supplies, ships and supports terminals, and do merchants rent or buy them?
+
+**Proposed:** Rent through Paytinno from one supplier, delivered by courier, replaced within [2] business days, rent shown in the tariff.
+
+Owner: COO. Workflow: [MP-30 Card terminals](workflows/MP-30-card-terminals.md)
+
+### MP-Q43
+
+Should shop staff be able to refund on the terminal?
+
+**Proposed:** Off by default. On request: protected by a supervisor PIN and a daily refund limit.
+
+Owner: CRO. Workflow: [MP-30 Card terminals](workflows/MP-30-card-terminals.md)
+
+### MP-Q44
+
+Can an order that ships in parts be captured in several parts?
+
+**Proposed:** Yes, if BPC supports several captures on one authorisation; otherwise one capture and the rest released.
+
+Owner: CTO. Workflow: [MP-31 Capture later, or in part](workflows/MP-31-capture-later-or-in-part.md)
+
+### MP-Q45
+
+Which capture mode do new merchants get?
+
+**Proposed:** Automatic. Manual only on request, for merchants that ship goods or take deposits, agreed in underwriting.
+
+Owner: Product. Workflow: [MP-31 Capture later, or in part](workflows/MP-31-capture-later-or-in-part.md)
+
+### MP-Q46
+
+Who handles complaints and approves the answers?
+
+**Proposed:** Compliance owns the process and approves every final answer; the handler is never the person or team complained about.
+
+Owner: Compliance. Workflow: [MP-32 Complaints](workflows/MP-32-complaints.md)
+
+### MP-Q47
+
+Which escalation routes do we give merchants: the BNB, an out-of-court body, and later the UK ombudsman?
+
+**Proposed:** The BNB always; the conciliation committee for payment disputes where it applies to the merchant; the UK Financial Ombudsman only once there are UK merchants.
+
+Owner: Legal. Workflow: [MP-32 Complaints](workflows/MP-32-complaints.md)
+
+### MP-Q48
+
+Do our licence and the merchant agreement cover paying players from the operator's acquiring balance, and does that make the balance a payment account?
+
+**Proposed:** Legal to confirm before build. If it does, the operator gets a payment account with its own terms.
+
+Owner: Legal. Workflow: [MP-33 Payouts to players](workflows/MP-33-payouts-to-players.md)
+
+### MP-Q49
+
+Payouts sent through the API cannot be signed with SCA one by one. Is a payout-only key with an IP allow list and daily limits enough?
+
+**Proposed:** Yes, under the exemption for secure corporate payment processes (RTS Art. 17), if the BNB agrees; batches approved in the portal are signed with SCA.
+
+Owner: Compliance. Workflow: [MP-33 Payouts to players](workflows/MP-33-payouts-to-players.md)
+
+### MP-Q50
+
+Must payouts go back to the card or account the player deposited from?
+
+**Proposed:** Yes: card payouts only to a card that deposited in the last [180] days; otherwise SEPA to an account in the player's name.
+
+Owner: CRO. Workflow: [MP-33 Payouts to players](workflows/MP-33-payouts-to-players.md)
+
+### MP-Q51
+
+Where does the merchant activity log live, and for how long?
+
+**Proposed:** An append-only store fed by S18, hash-chained like the admin journal; actions [5] years, IP addresses [13] months.
+
+Owner: CTO. Workflow: [MP-34 Activity log](workflows/MP-34-activity-log.md)
+
+### MP-Q52
+
+At what level do we warn merchants, and which scheme fines do we pass on?
+
+**Proposed:** Warn at [70%] of each threshold; pass on scheme fines in full while the merchant is in a programme, as the agreement says.
+
+Owner: CRO. Workflow: [MP-35 Fraud and dispute ratio warnings](workflows/MP-35-fraud-and-dispute-ratio-warnings.md)
+
+### MP-Q53
+
+Is the status page public or only for signed-in merchants, and who approves the texts?
+
+**Proposed:** Public, without details on causes; the incident manager approves, and Compliance too when DORA applies.
+
+Owner: COO. Workflow: [MP-36 Incident and maintenance notices](workflows/MP-36-incident-and-maintenance-notices.md)
+
+### MP-Q54
+
+May we take what a merchant owes from its next payouts, and do we charge late interest?
+
+**Proposed:** Yes to netting, written into the agreement; no late interest in phase 1.
+
+Owner: Legal. Workflow: [MP-37 Money the merchant owes](workflows/MP-37-money-the-merchant-owes.md)
+
+### MP-Q55
+
+Who decides these requests, and how fast?
+
+**Proposed:** The underwriting team, in [3] business days; four eyes above the same thresholds as onboarding.
+
+Owner: CRO. Workflow: [MP-38 Ask for higher limits or new services](workflows/MP-38-ask-for-higher-limits-or-new-services.md)
+
+### MP-Q56
+
+Do we offer only saved cards and merchant-initiated payments, or also a subscription engine (plans, schedules, retries)?
+
+**Proposed:** Only saved cards and merchant-initiated payments through the API in phase 1; merchants run their own schedules.
+
+Owner: Product. Workflow: [MP-39 Saved cards and recurring payments](workflows/MP-39-saved-cards-and-recurring-payments.md)
+
+### MP-Q57
+
+Who registers merchant domains with Apple: BPC as the processor, or Paytinno as a payment platform?
+
+**Proposed:** BPC, if it is already an Apple Pay payment platform; otherwise Paytinno applies to Apple.
+
+Owner: CTO. Workflow: [MP-40 Apple Pay and Google Pay](workflows/MP-40-apple-pay-and-google-pay.md)
+
+### MP-Q58
+
+Who builds and maintains the plugins, and for which platforms first?
+
+**Proposed:** Use BPC's plugins where they exist; otherwise build WooCommerce and OpenCart first, then CloudCart.
+
+Owner: Product. Workflow: [MP-41 Shop plugins](workflows/MP-41-shop-plugins.md)
+
+### MP-Q59
+
+Can BPC issue keys limited to payments and refunds?
+
+**Proposed:** Needed for plugins. If BPC cannot, plugins use the hosted page only.
+
+Owner: CTO. Workflow: [MP-41 Shop plugins](workflows/MP-41-shop-plugins.md)

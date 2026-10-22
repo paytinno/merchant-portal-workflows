@@ -9,6 +9,7 @@ One sender, one signature, one retry policy: Paytinno sends every event through 
 | | |
 |---|---|
 | Status | v8.1, gaps closed |
+| For | Every merchant |
 | Area | Developers |
 | Source | WF10 3 (BPC webhooks); WF21 (merchant notices through Q5, A07, Q4); PRD WF11 (chargeback webhooks through S17); module spec v7.1 |
 | Starts when | A developer adds an endpoint; an event happens. |

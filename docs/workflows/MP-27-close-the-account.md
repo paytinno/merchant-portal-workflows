@@ -2,13 +2,14 @@
 
 # MP-27 Close the account
 
-[All workflows](../README.md) | Previous: [MP-26 Suspension and restricted access](MP-26-suspension-and-restricted-access.md)
+[All workflows](../README.md) | Previous: [MP-26 Suspension and restricted access](MP-26-suspension-and-restricted-access.md) | Next: [MP-32 Complaints](MP-32-complaints.md)
 
 Acceptance stops on the date, the balance is paid out, the reserve is kept for the chargeback tail, and the portal stays readable.
 
 | | |
 |---|---|
 | Status | Proposed |
+| For | Every merchant |
 | Area | Business |
 | Source | S6 lifecycle and S4 closure (one-pager); admin spec P6 (5 years read access) |
 | Starts when | The merchant asks to close, or Paytinno ends the agreement. |

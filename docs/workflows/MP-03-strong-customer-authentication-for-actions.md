@@ -9,6 +9,7 @@ The passkey signs exactly what the user sees (amount and payee, or the key, or t
 | | |
 |---|---|
 | Status | v8.1, gaps closed |
+| For | Every merchant |
 | Area | Access |
 | Source | WF02a steps 22 to 26 |
 | Starts when | A user starts an action that moves money or changes who gets it or who can act. |

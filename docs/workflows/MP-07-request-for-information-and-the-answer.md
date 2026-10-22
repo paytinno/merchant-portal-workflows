@@ -9,6 +9,7 @@ Staff ask, the merchant answers in the portal with text and documents. The appli
 | | |
 |---|---|
 | Status | v8.1, gaps closed |
+| For | Every merchant |
 | Area | Onboarding |
 | Source | Admin spec 5.2 rfi.send and merchant.message; not a v8.1 workflow |
 | Starts when | Staff need a document or an answer, during onboarding or for a live merchant. |

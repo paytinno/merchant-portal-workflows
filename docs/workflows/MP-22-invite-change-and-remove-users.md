@@ -2,13 +2,14 @@
 
 # MP-22 Invite, change and remove users
 
-[All workflows](../README.md) | Previous: [MP-28 Reports and exports](MP-28-reports-and-exports.md) | Next: [MP-23 Approvals by a second person](MP-23-approvals-by-a-second-person.md)
+[All workflows](../README.md) | Previous: [MP-41 Shop plugins](MP-41-shop-plugins.md) | Next: [MP-23 Approvals by a second person](MP-23-approvals-by-a-second-person.md)
 
 Invitations by email, accepted through the normal registration. Roles that can move money need SCA to grant.
 
 | | |
 |---|---|
 | Status | Proposed |
+| For | Every merchant |
 | Area | Team |
 | Source | One-pager S3 item 7; WF02b 17 ("invites its other users with roles"); WF02a 22 (role above threshold) |
 | Starts when | An admin manages the team. |

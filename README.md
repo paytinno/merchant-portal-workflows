@@ -3,20 +3,24 @@
 The intended workflows behind the Paytinno merchant portal (module S3 in the CTO's architecture v8.1). They are written for review
 with the CTO's team **before** anything is built.
 
-**Start here: [docs/README.md](docs/README.md).** It lists all 28 workflows, the open questions, the roles and rights,
-and the sources.
+**Start here: [docs/README.md](docs/README.md).** It lists all 41 workflows, the questions, the changes v8.1 needs,
+the merchant types, the roles and rights, and the sources.
 
 | Status | Meaning |
 |---|---|
 | In v8.1 | As the CTO's architecture v8.1 writes it |
-| v8.1 with gaps | In v8.1, with missing parts filled in here and marked "Gap" |
+| v8.1, gaps closed | In v8.1; every gap closed by a decision that awaits its owner's sign-off |
 | Proposed | Not in v8.1. Needs the CTO team's agreement |
+
+Some workflows are only for certain merchant types, for example shops with card terminals or gambling operators. Whether
+each type is in year-one scope is still to decide; see [docs/merchant-types.md](docs/merchant-types.md).
 
 Every workflow has:
 * a sequence diagram
-* a step table: who calls whom, the API call, time limits, SCA, what happens when it fails, gaps in v8.1
+* a step table: who calls whom, the API call, time limits, SCA, what happens when it fails, the decision behind a step
 * states and rules
-* open questions, each with a proposed answer and an owner
+* the changes v8.1 needs, and what it depends on outside Paytinno
+* questions, each with a proposed answer (or the decision) and an owner
 
 ## What is in this repository
 

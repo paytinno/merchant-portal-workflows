@@ -9,6 +9,7 @@ The highest-risk change in the portal. Name check, second admin, staff check, th
 | | |
 |---|---|
 | Status | Proposed |
+| For | Every merchant |
 | Area | Money |
 | Source | WF02b invariant (verified account in the merchant's name, SCA); admin spec payout.account.changed |
 | Starts when | An admin adds a new payout account. |

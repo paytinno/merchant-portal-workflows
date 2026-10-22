@@ -9,6 +9,7 @@ Six steps: company, people, business, documents, payout account, review. Saved a
 | | |
 |---|---|
 | Status | v8.1, gaps closed |
+| For | Every merchant |
 | Area | Onboarding |
 | Source | WF02b steps 1 to 4; admin spec application.submitted |
 | Starts when | An applicant (MP-01) starts an application. |
