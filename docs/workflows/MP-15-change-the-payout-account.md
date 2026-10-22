@@ -45,7 +45,7 @@ sequenceDiagram
 | # | From | To | Step | Call | Notes |
 |---|---|---|---|---|---|
 | 1 | Merchant (user) | Portal (S3) | Admin enters IBAN and holder name and uploads a bank statement. |  |  |
-| 2 | Gateway, BFF (S18) | Gateway, BFF (S18) | IBAN format and SEPA reach; Verification of Payee name check: match, close match, no match. |  | **Gap:** v8.1 does not say how "in the merchant's name" is checked (MP-Q30). |
+| 2 | Gateway, BFF (S18) | Gateway, BFF (S18) | IBAN format and SEPA reach; Verification of Payee name check: match, close match, no match. |  | **Open gap:** v8.1 does not say how "in the merchant's name" is checked (MP-Q30). |
 | 3 | Gateway, BFF (S18) | Identity, SCA (S19) | SCA bound to the new masked IBAN. |  | **SCA** |
 | 4 | Gateway, BFF (S18) | Onboarding (S6) | Second admin approves, if there is one (MP-23). |  |  |
 | 5 | Gateway, BFF (S18) | Admin (S4) | Change sent to the admin; payouts to the new account stopped until verified. | `webhook payout.account.changed {accountRef, ibanMasked, holderMatches, verified, scaEvidenceId}` | admin spec 6 |
@@ -84,7 +84,7 @@ stateDiagram-v2
 - No change for [24 h] after passkey recovery (MP-04).
 - The old account stays primary until the new one is.
 
-## Open questions
+## Questions
 
 ### MP-Q30
 

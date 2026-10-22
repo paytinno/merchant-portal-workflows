@@ -43,7 +43,7 @@ sequenceDiagram
 | 2 | Admin (S4) | BPC (S10 via A09) | Acceptance profile suspended. |  |  |
 | 3 | Admin (S4) | Gateway, BFF (S18) | Portal access restricted. | `POST /admin/v1/merchants/{id}/access/revoke` | admin spec 5.4 |
 | 4 | Messages (S17) | Merchant (user) | Notice acceptance_suspended, neutral text. |  |  |
-| 5 | Portal (S3) | Merchant (user) | Banner. Still possible: read payments and statements, answer disputes, messages. Not possible: refunds, payouts, keys, changes. |  | **Gap:** admin spec 5.4 stops all actions; dispute answers must continue (MP-Q38). |
+| 5 | Portal (S3) | Merchant (user) | Banner. Still possible: read payments and statements, answer disputes, messages. Not possible: refunds, payouts, keys, changes. |  | **Open gap:** admin spec 5.4 stops all actions; dispute answers must continue (MP-Q38). |
 
 ## States
 
@@ -68,7 +68,7 @@ stateDiagram-v2
 
 - Text never says why when the reason is AML.
 
-## Open questions
+## Questions
 
 ### MP-Q38
 

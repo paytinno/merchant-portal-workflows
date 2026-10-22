@@ -8,7 +8,7 @@ Recovery re-proves email and phone. For an admin of a live merchant, another adm
 
 | | |
 |---|---|
-| Status | v8.1 with gaps |
+| Status | v8.1, gaps closed |
 | Area | Access |
 | Source | WF02a steps 17 and 27 |
 | Starts when | Five failed signatures, or a person who lost every passkey. |
@@ -36,9 +36,9 @@ sequenceDiagram
   S18->>S6: Is the person an admin of an active merchant?
   S6->>S3: Yes, and there is a second admin: an approval<br/>request goes to that admin (MP-23).
   S6->>S4: Yes, and there is no second admin: a case for<br/>Paytinno staff.
-  OPS->>S4: Checks identity with a new IDV selfie check<br/>against the stored result, then approves with<br/>four eyes.
+  OPS->>S4: Checks identity with a new IDV selfie check<br/>matched to the face from onboarding (no new<br/>documents), then approves with four eyes.
   S3->>S19: New passkey registered, all old passkeys<br/>revoked, sessions ended.
-  S19->>S17: Email to the person and to every admin of each<br/>merchant the person works for.
+  S19->>S17: Email to the person and to every admin of each<br/>merchant the person works for. Payout account<br/>changes from this login are blocked for [24<br/>h].
   Note over MER,S6: No access to email or phone
   MER->>S4: Asks through support. Staff change email or<br/>phone with four eyes after an IDV check.
 ```
@@ -54,9 +54,9 @@ sequenceDiagram
 | 4 | Gateway, BFF (S18) | Onboarding (S6) | Is the person an admin of an active merchant? |  |  |
 | 5 | Onboarding (S6) | Portal (S3) | Yes, and there is a second admin: an approval request goes to that admin (MP-23). |  | Rule: Second admin approves |
 | 6 | Onboarding (S6) | Admin (S4) | Yes, and there is no second admin: a case for Paytinno staff. |  |  |
-| 7 | Paytinno staff (OPS) | Admin (S4) | Checks identity with a new IDV selfie check against the stored result, then approves with four eyes. |  | **Gap:** v8.1 says "after an identity check" without saying how (MP-Q05b). |
+| 7 | Paytinno staff (OPS) | Admin (S4) | Checks identity with a new IDV selfie check matched to the face from onboarding (no new documents), then approves with four eyes. |  | **Decided:** [MP-Q05b](../open-questions.md#mp-q05b) |
 | 8 | Portal (S3) | Identity, SCA (S19) | New passkey registered; all old passkeys revoked; sessions ended. |  |  |
-| 9 | Identity, SCA (S19) | Messages (S17) | Email to the person and to every admin of each merchant the person works for. |  | **Gap:** Proposed |
+| 9 | Identity, SCA (S19) | Messages (S17) | Email to the person and to every admin of each merchant the person works for. Payout account changes from this login are blocked for [24 h]. |  | **Decided:** [MP-Q05b](../open-questions.md#mp-q05b)<br>Added to v8.1 |
 | | | | **No access to email or phone** | | |
 | 10 | Merchant (user) | Admin (S4) | Asks through support. Staff change email or phone with four eyes after an IDV check. |  | WF02a 27 |
 
@@ -86,12 +86,19 @@ stateDiagram-v2
 - Recovery never restores the old passkey.
 - A recovered admin cannot change the payout account for [24 h] (account takeover pattern).
 
-## Open questions
+## Changes v8.1 needs
+
+For the CTO's next version of the architecture (v8.2).
+
+- WF02a 27: without a second admin, the identity check is an IDV selfie matched to onboarding, then four eyes in S4 (MP-Q05b).
+- WF02a 27: after recovery, notify the person and every admin, and block payout account changes for [24 h].
+
+## Questions
 
 ### MP-Q05b
 
 How do staff check identity in recovery without a second admin?
 
-**Proposed:** IDV selfie check matched to the face from onboarding (no new documents), then four eyes in S4. Block payout account changes for [24 h] after.
+**Decision:** IDV selfie check matched to the face from onboarding (no new documents), then four eyes in S4. Block payout account changes for [24 h] after.
 
-Owner: Compliance
+Decided, awaiting sign-off by: Compliance

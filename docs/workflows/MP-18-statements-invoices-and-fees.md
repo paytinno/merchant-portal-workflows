@@ -38,7 +38,7 @@ sequenceDiagram
 
 | # | From | To | Step | Call | Notes |
 |---|---|---|---|---|---|
-| 1 | Fees (S7 M008) | Fees (S7 M008) | Month-end: fees per payment by IFR Art. 12 (interchange, scheme, ours), by brand and card category. |  | **Gap:** Whether M008 can split per payment was open in v7.1 (MP-Q32). |
+| 1 | Fees (S7 M008) | Fees (S7 M008) | Month-end: fees per payment by IFR Art. 12 (interchange, scheme, ours), by brand and card category. |  | **Open gap:** Whether M008 can split per payment was open in v7.1 (MP-Q32). |
 | 2 | Fees (S7 M008) | Core (S21, S5) | Totals posted; invoice from ERP (S15). |  |  |
 | 3 | Gateway, BFF (S18) | Portal (S3) | Statement and invoice available; daily fee report too. | `GET /v1/statements, GET /v1/statements/{id}.pdf\|csv` |  |
 | 4 | Messages (S17) | Merchant (user) | "Your statement is ready" with a link. |  |  |
@@ -65,7 +65,7 @@ stateDiagram-v2
 - Kept 5 years.
 - Merchants may ask for the fee split aggregated by brand and category (IFR Art. 12).
 
-## Open questions
+## Questions
 
 ### MP-Q32
 

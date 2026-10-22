@@ -71,7 +71,7 @@ stateDiagram-v2
 - Always two people: payout account change, payout settings, closure, a new admin.
 - Over the limit: refunds, payouts.
 
-## Open questions
+## Questions
 
 ### MP-Q05
 

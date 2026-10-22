@@ -65,6 +65,6 @@ stateDiagram-v2
 - Masked card data only.
 - The payout reconciliation file lists every payment, refund, fee and reserve in a payout.
 
-## Open questions
+## Questions
 
 None.

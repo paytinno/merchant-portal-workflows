@@ -50,7 +50,7 @@ sequenceDiagram
 |---|---|---|---|---|---|
 | | | | **Register** | | |
 | 1 | Merchant (user) | Portal (S3) | Enters business email, mobile number and name, and accepts the portal terms. No company data yet. |  | WF02a 1 |
-| 2 | Portal (S3) | Gateway, BFF (S18) | Sends the registration. Not signed in, behind the I4 rate limit and bot protection. | `POST /v1/portal/users/register {email, phone, name, consentVersion}` | WF02a 2<br>Time: 2 s<br>**If it fails:** 429 on rate limit<br>**Gap:** v8.1 answers 409 when the email exists. That tells anyone which emails are registered (MP-Q02). |
+| 2 | Portal (S3) | Gateway, BFF (S18) | Sends the registration. Not signed in, behind the I4 rate limit and bot protection. | `POST /v1/portal/users/register {email, phone, name, consentVersion}` | WF02a 2<br>Time: 2 s<br>**If it fails:** 429 on rate limit<br>**Open gap:** v8.1 answers 409 when the email exists. That tells anyone which emails are registered (MP-Q02). |
 | 3 | Gateway, BFF (S18) | Identity, SCA (S19) | Creates the user in realm merchant with status PENDING_VERIFICATION. |  | WF02a 3<br>**If it fails:** S19 down: 503, nothing is stored |
 | 4 | Identity, SCA (S19) | Messages (S17) | Sends one code by email and another by SMS. Valid 10 min, 5 attempts, resend at most 3 times an hour. |  | WF02a 4<br>Time: delivery 30 s |
 | 5 | Messages (S17) | Merchant (user) | Codes arrive. |  | WF02a 5 |
@@ -62,7 +62,7 @@ sequenceDiagram
 | 10 | Portal (S3) | Identity, SCA (S19) | The browser creates the passkey (platform or security key). Attestation is checked against policy but is not a condition for access. |  | WF02a 10<br>Time: 60 s<br>**If it fails:** authenticator refused: try another |
 | 11 | Identity, SCA (S19) | Portal (S3) | Tokens through PKCE (amr webauthn). Role ONBOARDING_APPLICANT. Session 8 h, refresh 30 days. |  | WF02a 11 |
 | 12 | Gateway, BFF (S18) | Onboarding (S6) | First call with the token registers the person in S6 and returns a person ID. No merchant yet. |  | WF02a 12<br>**If it fails:** S6 down: 503, the token stays valid |
-| 13 | Portal (S3) | Merchant (user) | Offers to add a second passkey now, so a lost device does not mean recovery. |  | **Gap:** Proposed, not in v8.1 (MP-Q04) |
+| 13 | Portal (S3) | Merchant (user) | Offers to add a second passkey now, so a lost device does not mean recovery. |  | **Open gap:** Proposed, not in v8.1 (MP-Q04) |
 
 ## States
 
@@ -96,7 +96,7 @@ stateDiagram-v2
 - KYC of the person happens in the application (MP-06), not here.
 - S19 events go to SEC2.
 
-## Open questions
+## Questions
 
 ### MP-Q02
 

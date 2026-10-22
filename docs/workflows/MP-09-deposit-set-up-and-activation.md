@@ -8,7 +8,7 @@ If a deposit is required, the merchant transfers it first. Then accounts in OraS
 
 | | |
 |---|---|
-| Status | v8.1 with gaps |
+| Status | v8.1, gaps closed |
 | Area | Onboarding |
 | Source | WF02b steps 13 to 17; PRD WF11 AWAITING_DEPOSIT; admin spec 5.4 access.grant |
 | Starts when | The offer is accepted (MP-08). |
@@ -52,7 +52,7 @@ sequenceDiagram
 | # | From | To | Step | Call | Notes |
 |---|---|---|---|---|---|
 | | | | **Deposit (when the offer has one)** | | |
-| 1 | Portal (S3) | Merchant (user) | Shows the deposit amount, our IBAN and the payment reference. |  | **Gap:** AWAITING_DEPOSIT is in the PRD but not in the WF02b states (MP-Q20). |
+| 1 | Portal (S3) | Merchant (user) | Shows the deposit amount, our IBAN and the payment reference. |  | **Decided:** [MP-Q20](../open-questions.md#mp-q20) |
 | 2 | Merchant (user) | Outside (bank, scheme) | Transfers from the company's account. |  |  |
 | 3 | Core (S21, S5) | Core (S21, S5) | Credits the rolling reserve account. |  |  |
 | 4 | Reconciliation (S13) | Onboarding (S6) | Reconciled: deposit received in full from an account in the merchant's name. |  | Rule: S10 is not activated before the deposit is in and reconciled |
@@ -76,10 +76,12 @@ stateDiagram-v2
   state "PROVISIONING" as s_PROVISIONING
   state "ACTIVE" as s_ACTIVE
   state "COMPENSATING, S4 case" as s_COMPENSATING_S4_case
+  state "WITHDRAWN" as s_WITHDRAWN
   s_OFFER_SENT --> s_AWAITING_DEPOSIT : accepted, deposit needed
   s_AWAITING_DEPOSIT --> s_PROVISIONING : reconciled
   s_PROVISIONING --> s_ACTIVE : S5 and S10 both confirm
   s_PROVISIONING --> s_COMPENSATING_S4_case : one fails
+  s_AWAITING_DEPOSIT --> s_WITHDRAWN : [30] days unpaid
 ```
 
 | From | When | To |
@@ -88,18 +90,25 @@ stateDiagram-v2
 | AWAITING_DEPOSIT | reconciled | PROVISIONING |
 | PROVISIONING | S5 and S10 both confirm | ACTIVE |
 | PROVISIONING | one fails | COMPENSATING, S4 case |
+| AWAITING_DEPOSIT | [30] days unpaid | WITHDRAWN |
 
 ## Rules
 
 - No acceptance until both OraSYS and BPC confirm.
 - The deposit is paid by transfer only, never taken from settlements.
 
-## Open questions
+## Changes v8.1 needs
+
+For the CTO's next version of the architecture (v8.2).
+
+- WF02b states: add AWAITING_DEPOSIT between OFFER_SENT and PROVISIONING, as PRD WF11 needs; unpaid after [30] days the offer lapses (MP-Q20).
+
+## Questions
 
 ### MP-Q20
 
 AWAITING_DEPOSIT (PRD WF11) is not in the WF02b state machine.
 
-**Proposed:** Add it between the offer and PROVISIONING. Show the deposit IBAN and reference in the portal. Unpaid after [30] days: offer lapses.
+**Decision:** Add it between the offer and PROVISIONING. Show the deposit IBAN and reference in the portal. Unpaid after [30] days: offer lapses.
 
-Owner: CTO
+Decided, awaiting sign-off by: CTO

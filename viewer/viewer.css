@@ -134,3 +134,10 @@ ul.plain{margin:0;padding-left:18px} ul.plain li{padding:2px 0}
 @media (max-width:960px){.wiz{grid-template-columns:minmax(0,1fr)}.wiz ol.steps{position:static;display:flex;flex-wrap:wrap}.grid2{grid-template-columns:minmax(0,1fr)}.toc{columns:1}}
 @media (max-width:820px){.mswitch{padding:4px;justify-content:center}.mswitch div{display:none}.side-foot .chk span,.side-foot .linkbtn{display:none}}
 .form label > .btn{justify-self:start}
+/* decisions */
+.wfb.amd{color:var(--green);background:var(--panel)}
+.lanes .t .tg.dec{background:var(--green-bg);color:var(--green);text-decoration:none}
+.lanes .t .tg.dec:hover{text-decoration:underline}
+.lanes .t .tg.add{background:var(--grey-bg);color:var(--ink-2);border:1px dashed var(--ink-3)}
+.q.decided{border-left:3px solid var(--green)}
+.q p.prop b{color:var(--blue)} .q.decided p.prop b{color:var(--green)}

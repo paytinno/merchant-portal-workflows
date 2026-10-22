@@ -77,7 +77,7 @@ stateDiagram-v2
 - A09 never reads balances and never writes the ledger.
 - No full card number ever reaches the portal (SEC4 checks responses).
 
-## Open questions
+## Questions
 
 ### MP-Q22
 

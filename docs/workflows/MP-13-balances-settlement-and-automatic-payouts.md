@@ -80,7 +80,7 @@ stateDiagram-v2
 - Payouts only to a verified account in the merchant's name.
 - Every money figure shows when it was last updated.
 
-## Open questions
+## Questions
 
 ### MP-Q28
 

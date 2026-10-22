@@ -85,7 +85,7 @@ stateDiagram-v2
 - Never to any account other than the verified payout account.
 - No payout while a reconciliation hold is on.
 
-## Open questions
+## Questions
 
 ### MP-Q29
 

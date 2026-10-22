@@ -4,11 +4,11 @@
 
 [All workflows](../README.md) | Previous: [MP-07 Request for information and the answer](MP-07-request-for-information-and-the-answer.md) | Next: [MP-09 Deposit, set-up and activation](MP-09-deposit-set-up-and-activation.md)
 
-Staff set limits, tariff, reserve and deposit with four eyes. Proposed: the merchant sees the offer and accepts it with SCA before set-up starts.
+Staff set limits, tariff, reserve and deposit with four eyes. Then the merchant sees the offer and accepts it with SCA before set-up starts.
 
 | | |
 |---|---|
-| Status | v8.1 with gaps |
+| Status | v8.1, gaps closed |
 | Area | Onboarding |
 | Source | WF02b steps 10 to 12 |
 | Starts when | Checks are complete (MP-06). |
@@ -32,7 +32,7 @@ sequenceDiagram
   OPS->>S4: MATCH and VMAS checks, limits, tariff, rolling<br/>reserve %, guarantee deposit, MCC.
   S4->>S6: Approved with conditions, or rejected.<br/>Approver differs from preparer.
   S4->>S3: Rejected: status CLOSED_REJECTED and a neutral<br/>notice.
-  Note over MER,S17: Offer (proposed)
+  Note over MER,S17: Offer
   S4->>S3: Approved: the offer appears: tariff, reserve<br/>%, deposit, limits, payout schedule, the<br/>agreement.
   MER->>S3: SCA: The admin applicant accepts with SCA. The<br/>agreement version and evidence are stored.
   S3->>S18: Acceptance.
@@ -47,9 +47,9 @@ sequenceDiagram
 | 2 | Paytinno staff (OPS) | Admin (S4) | MATCH and VMAS checks; limits, tariff, rolling reserve %, guarantee deposit, MCC. |  | WF02b 11<br>Time: 2 business days<br>Rule: Four eyes above a threshold or for high-risk MCCs |
 | 3 | Admin (S4) | Onboarding (S6) | Approved with conditions, or rejected. Approver differs from preparer. |  | WF02b 12 |
 | 4 | Admin (S4) | Portal (S3) | Rejected: status CLOSED_REJECTED and a neutral notice. | `merchant.notify application_rejected` | **If it fails:** No reason is given in the portal |
-| | | | **Offer (proposed)** | | |
-| 5 | Admin (S4) | Portal (S3) | Approved: the offer appears: tariff, reserve %, deposit, limits, payout schedule, the agreement. |  | **Gap:** v8.1 has no step where the merchant agrees to the terms (MP-Q19). |
-| 6 | Merchant (user) | Portal (S3) | The admin applicant accepts with SCA. The agreement version and evidence are stored. |  | **SCA** |
+| | | | **Offer** | | |
+| 5 | Admin (S4) | Portal (S3) | Approved: the offer appears: tariff, reserve %, deposit, limits, payout schedule, the agreement. |  | **Decided:** [MP-Q19](../open-questions.md#mp-q19)<br>Added to v8.1 |
+| 6 | Merchant (user) | Portal (S3) | The admin applicant accepts with SCA. The agreement version and evidence are stored. |  | **SCA**<br>**Decided:** [MP-Q19](../open-questions.md#mp-q19) |
 | 7 | Portal (S3) | Gateway, BFF (S18) | Acceptance. | `POST /v1/merchants/applications/{appId}/offer/accept` |  |
 | 8 | Gateway, BFF (S18) | Onboarding (S6) | Moves on to AWAITING_DEPOSIT or PROVISIONING (MP-09). |  |  |
 
@@ -81,12 +81,18 @@ stateDiagram-v2
 - The rejection text is the same whatever the reason.
 - The decision record keeps rationale, policy version, tariff, reserve and approvers (WF02b 18).
 
-## Open questions
+## Changes v8.1 needs
+
+For the CTO's next version of the architecture (v8.2).
+
+- WF02b: add state OFFER_SENT between approval (step 12) and set-up (step 13); the representative accepts the offer and agreement with SCA; the offer lapses after [14] days (MP-Q19).
+
+## Questions
 
 ### MP-Q19
 
 Where does the merchant agree to the tariff, reserve and agreement? v8.1 goes from approval straight to set-up.
 
-**Proposed:** Add OFFER_SENT: the offer in the portal, accepted with SCA by the applicant who is the representative. Qualified e-signature only if Legal requires it.
+**Decision:** Add OFFER_SENT: the offer in the portal, accepted with SCA by the applicant who is the representative. Qualified e-signature only if Legal requires it.
 
-Owner: Legal
+Decided, awaiting sign-off by: Legal

@@ -77,7 +77,7 @@ stateDiagram-v2
 - Ongoing sanctions screening runs in the AML system; the merchant sees nothing of it.
 - Documents with an expiry date get reminders 30 days before.
 
-## Open questions
+## Questions
 
 ### MP-Q36
 

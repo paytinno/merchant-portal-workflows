@@ -45,7 +45,7 @@ sequenceDiagram
 | 1 | Merchant (user) | Portal (S3) | Create a key (test or live) with a label, or roll or revoke one. |  |  |
 | 2 | Gateway, BFF (S18) | Identity, SCA (S19) | SCA bound to the key label and action. |  | WF02a 22<br>**SCA** |
 | 3 | Portal (S3) | Gateway, BFF (S18) | Command. | `POST /v1/keys {mode, label} \| POST /v1/keys/{id}/roll \| DELETE /v1/keys/{id}` |  |
-| 4 | Gateway, BFF (S18) | BPC (S10 via A09) | Through A09. | `IF45 via A09` | **Gap:** BPC API coverage for keys is open (questions 21, 33). Until then an S4 operator does it (MP-Q10). |
+| 4 | Gateway, BFF (S18) | BPC (S10 via A09) | Through A09. | `IF45 via A09` | **Open gap:** BPC API coverage for keys is open (questions 21, 33). Until then an S4 operator does it (MP-Q10). |
 | 5 | BPC (S10 via A09) | Portal (S3) | The secret, once. The portal shows it and forgets it. |  | Rule: Shown once |
 | 6 | BPC (S10 via A09) | BPC (S10 via A09) | Roll: the old key works for [24 h] more, then stops. Revoke: stops now. |  |  |
 | 7 | Messages (S17) | Merchant (user) | Email to admins and developers for every create, roll and revoke. |  |  |
@@ -76,7 +76,7 @@ stateDiagram-v2
 - Live keys only after go-live (MP-10).
 - Secrets never in email, messages or logs.
 
-## Open questions
+## Questions
 
 ### MP-Q10
 

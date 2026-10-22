@@ -76,7 +76,7 @@ stateDiagram-v2
 - The main balance is never negative.
 - Top-ups only by transfer from the merchant.
 
-## Open questions
+## Questions
 
 ### MP-Q27
 

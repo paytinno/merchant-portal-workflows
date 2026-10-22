@@ -76,7 +76,7 @@ stateDiagram-v2
 - No tipping off: the portal never names a screening hit, PEP, sanctions, MATCH or VMAS.
 - The portal maps each state to its own fixed text (CONFIG.APP_STATES); the admin's label is a hint only.
 
-## Open questions
+## Questions
 
 ### MP-Q09
 

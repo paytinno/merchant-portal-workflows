@@ -8,7 +8,7 @@ The money moves to a dispute account at once. The merchant gets a deadline, can 
 
 | | |
 |---|---|
-| Status | v8.1 with gaps |
+| Status | v8.1, gaps closed |
 | Area | Disputes |
 | Source | WF11 steps 11 to 17; PRD WF11 Acquiring v6 |
 | Starts when | A card holder's bank disputes a payment. |
@@ -39,8 +39,8 @@ sequenceDiagram
   MER->>S3: SCA: Escalate: reason 'Refund issued' or 'See<br/>attached documents' (at least one document<br/>unless refunded), amount up to the disputed<br/>amount, the rest accepted.
   MER->>S3: SCA: Or Accept: final, the case is lost.
   S3->>S18: Sends the decision.
-  S18->>S4: Decision recorded on the case.
-  OPS->>EXT: Staff submit in Visa VROL or Mastercom, or<br/>refuse to escalate weak evidence.
+  S18->>S4: Decision recorded on the DisputeCase in S4.<br/>The portal never sends it to BPC itself.
+  OPS->>EXT: Paytinno chargeback analysts submit in Visa<br/>VROL or Mastercom, or decline to escalate weak<br/>evidence and tell the merchant why.
   Note over EXT,OPS: Outcome
   S10->>S21: Won: money back by origin. Lost: the dispute<br/>account is cleared.
   S4->>S17: Every stage change and the result, reminders<br/>72, 48 and 24 h before the merchant deadline.
@@ -60,8 +60,8 @@ sequenceDiagram
 | 6 | Merchant (user) | Portal (S3) | Escalate: reason "Refund issued" or "See attached documents" (at least one document unless refunded); amount up to the disputed amount, the rest accepted. |  | PRD Escalate<br>**SCA** |
 | 7 | Merchant (user) | Portal (S3) | Or Accept: final, the case is lost. |  | PRD Accept<br>**SCA** |
 | 8 | Portal (S3) | Gateway, BFF (S18) | Sends the decision. | `POST /v1/disputes/{caseId}/escalate \| /accept + Idempotency-Key` | WF11 16<br>Time: 2 s |
-| 9 | Gateway, BFF (S18) | Admin (S4) | Decision recorded on the case. |  | **Gap:** v8.1 sends it to BPC through A09; the PRD sends it to S4 and staff (MP-Q12). |
-| 10 | Paytinno staff (OPS) | Outside (bank, scheme) | Staff submit in Visa VROL or Mastercom, or refuse to escalate weak evidence. |  | PRD |
+| 9 | Gateway, BFF (S18) | Admin (S4) | Decision recorded on the DisputeCase in S4. The portal never sends it to BPC itself. |  | **Decided:** [MP-Q12](../open-questions.md#mp-q12) |
+| 10 | Paytinno staff (OPS) | Outside (bank, scheme) | Paytinno chargeback analysts submit in Visa VROL or Mastercom, or decline to escalate weak evidence and tell the merchant why. |  | PRD<br>**Decided:** [MP-Q13](../open-questions.md#mp-q13) |
 | | | | **Outcome** | | |
 | 11 | BPC (S10 via A09) | Core (S21, S5) | Won: money back by origin. Lost: the dispute account is cleared. |  |  |
 | 12 | Admin (S4) | Messages (S17) | Every stage change and the result; reminders 72, 48 and 24 h before the merchant deadline. |  | PRD notifications |
@@ -100,20 +100,29 @@ stateDiagram-v2
 - Escalate and Accept are possible only while the stage waits for the merchant and the deadline has not passed.
 - Staff comments are shown; internal notes are not.
 
-## Open questions
+## Changes v8.1 needs
+
+For the CTO's next version of the architecture (v8.2).
+
+- WF11 14 to 17: the merchant's Escalate or Accept goes to the DisputeCase in S4; chargeback analysts submit in VROL or Mastercom (PRD WF11 v6). Not through A09 at launch (MP-Q12).
+- WF11 states: keep OPEN, SUBMITTED, WON, LOST, DECLINED for reporting; the portal shows the PRD stage names (MP-Q12).
+- WF11 ledger: use the PRD's dispute (CB) sub-account; a shortfall comes from the reserve, then becomes a receivable from the merchant (MP-Q12).
+- CTO question 29 answered: Paytinno chargeback analysts in S4 (MP-Q13).
+
+## Questions
 
 ### MP-Q12
 
 The PRD and v8.1 WF11 disagree: states (PRD stages vs OPEN/SUBMITTED/WON/LOST), channel (staff in VROL/Mastercom vs A09 to BPC), ledger (CB sub-account vs reserve and receivable).
 
-**Proposed:** Use the PRD for the merchant side and update WF11 in v8.2. The portal shows PRD stages and maps them to the v8.1 states for reporting.
+**Decision:** Use the PRD for the merchant side and update WF11 in v8.2. The portal shows PRD stages and maps them to the v8.1 states for reporting.
 
-Owner: CTO
+Decided, awaiting sign-off by: CTO
 
 ### MP-Q13
 
 Who works disputes at launch? (CTO question 29)
 
-**Proposed:** Paytinno chargeback analysts in S4 (PRD), with the merchant answering in the portal.
+**Decision:** Paytinno chargeback analysts in S4 (PRD), with the merchant answering in the portal.
 
-Owner: COO
+Decided, awaiting sign-off by: COO

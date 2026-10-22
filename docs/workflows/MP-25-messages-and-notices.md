@@ -8,7 +8,7 @@ One inbox for requests, notices and support. Emails carry a link, not the conten
 
 | | |
 |---|---|
-| Status | v8.1 with gaps |
+| Status | v8.1, gaps closed |
 | Area | Business |
 | Source | S17; admin spec 5.3 merchant.notify templates |
 | Starts when | Paytinno sends a notice; a user writes to Paytinno. |
@@ -30,7 +30,7 @@ sequenceDiagram
   S4->>S18: Notice from a fixed template.
   S17->>MER: Email (and portal) in Bulgarian or English.
   MER->>S3: Writes to support.
-  OPS->>S4: Answers.
+  OPS->>S4: Answers from the support inbox in S4 (phase<br/>1). A help desk tool can replace it later, the<br/>portal API stays the same.
   MER->>S3: Sets which notices to get by email. Regulatory<br/>notices cannot be turned off.
 ```
 
@@ -41,7 +41,7 @@ sequenceDiagram
 | 1 | Admin (S4) | Gateway, BFF (S18) | Notice from a fixed template. | `merchant.notify {template, data}` | admin spec 5.3 |
 | 2 | Messages (S17) | Merchant (user) | Email (and portal) in Bulgarian or English. |  |  |
 | 3 | Merchant (user) | Portal (S3) | Writes to support. | `POST /v1/messages → webhook merchant.message` |  |
-| 4 | Paytinno staff (OPS) | Admin (S4) | Answers. |  | **Gap:** Where support conversations live is not decided (MP-Q37). |
+| 4 | Paytinno staff (OPS) | Admin (S4) | Answers from the support inbox in S4 (phase 1). A help desk tool can replace it later; the portal API stays the same. |  | **Decided:** [MP-Q37](../open-questions.md#mp-q37) |
 | 5 | Merchant (user) | Portal (S3) | Sets which notices to get by email. Regulatory notices cannot be turned off. |  |  |
 
 ## States
@@ -52,12 +52,19 @@ No states of its own.
 
 - Templates: welcome, application received, application rejected, RFI reminder, tariff change, acceptance suspended, acceptance reactivated, account closing, payout account verified (admin spec P5).
 
-## Open questions
+## Changes v8.1 needs
+
+For the CTO's next version of the architecture (v8.2).
+
+- S4 module: add a merchant support inbox for phase 1 (MP-Q37).
+- S17: emails to merchants carry a link to the portal, not the content.
+
+## Questions
 
 ### MP-Q37
 
 Where are support conversations handled? The admin has no case management for them.
 
-**Proposed:** A simple inbox in S4 for phase 1; a help desk tool later.
+**Decision:** A simple inbox in S4 for phase 1; a help desk tool later.
 
-Owner: COO
+Decided, awaiting sign-off by: COO

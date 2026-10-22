@@ -41,7 +41,7 @@ sequenceDiagram
 
 | # | From | To | Step | Call | Notes |
 |---|---|---|---|---|---|
-| 1 | Gateway, BFF (S18) | BPC (S10 via A09) | Test keys for the BPC sandbox, issued at activation. |  | **Gap:** Does BPC give a sandbox per merchant? (CTO question 21, MP-Q21) |
+| 1 | Gateway, BFF (S18) | BPC (S10 via A09) | Test keys for the BPC sandbox, issued at activation. |  | **Open gap:** Does BPC give a sandbox per merchant? (CTO question 21, MP-Q21) |
 | 2 | Merchant (user) | BPC (S10 via A09) | The developer runs payments with test cards: success, decline, 3-D Secure challenge, refund, webhook. |  |  |
 | 3 | Portal (S3) | Gateway, BFF (S18) | The checklist ticks itself from test data. | `GET /v1/golive/checklist` |  |
 | 4 | Merchant (user) | Portal (S3) | Admin asks for live. |  |  |
@@ -73,7 +73,7 @@ stateDiagram-v2
 
 - Live keys are never issued before the website check.
 
-## Open questions
+## Questions
 
 ### MP-Q21
 

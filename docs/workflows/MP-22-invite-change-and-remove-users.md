@@ -79,7 +79,7 @@ stateDiagram-v2
 - At least one admin; two recommended (recovery, approvals).
 - Every change is in the team history.
 
-## Open questions
+## Questions
 
 ### MP-Q35
 

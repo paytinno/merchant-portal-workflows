@@ -70,7 +70,7 @@ stateDiagram-v2
 
 - Paytinno-initiated closure follows the agreement's notice, or immediately for cause.
 
-## Open questions
+## Questions
 
 ### MP-Q39
 

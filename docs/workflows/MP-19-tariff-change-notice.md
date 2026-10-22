@@ -68,12 +68,12 @@ stateDiagram-v2
 
 - Micro-enterprises: at least 2 months' notice (payment services rules); others as the agreement says.
 
-## Open questions
+## Questions
 
 ### MP-Q33
 
 Notice periods differ for micro-enterprises, but onboarding does not ask whether the merchant is one.
 
-**Proposed:** Ask in the application (MP-05) and keep it in S6; S7 refuses an effective date shorter than the notice period.
+**Decision:** Ask in the application (MP-05) and keep it in S6; S7 refuses an effective date shorter than the notice period.
 
-Owner: Legal
+Decided, awaiting sign-off by: Legal
