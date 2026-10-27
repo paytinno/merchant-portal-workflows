@@ -2,7 +2,7 @@
 
 # MP-09 Deposit, set-up and activation
 
-[All workflows](../README.md) | Previous: [MP-08 Underwriting decision and the offer](MP-08-underwriting-decision-and-the-offer.md) | Next: [MP-10 Go live: from test to live payments](MP-10-go-live-from-test-to-live-payments.md)
+[All workflows](../README.md) | Previous: [MP-08 Onboarding review and the offer](MP-08-onboarding-review-and-the-offer.md) | Next: [MP-10 Go live: from test to live payments](MP-10-go-live-from-test-to-live-payments.md)
 
 If a deposit is required, the merchant transfers it first. Then accounts in OraSYS and the merchant in BPC. Only when both confirm is the merchant active and the full portal opens.
 

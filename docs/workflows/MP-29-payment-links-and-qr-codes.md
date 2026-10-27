@@ -87,7 +87,7 @@ stateDiagram-v2
 - The page shows the merchant's trading name, the amount and the description; card details are typed only on the hosted page.
 - A one-payment link cannot be paid twice.
 - Same limits, risk rules and fees as other online payments; refunds as MP-12.
-- High-risk merchant categories get links only if underwriting allows it (MP-38).
+- High-risk merchant categories get links only if the onboarding review allows it (MP-38).
 
 ## Changes v8.1 needs
 

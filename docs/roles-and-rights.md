@@ -60,7 +60,7 @@ SCA: the person signs with a passkey (dynamic linking). 2nd: a second person app
 | Finance | €5,000 | €50,000 |
 | Support | €100 | None |
 
-An admin can lower a person's limit. Paytinno sets the business's maximum in underwriting (MP-Q05).
+An admin can lower a person's limit. Paytinno sets the business's maximum in the onboarding review (MP-Q05).
 
 ## Timers and limits
 
@@ -90,7 +90,8 @@ The portal shows its own fixed text for each state, never free text from staff (
 | `KYB_PENDING` | Checking documents | We are checking your company, documents and the people you listed. |
 | `INFO_REQUESTED` | We need something | We need more information from you. See Messages. |
 | `MANUAL_REVIEW` | In review | We are reviewing your application. |
-| `UNDERWRITING` | Risk assessment | We are setting your limits and terms. |
+| `ONBOARDING_REVIEW` | Risk assessment | We are setting your limits and terms. |
+| `OFFER_SENT` | Your offer | Approved. Please read and accept your offer. |
 | `AWAITING_DEPOSIT` | Waiting for the deposit | Approved. Please transfer the guarantee deposit to start. |
 | `PROVISIONING` | Setting up | Approved. We are setting up your account and keys. |
 | `ACTIVE` | Active | You can take live payments. |

@@ -4,7 +4,7 @@
 
 [All workflows](README.md)
 
-40 open, 20 decided and awaiting sign-off. CTO question numbers refer to the v8.1 question list.
+40 open, 22 decided and awaiting sign-off. CTO question numbers refer to the v8.1 question list.
 
 ## Open
 
@@ -73,7 +73,7 @@ Answers adopted as the design to close gaps in v8.1. Each owner signs off or cha
 | [MP-Q16](#mp-q16) | Where is the draft kept before it is sent? v8.1 starts the case only at submission. | CTO | [MP-05](workflows/MP-05-fill-in-and-send-the-application.md) |
 | [MP-Q17](#mp-q17) | Who must do an identity check: only the representative (v8.1), or every owner (the design prototype)? | Compliance | [MP-05](workflows/MP-05-fill-in-and-send-the-application.md) |
 | [MP-Q18](#mp-q18) | What happens when an RFI is overdue? | Compliance | [MP-07](workflows/MP-07-request-for-information-and-the-answer.md) |
-| [MP-Q19](#mp-q19) | Where does the merchant agree to the tariff, reserve and agreement? v8.1 goes from approval straight to set-up. | Legal | [MP-08](workflows/MP-08-underwriting-decision-and-the-offer.md) |
+| [MP-Q19](#mp-q19) | Where does the merchant agree to the tariff, reserve and agreement? v8.1 goes from approval straight to set-up. | Legal | [MP-08](workflows/MP-08-onboarding-review-and-the-offer.md) |
 | [MP-Q20](#mp-q20) | AWAITING_DEPOSIT (PRD WF11) is not in the WF02b state machine. | CTO | [MP-09](workflows/MP-09-deposit-set-up-and-activation.md) |
 | [MP-Q24](#mp-q24) | Where does the "no refund while disputed" check run? The PRD says S21a; in v8.1 portal refunds go S18 to A09 to BPC. | CTO | [MP-12](workflows/MP-12-refund-a-payment.md) |
 | [MP-Q25](#mp-q25) | What if the merchant's balance is lower than the refund? | Finance | [MP-12](workflows/MP-12-refund-a-payment.md) |
@@ -81,8 +81,10 @@ Answers adopted as the design to close gaps in v8.1. Each owner signs off or cha
 | [MP-Q33](#mp-q33) | Notice periods differ for micro-enterprises, but onboarding does not ask whether the merchant is one. | Legal | [MP-19](workflows/MP-19-tariff-change-notice.md) |
 | [MP-Q34](#mp-q34) | Two signing schemes and retry policies (BPC payment webhooks and Paytinno chargeback webhooks). | CTO | [MP-21](workflows/MP-21-webhooks.md) |
 | [MP-Q37](#mp-q37) | Where are support conversations handled? The admin has no case management for them. | COO | [MP-25](workflows/MP-25-messages-and-notices.md) |
+| [MP-Q60](#mp-q60) | When does onboarding need a credit review (underwriting), and who signs it? | CRO | [MP-08](workflows/MP-08-onboarding-review-and-the-offer.md) |
+| [MP-Q61](#mp-q61) | Which sectors are high risk, and what extra checks does each get? v8.1 names only gambling (MCC 7995). | Compliance | [MP-08](workflows/MP-08-onboarding-review-and-the-offer.md) |
 
-By owner: COO 2, CTO 12, Compliance 3, Finance 1, Legal 2.
+By owner: COO 2, CRO 1, CTO 12, Compliance 4, Finance 1, Legal 2.
 
 ## Details
 
@@ -244,7 +246,7 @@ Where does the merchant agree to the tariff, reserve and agreement? v8.1 goes fr
 
 **Decision:** Add OFFER_SENT: the offer in the portal, accepted with SCA by the applicant who is the representative. Qualified e-signature only if Legal requires it.
 
-Decided, awaiting sign-off by: Legal. Workflow: [MP-08 Underwriting decision and the offer](workflows/MP-08-underwriting-decision-and-the-offer.md)
+Decided, awaiting sign-off by: Legal. Workflow: [MP-08 Onboarding review and the offer](workflows/MP-08-onboarding-review-and-the-offer.md)
 
 ### MP-Q20
 
@@ -306,7 +308,7 @@ Decided, awaiting sign-off by: CTO. Workflow: [MP-12 Refund a payment](workflows
 
 Reserve release: v8.1 proposes 180 days; the PRD says "on schedule" with no number.
 
-**Proposed:** 180 days rolling, daily release, per merchant override set in underwriting.
+**Proposed:** 180 days rolling, daily release, per merchant override set in the onboarding review, or the credit review (MP-Q60).
 
 Owner: CRO. Workflow: [MP-17 Rolling reserve and reserve top-up](workflows/MP-17-rolling-reserve-and-reserve-top-up.md)
 
@@ -450,7 +452,7 @@ Owner: CTO. Workflow: [MP-31 Capture later, or in part](workflows/MP-31-capture-
 
 Which capture mode do new merchants get?
 
-**Proposed:** Automatic. Manual only on request, for merchants that ship goods or take deposits, agreed in underwriting.
+**Proposed:** Automatic. Manual only on request, for merchants that ship goods or take deposits, agreed in the onboarding review.
 
 Owner: Product. Workflow: [MP-31 Capture later, or in part](workflows/MP-31-capture-later-or-in-part.md)
 
@@ -530,7 +532,7 @@ Owner: Legal. Workflow: [MP-37 Money the merchant owes](workflows/MP-37-money-th
 
 Who decides these requests, and how fast?
 
-**Proposed:** The underwriting team, in [3] business days; four eyes above the same thresholds as onboarding.
+**Proposed:** The onboarding review team, in [3] business days, with the credit approver when a credit trigger is met (MP-Q60); four eyes above the same thresholds as onboarding.
 
 Owner: CRO. Workflow: [MP-38 Ask for higher limits or new services](workflows/MP-38-ask-for-higher-limits-or-new-services.md)
 
@@ -565,3 +567,19 @@ Can BPC issue keys limited to payments and refunds?
 **Proposed:** Needed for plugins. If BPC cannot, plugins use the hosted page only.
 
 Owner: CTO. Workflow: [MP-41 Shop plugins](workflows/MP-41-shop-plugins.md)
+
+### MP-Q60
+
+When does onboarding need a credit review (underwriting), and who signs it?
+
+**Decision:** Only when a credit trigger is met: goods or services delivered later (travel, tickets, events, pre-orders, memberships of more than [3] months); expected monthly volume above [€250,000]; payouts faster than the schemes pay Paytinno; or reserve and deposit below the estimated exposure (volume times days to delivery plus the refund and chargeback window). The CRO or a delegated credit approver signs; the onboarding review team cannot approve its own credit decision.
+
+Decided, awaiting sign-off by: CRO. Workflow: [MP-08 Onboarding review and the offer](workflows/MP-08-onboarding-review-and-the-offer.md)
+
+### MP-Q61
+
+Which sectors are high risk, and what extra checks does each get? v8.1 names only gambling (MCC 7995).
+
+**Decision:** Compliance keeps one list in the risk policy, the same list the AML system scores on. At least: gambling (National Revenue Agency licence), crypto (registration or MiCA licence), online pharmacy and medicines (Bulgarian Drug Agency permit), adult content, dating, tobacco, e-cigarettes and alcohol (age checks), forex and CFDs (investment firm licence), nutraceuticals and free trials (subscription terms), travel and ticketing (credit review). Each gets a licence check where one applies, the scheme high-risk registration where Visa or Mastercard require it, a website and sales-model review, four eyes and KYB refresh every 12 months.
+
+Decided, awaiting sign-off by: Compliance. Workflow: [MP-08 Onboarding review and the offer](workflows/MP-08-onboarding-review-and-the-offer.md)

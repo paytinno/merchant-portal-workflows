@@ -44,7 +44,7 @@ sequenceDiagram
 
 | # | From | To | Step | Call | Notes |
 |---|---|---|---|---|---|
-| 1 | Core (S21, S5) | Core (S21, S5) | Holds the reserve % from each settlement; releases each day's amount after [180] days. |  | Rule: Reserve % set in underwriting (MP-08) |
+| 1 | Core (S21, S5) | Core (S21, S5) | Holds the reserve % from each settlement; releases each day's amount after [180] days. |  | Rule: Reserve % set in the onboarding review (MP-08) |
 | 2 | Portal (S3) | Merchant (user) | Balances show the reserve and the release calendar. |  |  |
 | | | | **Top-up** | | |
 | 3 | Paytinno staff (OPS) | Admin (S4) | Risk sets a top-up amount and deadline (RR_TOPUP). |  | PRD |
@@ -83,6 +83,6 @@ stateDiagram-v2
 
 Reserve release: v8.1 proposes 180 days; the PRD says "on schedule" with no number.
 
-**Proposed:** 180 days rolling, daily release, per merchant override set in underwriting.
+**Proposed:** 180 days rolling, daily release, per merchant override set in the onboarding review, or the credit review (MP-Q60).
 
 Owner: CRO

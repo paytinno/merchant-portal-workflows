@@ -114,6 +114,6 @@ Owner: CTO
 
 Which capture mode do new merchants get?
 
-**Proposed:** Automatic. Manual only on request, for merchants that ship goods or take deposits, agreed in underwriting.
+**Proposed:** Automatic. Manual only on request, for merchants that ship goods or take deposits, agreed in the onboarding review.
 
 Owner: Product

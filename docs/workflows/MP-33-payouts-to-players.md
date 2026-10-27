@@ -11,7 +11,7 @@ Paid from the operator's available balance to the card the player deposited with
 | Status | Proposed |
 | For | Only Gambling operators (MCC 7995, licensed by the National Revenue Agency). Whether each merchant type is in year-one scope is still to decide. |
 | Area | Money |
-| Source | WF02b 10 (extra checks for MCC 7995); the design boards (payout approvals for a gambling operator); not in v8.1 |
+| Source | WF02b 10 (extra sector checks); the design boards (payout approvals for a gambling operator); not in v8.1 |
 | Starts when | A gambling operator pays a player's winnings or withdrawal. |
 | Object | Player payout (S21): a card payout through BPC or a SEPA transfer |
 | Systems | Merchant (user), Portal (S3), Gateway, BFF (S18), Admin (S4), Onboarding (S6), Identity, SCA (S19), Core (S21, S5), BPC (S10 via A09), Outside (bank, scheme), IDV, AML (S11 via A01), Messages (S17) |
@@ -34,7 +34,7 @@ sequenceDiagram
   participant S11 as IDV, AML S11 via A01
   participant S17 as Messages S17
   Note over MER,S17: Set up
-  S4->>S6: Underwriting approves player payouts, with<br/>limits per payout and per day, and the<br/>methods: card payout, SEPA, or both.
+  S4->>S6: The onboarding review approves player payouts,<br/>with limits per payout and per day, and the<br/>methods: card payout, SEPA, or both.
   MER->>S3: The operator sets its review rules: amounts,<br/>new destinations, payouts per player per day.<br/>Below them, payouts go straight out.
   Note over MER,S17: Request
   MER->>S18: A payout request, usually through the API with<br/>a payout-only key: player reference,<br/>destination (a card token from a deposit, or<br/>an IBAN and name), amount.
@@ -54,7 +54,7 @@ sequenceDiagram
 | # | From | To | Step | Call | Notes |
 |---|---|---|---|---|---|
 | | | | **Set up** | | |
-| 1 | Admin (S4) | Onboarding (S6) | Underwriting approves player payouts, with limits per payout and per day, and the methods: card payout, SEPA, or both. |  | MP-08 |
+| 1 | Admin (S4) | Onboarding (S6) | The onboarding review approves player payouts, with limits per payout and per day, and the methods: card payout, SEPA, or both. |  | MP-08 |
 | 2 | Merchant (user) | Portal (S3) | The operator sets its review rules: amounts, new destinations, payouts per player per day. Below them, payouts go straight out. |  |  |
 | | | | **Request** | | |
 | 3 | Merchant (user) | Gateway, BFF (S18) | A payout request, usually through the API with a payout-only key: player reference, destination (a card token from a deposit, or an IBAN and name), amount. | `POST /v1/player-payouts {playerRef, destination, amount, reference} + Idempotency-Key` |  |
@@ -116,7 +116,7 @@ stateDiagram-v2
 
 For the CTO's next version of the architecture (v8.2).
 
-- WF02b 10: for gambling (MCC 7995) add the National Revenue Agency licence check and the Visa and Mastercard high-risk merchant registration before activation.
+- WF02b 10: gambling is on the high-risk sector list (MP-Q61): the National Revenue Agency licence check and the Visa and Mastercard high-risk registration before activation.
 - Add a player payout workflow to v8.1: funded from the merchant balance, card payouts through A09 or SEPA through NC3, with the operator's own review rules.
 
 ## Depends on

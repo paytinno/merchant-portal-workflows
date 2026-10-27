@@ -175,9 +175,9 @@ window.WF = (function () {
       ["S11", "S6", "Results come back as webhooks: identity verified, company verified, owners screened. Bad signature: quarantine and SEC2.", { ref: "WF02b 6 to 8" }],
       ["S6", "S11", "AML system: risk and PEP or sanctions screening of the company, representative and every owner.", { sla: "1 s per person, 3 attempts", ref: "WF02b 9" }],
       ["S6", "S4", "Any hit, or the identity does not match the role: manual review case.", { rule: "A hit makes manual review mandatory" }],
-      ["S4", "S3", "Status line KYB_PENDING, then UNDERWRITING or MANUAL_REVIEW.", { api: "application.status", rule: "Fixed texts, never the reason" }]
+      ["S4", "S3", "Status line KYB_PENDING, then ONBOARDING_REVIEW or MANUAL_REVIEW.", { api: "application.status", rule: "Fixed texts, never the reason" }]
     ],
-    states: [["STARTED", "IDs recorded", "KYB_PENDING"], ["KYB_PENDING", "checks clear", "UNDERWRITING"], ["KYB_PENDING", "hit or review", "MANUAL_REVIEW"], ["KYB_PENDING", "information missing", "INFO_REQUESTED (MP-07)"]],
+    states: [["STARTED", "IDs recorded", "KYB_PENDING"], ["KYB_PENDING", "checks clear", "ONBOARDING_REVIEW"], ["KYB_PENDING", "hit or review", "MANUAL_REVIEW"], ["KYB_PENDING", "information missing", "INFO_REQUESTED (MP-07)"]],
     rules: ["No tipping off: the portal never names a screening hit, PEP, sanctions, MATCH or VMAS.", "The portal maps each state to its own fixed text (CONFIG.APP_STATES); the admin's label is a hint only."],
     questions: [
       { id: "MP-Q09", q: "Should the portal show the admin's free-text status label, or its own fixed text per state? (admin spec P7)", prop: "Fixed texts per state in the portal, in Bulgarian and English. Free text only inside an RFI, which staff write knowingly.", owner: "Compliance" }
@@ -212,13 +212,14 @@ window.WF = (function () {
   });
 
   W("MP-08", {
-    title: "Underwriting decision and the offer", area: "Onboarding", status: "amended", source: "WF02b steps 10 to 12",
-    trigger: "Checks are complete (MP-06).", object: "Underwriting case (S4), offer",
+    title: "Onboarding review and the offer", area: "Onboarding", status: "amended", source: "WF02b steps 10 to 12 (v8.1 calls it underwriting)",
+    trigger: "Checks are complete (MP-06).", object: "Onboarding review case (S4), offer",
     screens: ["application"], lanes: ["MER", "S3", "S18", "S6", "S4", "OPS", "S17"],
-    summary: "Staff set limits, tariff, reserve and deposit with four eyes. Then the merchant sees the offer and accepts it with SCA before set-up starts.",
+    summary: "Staff review the merchant and set limits, tariff, reserve and deposit with four eyes. A credit review (underwriting) is added only when the merchant creates credit exposure for Paytinno. Then the merchant sees the offer and accepts it with SCA before set-up starts.",
     steps: [
-      ["S6", "S4", "Underwriting case. MCC 7995 gets extra sector checks.", { ref: "WF02b 10" }],
-      ["OPS", "S4", "MATCH and VMAS checks; limits, tariff, rolling reserve %, guarantee deposit, MCC.", { sla: "2 business days", rule: "Four eyes above a threshold or for high-risk MCCs", ref: "WF02b 11" }],
+      ["S6", "S4", "Onboarding review case. Every high-risk sector on Compliance's list gets its extra checks: licence, scheme registration, website and sales model.", { ref: "WF02b 10", dec: "MP-Q61" }],
+      ["OPS", "S4", "MATCH and VMAS checks; limits, tariff, rolling reserve %, guarantee deposit, MCC.", { sla: "2 business days", rule: "Four eyes above a threshold or for high-risk sectors", ref: "WF02b 11" }],
+      ["OPS", "S4", "Exposure test. If a credit trigger is met, a credit review (underwriting) by the credit approver sets the reserve, deposit and payout delay that cover the exposure.", { dec: "MP-Q60", added: true, rule: "Without a trigger there is no credit review" }],
       ["S4", "S6", "Approved with conditions, or rejected. Approver differs from preparer.", { ref: "WF02b 12" }],
       ["S4", "S3", "Rejected: status CLOSED_REJECTED and a neutral notice.", { api: "merchant.notify application_rejected", fail: "No reason is given in the portal" }],
       ["#", "Offer"],
@@ -227,11 +228,13 @@ window.WF = (function () {
       ["S3", "S18", "Acceptance.", { api: "POST /v1/merchants/applications/{appId}/offer/accept" }],
       ["S18", "S6", "Moves on to AWAITING_DEPOSIT or PROVISIONING (MP-09).", {}]
     ],
-    states: [["UNDERWRITING", "approved", "OFFER_SENT"], ["OFFER_SENT", "accepted", "AWAITING_DEPOSIT or PROVISIONING"], ["OFFER_SENT", "[14] days", "WITHDRAWN"], ["UNDERWRITING", "rejected", "CLOSED_REJECTED"]],
-    rules: ["The rejection text is the same whatever the reason.", "The decision record keeps rationale, policy version, tariff, reserve and approvers (WF02b 18)."],
-    amends: ["WF02b: add state OFFER_SENT between approval (step 12) and set-up (step 13); the representative accepts the offer and agreement with SCA; the offer lapses after [14] days (MP-Q19)."],
+    states: [["ONBOARDING_REVIEW", "approved", "OFFER_SENT"], ["OFFER_SENT", "accepted", "AWAITING_DEPOSIT or PROVISIONING"], ["OFFER_SENT", "[14] days", "WITHDRAWN"], ["ONBOARDING_REVIEW", "rejected", "CLOSED_REJECTED"]],
+    rules: ["The rejection text is the same whatever the reason.", "The decision record keeps rationale, policy version, tariff, reserve and approvers, and the credit approver when there was a credit review (WF02b 18).", "\"Underwriting\" means only the credit review. The rest is the onboarding review."],
+    amends: ["WF02b 10 to 12: call it the onboarding review and the state ONBOARDING_REVIEW, not UNDERWRITING. Underwriting is only the credit review, when a credit trigger is met (MP-Q60).", "WF02b 10: extra sector checks for every high-risk sector on Compliance's list, not only MCC 7995 (MP-Q61).", "WF02b: add state OFFER_SENT between approval (step 12) and set-up (step 13); the representative accepts the offer and agreement with SCA; the offer lapses after [14] days (MP-Q19)."],
     questions: [
-      { id: "MP-Q19", q: "Where does the merchant agree to the tariff, reserve and agreement? v8.1 goes from approval straight to set-up.", prop: "Add OFFER_SENT: the offer in the portal, accepted with SCA by the applicant who is the representative. Qualified e-signature only if Legal requires it.", owner: "Legal", decided: true }
+      { id: "MP-Q19", q: "Where does the merchant agree to the tariff, reserve and agreement? v8.1 goes from approval straight to set-up.", prop: "Add OFFER_SENT: the offer in the portal, accepted with SCA by the applicant who is the representative. Qualified e-signature only if Legal requires it.", owner: "Legal", decided: true },
+      { id: "MP-Q60", q: "When does onboarding need a credit review (underwriting), and who signs it?", prop: "Only when a credit trigger is met: goods or services delivered later (travel, tickets, events, pre-orders, memberships of more than [3] months); expected monthly volume above [€250,000]; payouts faster than the schemes pay Paytinno; or reserve and deposit below the estimated exposure (volume times days to delivery plus the refund and chargeback window). The CRO or a delegated credit approver signs; the onboarding review team cannot approve its own credit decision.", owner: "CRO", decided: true },
+      { id: "MP-Q61", q: "Which sectors are high risk, and what extra checks does each get? v8.1 names only gambling (MCC 7995).", prop: "Compliance keeps one list in the risk policy, the same list the AML system scores on. At least: gambling (National Revenue Agency licence), crypto (registration or MiCA licence), online pharmacy and medicines (Bulgarian Drug Agency permit), adult content, dating, tobacco, e-cigarettes and alcohol (age checks), forex and CFDs (investment firm licence), nutraceuticals and free trials (subscription terms), travel and ticketing (credit review). Each gets a licence check where one applies, the scheme high-risk registration where Visa or Mastercard require it, a website and sales-model review, four eyes and KYB refresh every 12 months.", owner: "Compliance", decided: true }
     ]
   });
 
@@ -376,7 +379,7 @@ window.WF = (function () {
     screens: ["balances", "messages"], lanes: ["S21", "S4", "OPS", "S17", "MER", "S3", "EXT", "S13"],
     summary: "A share of each settlement is held for [180] days and released day by day. If Risk asks for more, the merchant transfers it; it is never taken from settlements.",
     steps: [
-      ["S21", "S21", "Holds the reserve % from each settlement; releases each day's amount after [180] days.", { rule: "Reserve % set in underwriting (MP-08)" }],
+      ["S21", "S21", "Holds the reserve % from each settlement; releases each day's amount after [180] days.", { rule: "Reserve % set in the onboarding review (MP-08)" }],
       ["S3", "MER", "Balances show the reserve and the release calendar.", {}],
       ["#", "Top-up"],
       ["OPS", "S4", "Risk sets a top-up amount and deadline (RR_TOPUP).", { ref: "PRD" }],
@@ -388,7 +391,7 @@ window.WF = (function () {
     states: [["", "requested", "TOPUP_OPEN"], ["TOPUP_OPEN", "reconciled", "PAID"], ["TOPUP_OPEN", "deadline", "ESCALATED"]],
     rules: ["The main balance is never negative.", "Top-ups only by transfer from the merchant."],
     questions: [
-      { id: "MP-Q27", q: "Reserve release: v8.1 proposes 180 days; the PRD says \"on schedule\" with no number.", prop: "180 days rolling, daily release, per merchant override set in underwriting.", owner: "CRO" }
+      { id: "MP-Q27", q: "Reserve release: v8.1 proposes 180 days; the PRD says \"on schedule\" with no number.", prop: "180 days rolling, daily release, per merchant override set in the onboarding review, or the credit review (MP-Q60).", owner: "CRO" }
     ]
   });
 
@@ -717,7 +720,7 @@ window.WF = (function () {
       ["MER", "S3", "Sees each link with its status and payments; cancels a link that is not paid yet.", { api: "GET /v1/payment-links; POST /v1/payment-links/{id}/cancel" }]
     ],
     states: [["", "created", "OPEN"], ["OPEN", "paid, one-payment link", "PAID"], ["OPEN", "expiry date", "EXPIRED"], ["OPEN", "merchant cancels", "CANCELLED"]],
-    rules: ["The page shows the merchant's trading name, the amount and the description; card details are typed only on the hosted page.", "A one-payment link cannot be paid twice.", "Same limits, risk rules and fees as other online payments; refunds as MP-12.", "High-risk merchant categories get links only if underwriting allows it (MP-38)."],
+    rules: ["The page shows the merchant's trading name, the amount and the description; card details are typed only on the hosted page.", "A one-payment link cannot be paid twice.", "Same limits, risk rules and fees as other online payments; refunds as MP-12.", "High-risk merchant categories get links only if the onboarding review allows it (MP-38)."],
     amends: ["WF10: add creating, sharing and cancelling payment links and QR codes in the portal. WF10 lists link and QR as checkout channels but has no flow for them."],
     deps: ["BPC: hosted page orders created through the API with an expiry of up to [30] days (pay by link)."],
     questions: [
@@ -786,7 +789,7 @@ window.WF = (function () {
     deps: ["BPC: manual capture, part capture, incremental authorisation and hold expiry through A09 (CTO question 21)."],
     questions: [
       { id: "MP-Q44", q: "Can an order that ships in parts be captured in several parts?", prop: "Yes, if BPC supports several captures on one authorisation; otherwise one capture and the rest released.", owner: "CTO" },
-      { id: "MP-Q45", q: "Which capture mode do new merchants get?", prop: "Automatic. Manual only on request, for merchants that ship goods or take deposits, agreed in underwriting.", owner: "Product" }
+      { id: "MP-Q45", q: "Which capture mode do new merchants get?", prop: "Automatic. Manual only on request, for merchants that ship goods or take deposits, agreed in the onboarding review.", owner: "Product" }
     ]
   });
 
@@ -846,14 +849,14 @@ window.WF = (function () {
 
   W("MP-33", {
     title: "Payouts to players", area: "Money", status: "new", segments: ["gambling"],
-    source: "WF02b 10 (extra checks for MCC 7995); the design boards (payout approvals for a gambling operator); not in v8.1",
+    source: "WF02b 10 (extra sector checks); the design boards (payout approvals for a gambling operator); not in v8.1",
     trigger: "A gambling operator pays a player's winnings or withdrawal.", object: "Player payout (S21): a card payout through BPC or a SEPA transfer",
     screens: [], placement: "Money: a Player payouts page with a review queue and review rules; Developers: payout keys",
     lanes: ["MER", "S3", "S18", "S4", "S6", "S19", "S21", "S10", "EXT", "S11", "S17"],
     summary: "Paid from the operator's available balance to the card the player deposited with, or to an account in the player's name. The operator's own review rules decide which payouts need a second look.",
     steps: [
       ["#", "Set up"],
-      ["S4", "S6", "Underwriting approves player payouts, with limits per payout and per day, and the methods: card payout, SEPA, or both.", { ref: "MP-08" }],
+      ["S4", "S6", "The onboarding review approves player payouts, with limits per payout and per day, and the methods: card payout, SEPA, or both.", { ref: "MP-08" }],
       ["MER", "S3", "The operator sets its review rules: amounts, new destinations, payouts per player per day. Below them, payouts go straight out.", {}],
       ["#", "Request"],
       ["MER", "S18", "A payout request, usually through the API with a payout-only key: player reference, destination (a card token from a deposit, or an IBAN and name), amount.", { api: "POST /v1/player-payouts {playerRef, destination, amount, reference} + Idempotency-Key" }],
@@ -869,7 +872,7 @@ window.WF = (function () {
     ],
     states: [["", "requested", "REQUESTED"], ["REQUESTED", "above the operator's rules", "IN_REVIEW"], ["REQUESTED", "within the rules", "APPROVED"], ["IN_REVIEW", "approved", "APPROVED"], ["IN_REVIEW", "held", "HELD"], ["HELD", "approved", "APPROVED"], ["IN_REVIEW", "rejected", "REJECTED"], ["APPROVED", "sent", "SENT"], ["SENT", "confirmed", "PAID"], ["SENT", "declined or returned", "FAILED"]],
     rules: ["Paid only from the operator's available balance; never negative.", "Player data stays minimal: a player reference and a masked card or IBAN.", "Before go-live: the operator's licence from the National Revenue Agency is checked, and the operator is registered with Visa and Mastercard as a high-risk merchant category."],
-    amends: ["WF02b 10: for gambling (MCC 7995) add the National Revenue Agency licence check and the Visa and Mastercard high-risk merchant registration before activation.", "Add a player payout workflow to v8.1: funded from the merchant balance, card payouts through A09 or SEPA through NC3, with the operator's own review rules."],
+    amends: ["WF02b 10: gambling is on the high-risk sector list (MP-Q61): the National Revenue Agency licence check and the Visa and Mastercard high-risk registration before activation.", "Add a player payout workflow to v8.1: funded from the merchant balance, card payouts through A09 or SEPA through NC3, with the operator's own review rules."],
     deps: ["BPC: card payouts (original credit transactions) for gambling winnings through A09.", "OraSYS: payout orders to third parties from a merchant balance through M0391."],
     questions: [
       { id: "MP-Q48", q: "Do our licence and the merchant agreement cover paying players from the operator's acquiring balance, and does that make the balance a payment account?", prop: "Legal to confirm before build. If it does, the operator gets a payment account with its own terms.", owner: "Legal" },
@@ -1040,17 +1043,17 @@ window.WF = (function () {
 
   W("MP-38", {
     title: "Ask for higher limits or new services", area: "Business", status: "new",
-    source: "WF02b 10 to 12 (underwriting sets limits, MCC and channels); not as a merchant request in v8.1",
-    trigger: "A merchant needs a higher limit, a new channel (links, terminals, manual capture, saved cards), new customer countries, or a lower reserve.", object: "Change request (S4 underwriting case)",
+    source: "WF02b 10 to 12 (the onboarding review sets limits, MCC and channels); not as a merchant request in v8.1",
+    trigger: "A merchant needs a higher limit, a new channel (links, terminals, manual capture, saved cards), new customer countries, or a lower reserve.", object: "Change request (S4 review case)",
     screens: [], placement: "Business: a Limits and services tab with current limits, usage and Ask for a change",
     lanes: ["MER", "S3", "S18", "S4", "OPS", "S6", "S10", "S17"],
-    summary: "The merchant sees its limits and how much it has used, and asks for changes. Staff review them like the first underwriting; new terms are accepted like the first offer.",
+    summary: "The merchant sees its limits and how much it has used, and asks for changes. Staff review them like the onboarding review; new terms are accepted like the first offer.",
     steps: [
       ["S4", "S3", "Current limits and usage: monthly volume, largest payment, channels, countries, reserve.", { api: "GET /v1/merchant/limits" }],
       ["S4", "S17", "Warning at [80]% of the monthly limit.", {}],
       ["MER", "S3", "Asks for a change, with a reason and documents (forecast, new contracts, accounts).", {}],
       ["S3", "S18", "Sends it.", { api: "POST /v1/merchant/requests {type, requested, reason, docRefs}" }],
-      ["S18", "S4", "Underwriting case; staff may ask for more (MP-07).", { sla: "[3] business days" }],
+      ["S18", "S4", "Review case; staff may ask for more (MP-07). A credit trigger (MP-Q60) adds a credit review.", { sla: "[3] business days" }],
       ["OPS", "S4", "Decision with the same four-eyes rules as onboarding.", { ref: "WF02b 11" }],
       ["S4", "S10", "Approved: new limits or channels at BPC through A09.", { api: "IF45 via A09" }],
       ["S4", "S6", "Merchant profile updated. If fees or the reserve change, a new offer to accept with SCA, as in MP-08.", {}],
@@ -1058,9 +1061,9 @@ window.WF = (function () {
     ],
     states: [["", "asked", "REQUESTED"], ["REQUESTED", "staff start", "IN_REVIEW"], ["IN_REVIEW", "approved", "APPROVED"], ["IN_REVIEW", "new terms needed", "OFFER_SENT"], ["OFFER_SENT", "accepted", "APPROVED"], ["IN_REVIEW", "refused", "DECLINED"]],
     rules: ["Refusals use the same neutral words as onboarding (no tipping off)."],
-    amends: ["WF02b underwriting: add re-underwriting on the merchant's request (limits, channels, countries, reserve) with the same four-eyes rules, and new terms accepted like the offer (MP-08)."],
+    amends: ["WF02b onboarding review: add a new review on the merchant's request (limits, channels, countries, reserve) with the same four-eyes rules, and new terms accepted like the offer (MP-08)."],
     questions: [
-      { id: "MP-Q55", q: "Who decides these requests, and how fast?", prop: "The underwriting team, in [3] business days; four eyes above the same thresholds as onboarding.", owner: "CRO" }
+      { id: "MP-Q55", q: "Who decides these requests, and how fast?", prop: "The onboarding review team, in [3] business days, with the credit approver when a credit trigger is met (MP-Q60); four eyes above the same thresholds as onboarding.", owner: "CRO" }
     ]
   });
 
@@ -1094,7 +1097,7 @@ window.WF = (function () {
     "WF02a step 26 points to the wrong steps (MP-Q08).",
     "WF02b step 17 says the portal talks only to S18; WF02a has the portal talk to S19 directly through the web SDK (IF05 rows). Both can be true: S19's SDK for the passkey, S18 for everything else. Say so in v8.2.",
     "PRD WF11 and v8.1 WF11 disagree on dispute states, the channel to the schemes and the ledger accounts (MP-Q12). The PRD also uses component names S21a, S21b, S21c that v7.1 dropped.",
-    "Chargeback ratio: v8.1 opens an underwriting case above about 1%; Visa VAMP and Mastercard ECP thresholds in the admin are different and still placeholders.",
+    "Chargeback ratio: v8.1 opens a review case (it says underwriting) above about 1%; Visa VAMP and Mastercard ECP thresholds in the admin are different and still placeholders.",
     "Webhooks: payment events from BPC, dispute events from S17, with different signatures and retries (MP-Q34).",
     "The admin's access.revoke stops every action; WF11 needs dispute answers to keep working (MP-Q38)."
   ];

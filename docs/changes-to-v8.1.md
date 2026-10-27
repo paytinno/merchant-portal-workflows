@@ -33,8 +33,10 @@ What the CTO's architecture needs to change (v8.2) so it matches the decided wor
 - Add the RFI to v8.1 as a sub-flow of WF02b and of periodic reviews, as in the admin spec 5.2 (rfi.send, merchant.message).
 - Overdue RFI: onboarding withdrawn after [30] days; for a live merchant staff decide (MP-Q18).
 
-## [MP-08 Underwriting decision and the offer](workflows/MP-08-underwriting-decision-and-the-offer.md)
+## [MP-08 Onboarding review and the offer](workflows/MP-08-onboarding-review-and-the-offer.md)
 
+- WF02b 10 to 12: call it the onboarding review and the state ONBOARDING_REVIEW, not UNDERWRITING. Underwriting is only the credit review, when a credit trigger is met (MP-Q60).
+- WF02b 10: extra sector checks for every high-risk sector on Compliance's list, not only MCC 7995 (MP-Q61).
 - WF02b: add state OFFER_SENT between approval (step 12) and set-up (step 13); the representative accepts the offer and agreement with SCA; the offer lapses after [14] days (MP-Q19).
 
 ## [MP-09 Deposit, set-up and activation](workflows/MP-09-deposit-set-up-and-activation.md)
@@ -75,7 +77,7 @@ What the CTO's architecture needs to change (v8.2) so it matches the decided wor
 
 ## [MP-33 Payouts to players](workflows/MP-33-payouts-to-players.md)
 
-- WF02b 10: for gambling (MCC 7995) add the National Revenue Agency licence check and the Visa and Mastercard high-risk merchant registration before activation.
+- WF02b 10: gambling is on the high-risk sector list (MP-Q61): the National Revenue Agency licence check and the Visa and Mastercard high-risk registration before activation.
 - Add a player payout workflow to v8.1: funded from the merchant balance, card payouts through A09 or SEPA through NC3, with the operator's own review rules.
 
 ## [MP-37 Money the merchant owes](workflows/MP-37-money-the-merchant-owes.md)
@@ -115,7 +117,7 @@ What the CTO's architecture needs to change (v8.2) so it matches the decided wor
 
 ## [MP-38 Ask for higher limits or new services](workflows/MP-38-ask-for-higher-limits-or-new-services.md)
 
-- WF02b underwriting: add re-underwriting on the merchant's request (limits, channels, countries, reserve) with the same four-eyes rules, and new terms accepted like the offer (MP-08).
+- WF02b onboarding review: add a new review on the merchant's request (limits, channels, countries, reserve) with the same four-eyes rules, and new terms accepted like the offer (MP-08).
 
 ## Depends on
 

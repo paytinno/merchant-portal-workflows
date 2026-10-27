@@ -34,7 +34,7 @@ sequenceDiagram
   S11->>S6: Results come back as webhooks: identity<br/>verified, company verified, owners screened.<br/>Bad signature: quarantine and SEC2.
   S6->>S11: AML system: risk and PEP or sanctions<br/>screening of the company, representative and<br/>every owner.
   S6->>S4: Any hit, or the identity does not match the<br/>role: manual review case.
-  S4->>S3: Status line KYB_PENDING, then UNDERWRITING or<br/>MANUAL_REVIEW.
+  S4->>S3: Status line KYB_PENDING, then<br/>ONBOARDING_REVIEW or MANUAL_REVIEW.
 ```
 
 ## Steps
@@ -47,7 +47,7 @@ sequenceDiagram
 | 4 | IDV, AML (S11 via A01) | Onboarding (S6) | Results come back as webhooks: identity verified, company verified, owners screened. Bad signature: quarantine and SEC2. |  | WF02b 6 to 8 |
 | 5 | Onboarding (S6) | IDV, AML (S11 via A01) | AML system: risk and PEP or sanctions screening of the company, representative and every owner. |  | WF02b 9<br>Time: 1 s per person, 3 attempts |
 | 6 | Onboarding (S6) | Admin (S4) | Any hit, or the identity does not match the role: manual review case. |  | Rule: A hit makes manual review mandatory |
-| 7 | Admin (S4) | Portal (S3) | Status line KYB_PENDING, then UNDERWRITING or MANUAL_REVIEW. | `application.status` | Rule: Fixed texts, never the reason |
+| 7 | Admin (S4) | Portal (S3) | Status line KYB_PENDING, then ONBOARDING_REVIEW or MANUAL_REVIEW. | `application.status` | Rule: Fixed texts, never the reason |
 
 ## States
 
@@ -56,11 +56,11 @@ stateDiagram-v2
   direction LR
   state "STARTED" as s_STARTED
   state "KYB_PENDING" as s_KYB_PENDING
-  state "UNDERWRITING" as s_UNDERWRITING
+  state "ONBOARDING_REVIEW" as s_ONBOARDING_REVIEW
   state "MANUAL_REVIEW" as s_MANUAL_REVIEW
   state "INFO_REQUESTED (MP-07)" as s_INFO_REQUESTED_MP_07_
   s_STARTED --> s_KYB_PENDING : IDs recorded
-  s_KYB_PENDING --> s_UNDERWRITING : checks clear
+  s_KYB_PENDING --> s_ONBOARDING_REVIEW : checks clear
   s_KYB_PENDING --> s_MANUAL_REVIEW : hit or review
   s_KYB_PENDING --> s_INFO_REQUESTED_MP_07_ : information missing
 ```
@@ -68,7 +68,7 @@ stateDiagram-v2
 | From | When | To |
 |---|---|---|
 | STARTED | IDs recorded | KYB_PENDING |
-| KYB_PENDING | checks clear | UNDERWRITING |
+| KYB_PENDING | checks clear | ONBOARDING_REVIEW |
 | KYB_PENDING | hit or review | MANUAL_REVIEW |
 | KYB_PENDING | information missing | INFO_REQUESTED (MP-07) |
 

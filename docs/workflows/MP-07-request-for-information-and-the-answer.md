@@ -2,7 +2,7 @@
 
 # MP-07 Request for information and the answer
 
-[All workflows](../README.md) | Previous: [MP-06 Company checks, identity and screening](MP-06-company-checks-identity-and-screening.md) | Next: [MP-08 Underwriting decision and the offer](MP-08-underwriting-decision-and-the-offer.md)
+[All workflows](../README.md) | Previous: [MP-06 Company checks, identity and screening](MP-06-company-checks-identity-and-screening.md) | Next: [MP-08 Onboarding review and the offer](MP-08-onboarding-review-and-the-offer.md)
 
 Staff ask, the merchant answers in the portal with text and documents. The application status shows "We need something" while it is open.
 
