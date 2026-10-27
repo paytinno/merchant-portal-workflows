@@ -37,6 +37,7 @@ What the CTO's architecture needs to change (v8.2) so it matches the decided wor
 
 - WF02b 10 to 12: call it the onboarding review and the state ONBOARDING_REVIEW, not UNDERWRITING. Underwriting is only the credit review, when a credit trigger is met (MP-Q60).
 - WF02b 10: extra sector checks for every high-risk sector on Compliance's list, not only MCC 7995 (MP-Q61).
+- WF02b 11: MATCH and VMAS checks by API; manual only as a fallback, with evidence in the case (MP-Q65).
 - WF02b: add state OFFER_SENT between approval (step 12) and set-up (step 13); the representative accepts the offer and agreement with SCA; the offer lapses after [14] days (MP-Q19).
 
 ## [MP-09 Deposit, set-up and activation](workflows/MP-09-deposit-set-up-and-activation.md)
@@ -106,6 +107,10 @@ What the CTO's architecture needs to change (v8.2) so it matches the decided wor
 
 - S4 module: add a merchant support inbox for phase 1 (MP-Q37).
 - S17: emails to merchants carry a link to the portal, not the content.
+
+## [MP-27 Close the account](workflows/MP-27-close-the-account.md)
+
+- S4 closure: record the termination reason; add MATCH and VMAS listing by API only for the scheme listing reasons (MP-Q66).
 
 ## [MP-32 Complaints](workflows/MP-32-complaints.md)
 

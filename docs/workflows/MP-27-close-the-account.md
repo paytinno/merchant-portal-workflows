@@ -33,6 +33,7 @@ sequenceDiagram
   participant S17 as Messages S17
   MER->>S3: SCA: Admin asks to close: date and reason, SCA<br/>and a second admin.
   S18->>S4: Closure case: open disputes, reserve, last<br/>statement.
+  OPS->>S4: Paytinno ends the agreement: staff record the<br/>reason. Only if it is a listing reason in the<br/>scheme rules (for example fraud, laundering,<br/>excessive chargebacks or fraud, a data breach)<br/>is the merchant added to MATCH and VMAS, by<br/>API, with four eyes and within the scheme<br/>deadline. Other closures are not listed.
   S4->>S10: Acceptance stops on the date.
   S21->>S21: Final payout of available funds, reserve kept<br/>[180] days then released.
   S17->>MER: Notice account_closing with dates.
@@ -45,10 +46,11 @@ sequenceDiagram
 |---|---|---|---|---|---|
 | 1 | Merchant (user) | Portal (S3) | Admin asks to close: date and reason; SCA and a second admin. |  | **SCA** |
 | 2 | Gateway, BFF (S18) | Admin (S4) | Closure case: open disputes, reserve, last statement. |  |  |
-| 3 | Admin (S4) | BPC (S10 via A09) | Acceptance stops on the date. |  |  |
-| 4 | Core (S21, S5) | Core (S21, S5) | Final payout of available funds; reserve kept [180] days then released. |  |  |
-| 5 | Messages (S17) | Merchant (user) | Notice account_closing with dates. |  |  |
-| 6 | Portal (S3) | Merchant (user) | Read-only: statements, payments, documents for [5] years; disputes still answerable until the tail ends. |  |  |
+| 3 | Paytinno staff (OPS) | Admin (S4) | Paytinno ends the agreement: staff record the reason. Only if it is a listing reason in the scheme rules (for example fraud, laundering, excessive chargebacks or fraud, a data breach) is the merchant added to MATCH and VMAS, by API, with four eyes and within the scheme deadline. Other closures are not listed. |  | Rule: Not every termination is a listing<br>**Decided:** [MP-Q66](../open-questions.md#mp-q66) |
+| 4 | Admin (S4) | BPC (S10 via A09) | Acceptance stops on the date. |  |  |
+| 5 | Core (S21, S5) | Core (S21, S5) | Final payout of available funds; reserve kept [180] days then released. |  |  |
+| 6 | Messages (S17) | Merchant (user) | Notice account_closing with dates. |  |  |
+| 7 | Portal (S3) | Merchant (user) | Read-only: statements, payments, documents for [5] years; disputes still answerable until the tail ends. |  |  |
 
 ## States
 
@@ -70,6 +72,13 @@ stateDiagram-v2
 ## Rules
 
 - Paytinno-initiated closure follows the agreement's notice, or immediately for cause.
+- A MATCH or VMAS listing follows the scheme's reason list, not staff preference: listed when a reason applies, never otherwise.
+
+## Changes v8.1 needs
+
+For the CTO's next version of the architecture (v8.2).
+
+- S4 closure: record the termination reason; add MATCH and VMAS listing by API only for the scheme listing reasons (MP-Q66).
 
 ## Questions
 
@@ -80,3 +89,11 @@ Who keeps read access after closure, and for how long?
 **Proposed:** Admins and Finance, 5 years (AML record keeping), then the users are disabled.
 
 Owner: Legal
+
+### MP-Q66
+
+When does a terminated merchant go on MATCH and VMAS?
+
+**Decision:** Only when the termination reason is one the scheme rules list. When one applies, listing is required, so it is not optional for staff. Commercial reasons, the merchant's own request and inactivity are never listed. Compliance keeps the mapping from our reasons to the scheme reason codes.
+
+Decided, awaiting sign-off by: Compliance

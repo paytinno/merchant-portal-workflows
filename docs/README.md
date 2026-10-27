@@ -7,10 +7,11 @@ Version 0.1. The intended workflows behind the Paytinno merchant portal (S3), fo
 | Status | Meaning | Workflows |
 |---|---|---|
 | In v8.1 | As the CTO's architecture v8.1 writes it | 4 |
-| v8.1, gaps closed | In v8.1; every gap closed by a decision. The changes v8.1 needs are listed | 11 |
+| v8.1 with gaps | In v8.1, with gaps still open | 2 |
+| v8.1, gaps closed | In v8.1; every gap closed by a decision. The changes v8.1 needs are listed | 9 |
 | Proposed | Not in v8.1. Needs the CTO team's agreement | 26 |
 
-Also: [Questions](open-questions.md) (40 open, 22 decided and awaiting sign-off), [Changes to v8.1](changes-to-v8.1.md), [Merchant types](merchant-types.md), [Roles and rights](roles-and-rights.md), [Systems](systems.md), [Sources and contradictions](sources.md).
+Also: [Questions](open-questions.md) (43 open, 24 decided and awaiting sign-off), [Changes to v8.1](changes-to-v8.1.md), [Merchant types](merchant-types.md), [Roles and rights](roles-and-rights.md), [Systems](systems.md), [Sources and contradictions](sources.md).
 
 ## Access
 
@@ -25,11 +26,11 @@ Also: [Questions](open-questions.md) (40 open, 22 decided and awaiting sign-off)
 
 | ID | Workflow | Status | Source | Steps | Questions |
 |---|---|---|---|---|---|
-| MP-05 | [Fill in and send the application](workflows/MP-05-fill-in-and-send-the-application.md)<br>Six steps: company, people, business, documents, payout account, review. Saved as a draft on every step; sent once complete. | v8.1, gaps closed | WF02b steps 1 to 4; admin spec application.submitted | 14 | 3 |
+| MP-05 | [Fill in and send the application](workflows/MP-05-fill-in-and-send-the-application.md)<br>Six steps: company, people, business, documents, payout account, review. Saved as a draft on every step; sent once complete. | v8.1 with gaps | WF02b steps 1 to 4; admin spec application.submitted | 14 | 4 |
 | MP-06 | [Company checks, identity and screening](workflows/MP-06-company-checks-identity-and-screening.md)<br>The representative does an IDV check inside the portal. The company and owners are checked and screened. The portal only ever says "Checking documents" or "In review". | In v8.1 | WF02b steps 5 to 9 | 7 | 1 |
 | MP-07 | [Request for information and the answer](workflows/MP-07-request-for-information-and-the-answer.md)<br>Staff ask, the merchant answers in the portal with text and documents. The application status shows "We need something" while it is open. | v8.1, gaps closed | Admin spec 5.2 rfi.send and merchant.message; not a v8.1 workflow | 11 | 1 |
-| MP-08 | [Onboarding review and the offer](workflows/MP-08-onboarding-review-and-the-offer.md)<br>Staff review the merchant and set limits, tariff, reserve and deposit with four eyes. A credit review (underwriting) is added only when the merchant creates credit exposure for Paytinno. Then the merchant sees the offer and accepts it with SCA before set-up starts. | v8.1, gaps closed | WF02b steps 10 to 12 (v8.1 calls it underwriting) | 9 | 3 |
-| MP-09 | [Deposit, set-up and activation](workflows/MP-09-deposit-set-up-and-activation.md)<br>If a deposit is required, the merchant transfers it first. Then accounts in OraSYS and the merchant in BPC. Only when both confirm is the merchant active and the full portal opens. | v8.1, gaps closed | WF02b steps 13 to 17; PRD WF11 AWAITING_DEPOSIT; admin spec 5.4 access.grant | 11 | 1 |
+| MP-08 | [Onboarding review and the offer](workflows/MP-08-onboarding-review-and-the-offer.md)<br>Staff review the merchant and set limits, tariff, reserve and deposit with four eyes. A credit review (underwriting) is added only when the merchant creates credit exposure for Paytinno. Then the merchant sees the offer and accepts it with SCA before set-up starts. | v8.1, gaps closed | WF02b steps 10 to 12 (v8.1 calls it underwriting) | 10 | 4 |
+| MP-09 | [Deposit, set-up and activation](workflows/MP-09-deposit-set-up-and-activation.md)<br>If a deposit is required, the merchant transfers it first. Then accounts in OraSYS and the merchant in BPC. Only when both confirm is the merchant active and the full portal opens. | v8.1 with gaps | WF02b steps 13 to 17; PRD WF11 AWAITING_DEPOSIT; admin spec 5.4 access.grant | 11 | 3 |
 | MP-10 | [Go live: from test to live payments](workflows/MP-10-go-live-from-test-to-live-payments.md)<br>The developer proves the integration with test cards; staff check the website; then live keys are issued. | Proposed | WF02b 17 ("sandbox first"); module spec v7.1 sandbox with test cards | 8 | 1 |
 
 ## Payments
@@ -88,7 +89,7 @@ Also: [Questions](open-questions.md) (40 open, 22 decided and awaiting sign-off)
 | MP-24 | [Business details, owners and periodic review](workflows/MP-24-business-details-owners-and-periodic-review.md)<br>Contact details change at once. Legal name, address, owners, representative, what is sold and new websites are requests that staff check first. | Proposed | WF02b invariants (KYB refresh 12 or 36 months; owner change opens a case); admin spec application.updated | 8 | 1 |
 | MP-25 | [Messages and notices](workflows/MP-25-messages-and-notices.md)<br>One inbox for requests, notices and support. Emails carry a link, not the content. | v8.1, gaps closed | S17; admin spec 5.3 merchant.notify templates | 5 | 1 |
 | MP-26 | [Suspension and restricted access](workflows/MP-26-suspension-and-restricted-access.md)<br>Staff decide with four eyes. New payments stop; what the merchant can still do is limited but disputes stay answerable. | Proposed | Admin spec 5.4 access.revoke and P6; WF11 rule (chargeback ratio above 1%) | 5 | 1 |
-| MP-27 | [Close the account](workflows/MP-27-close-the-account.md)<br>Acceptance stops on the date, the balance is paid out, the reserve is kept for the chargeback tail, and the portal stays readable. | Proposed | S6 lifecycle and S4 closure (one-pager); admin spec P6 (5 years read access) | 6 | 1 |
+| MP-27 | [Close the account](workflows/MP-27-close-the-account.md)<br>Acceptance stops on the date, the balance is paid out, the reserve is kept for the chargeback tail, and the portal stays readable. | Proposed | S6 lifecycle and S4 closure (one-pager); admin spec P6 (5 years read access) | 7 | 2 |
 | MP-32 | [Complaints](workflows/MP-32-complaints.md)<br>A complaint is not a support question. It gets an ID, a deadline of 15 business days, a handler who was not involved, an answer approved by Compliance, and the ways to escalate. | Proposed | Module specs (complaint cases in S4); PSD2 Art. 101 (an answer within 15 business days) | 11 | 2 |
 | MP-36 | [Incident and maintenance notices](workflows/MP-36-incident-and-maintenance-notices.md)<br>Merchants hear about problems from us first: a banner, a status page and notices, and afterwards what happened and what we changed. | Proposed | DORA Art. 19(3) (tell clients about major ICT incidents that affect their financial interests); v8.1 incident handling | 7 | 1 |
 | MP-38 | [Ask for higher limits or new services](workflows/MP-38-ask-for-higher-limits-or-new-services.md)<br>The merchant sees its limits and how much it has used, and asks for changes. Staff review them like the onboarding review; new terms are accepted like the first offer. | Proposed | WF02b 10 to 12 (the onboarding review sets limits, MCC and channels); not as a merchant request in v8.1 | 9 | 1 |

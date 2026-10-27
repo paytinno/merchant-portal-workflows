@@ -105,7 +105,7 @@ window.WF = (function () {
   W("MP-04", {
     title: "Lockout and lost passkey", area: "Access", status: "amended", source: "WF02a steps 17 and 27",
     trigger: "Five failed signatures, or a person who lost every passkey.", object: "PortalUser LOCKED or RECOVERY",
-    screens: ["security"], lanes: ["MER", "S3", "S18", "S19", "S17", "S4", "OPS"],
+    screens: ["security"], lanes: ["MER", "S3", "S18", "S19", "S17", "S4", "OPS", "S6"],
     summary: "Recovery re-proves email and phone. For an admin of a live merchant, another admin approves; otherwise Paytinno staff check identity.",
     steps: [
       ["S19", "S17", "After 5 failed signatures: lock for 15 min and email the person.", { ref: "WF02a 17" }],
@@ -131,7 +131,7 @@ window.WF = (function () {
 
   /* ================= ONBOARDING ================= */
   W("MP-05", {
-    title: "Fill in and send the application", area: "Onboarding", status: "amended", source: "WF02b steps 1 to 4; admin spec application.submitted",
+    title: "Fill in and send the application", area: "Onboarding", status: "part", source: "WF02b steps 1 to 4; admin spec application.submitted",
     trigger: "An applicant (MP-01) starts an application.", object: "OnboardingCase (S6, type MERCHANT), from DRAFT",
     screens: ["application"], lanes: ["MER", "S3", "S18", "S6", "S4"],
     summary: "Six steps: company, people, business, documents, payout account, review. Saved as a draft on every step; sent once complete.",
@@ -150,7 +150,7 @@ window.WF = (function () {
       ["S3", "S18", "Sends the application. Needs permission application:create.", { api: "POST /v1/merchants/applications {legalName, eik, representativeRole, ubos[], mcc, expectedVolume, channels[], documents[]}", sla: "2 s", fail: "401, 403, 4xx", ref: "WF02b 2" }],
       ["S18", "S6", "Opens the case for the person in the token. The representative in the body is data, not proof of who applies.", { ref: "WF02b 3" }],
       ["S6", "S6", "Creates the customer ID for the company; links the person and the owners. State STARTED.", { ref: "WF02b 4" }],
-      ["S6", "S4", "The application appears in the admin. Until S6 exists, the admin stands in for it.", { api: "webhook application.submitted", ref: "admin spec 6" }],
+      ["S6", "S4", "The application appears in the admin. Until S6 exists, the admin stands in for it.", { api: "webhook application.submitted", ref: "admin spec 6", gap: "When does S6 exist, and how do cases move from the admin to it? (MP-Q64)" }],
       ["S4", "S3", "Status line STARTED.", { api: "POST /admin/v1/applications/{appId}/status", ref: "admin spec 5.1" }]
     ],
     states: [["", "first save", "DRAFT"], ["DRAFT", "sent", "STARTED"], ["DRAFT", "[90] days untouched", "deleted"], ["STARTED and later", "withdrawn by the applicant", "WITHDRAWN"]],
@@ -159,7 +159,8 @@ window.WF = (function () {
     questions: [
       { id: "MP-Q15", q: "Should the portal pre-fill from the Commercial Register?", prop: "Yes. S18 routes to the register lookup the KYB connector already has. Pre-filled fields are marked and kept as the register said.", owner: "CTO", decided: true },
       { id: "MP-Q16", q: "Where is the draft kept before it is sent? v8.1 starts the case only at submission.", prop: "Draft in S6 as an OnboardingCase in state DRAFT, keyed by person, kept [90] days. S18 only routes (it holds no business logic). Documents uploaded to the draft are deleted with it.", owner: "CTO", decided: true },
-      { id: "MP-Q17", q: "Who must do an identity check: only the representative (v8.1), or every owner (the design prototype)?", prop: "Representative always. Owners are screened from data; an IDV check for owners only for high-risk merchants or when the register and the declaration disagree.", owner: "Compliance", decided: true }
+      { id: "MP-Q17", q: "Who must do an identity check: only the representative (v8.1), or every owner (the design prototype)?", prop: "Representative always. Owners are screened from data; an IDV check for owners only for high-risk merchants or when the register and the declaration disagree.", owner: "Compliance", decided: true },
+      { id: "MP-Q64", q: "When will the onboarding service (S6) exist? Until then the admin stands in for it. Where do onboarding cases live in the meantime, and how do they move to S6?", prop: "The CTO to give a date. Until then the admin keeps the cases with the same states and IDs that S6 will use, so they move across as they are, without a second onboarding.", owner: "CTO" }
     ]
   });
 
@@ -214,11 +215,12 @@ window.WF = (function () {
   W("MP-08", {
     title: "Onboarding review and the offer", area: "Onboarding", status: "amended", source: "WF02b steps 10 to 12 (v8.1 calls it underwriting)",
     trigger: "Checks are complete (MP-06).", object: "Onboarding review case (S4), offer",
-    screens: ["application"], lanes: ["MER", "S3", "S18", "S6", "S4", "OPS", "S17"],
+    screens: ["application"], lanes: ["MER", "S3", "S18", "S6", "S4", "OPS", "EXT", "S17"],
     summary: "Staff review the merchant and set limits, tariff, reserve and deposit with four eyes. A credit review (underwriting) is added only when the merchant creates credit exposure for Paytinno. Then the merchant sees the offer and accepts it with SCA before set-up starts.",
     steps: [
       ["S6", "S4", "Onboarding review case. Every high-risk sector on Compliance's list gets its extra checks: licence, scheme registration, website and sales model.", { ref: "WF02b 10", dec: "MP-Q61" }],
-      ["OPS", "S4", "MATCH and VMAS checks; limits, tariff, rolling reserve %, guarantee deposit, MCC.", { sla: "2 business days", rule: "Four eyes above a threshold or for high-risk sectors", ref: "WF02b 11" }],
+      ["S4", "EXT", "MATCH and VMAS checks by API. Manual check in the scheme's own tool only when the API cannot be used; the result and evidence go into the case.", { ref: "WF02b 11", dec: "MP-Q65" }],
+      ["OPS", "S4", "Limits, tariff, rolling reserve %, guarantee deposit, MCC.", { sla: "2 business days", rule: "Four eyes above a threshold or for high-risk sectors", ref: "WF02b 11" }],
       ["OPS", "S4", "Exposure test. If a credit trigger is met, a credit review (underwriting) by the credit approver sets the reserve, deposit and payout delay that cover the exposure.", { dec: "MP-Q60", added: true, rule: "Without a trigger there is no credit review" }],
       ["S4", "S6", "Approved with conditions, or rejected. Approver differs from preparer.", { ref: "WF02b 12" }],
       ["S4", "S3", "Rejected: status CLOSED_REJECTED and a neutral notice.", { api: "merchant.notify application_rejected", fail: "No reason is given in the portal" }],
@@ -230,18 +232,19 @@ window.WF = (function () {
     ],
     states: [["ONBOARDING_REVIEW", "approved", "OFFER_SENT"], ["OFFER_SENT", "accepted", "AWAITING_DEPOSIT or PROVISIONING"], ["OFFER_SENT", "[14] days", "WITHDRAWN"], ["ONBOARDING_REVIEW", "rejected", "CLOSED_REJECTED"]],
     rules: ["The rejection text is the same whatever the reason.", "The decision record keeps rationale, policy version, tariff, reserve and approvers, and the credit approver when there was a credit review (WF02b 18).", "\"Underwriting\" means only the credit review. The rest is the onboarding review."],
-    amends: ["WF02b 10 to 12: call it the onboarding review and the state ONBOARDING_REVIEW, not UNDERWRITING. Underwriting is only the credit review, when a credit trigger is met (MP-Q60).", "WF02b 10: extra sector checks for every high-risk sector on Compliance's list, not only MCC 7995 (MP-Q61).", "WF02b: add state OFFER_SENT between approval (step 12) and set-up (step 13); the representative accepts the offer and agreement with SCA; the offer lapses after [14] days (MP-Q19)."],
+    amends: ["WF02b 10 to 12: call it the onboarding review and the state ONBOARDING_REVIEW, not UNDERWRITING. Underwriting is only the credit review, when a credit trigger is met (MP-Q60).", "WF02b 10: extra sector checks for every high-risk sector on Compliance's list, not only MCC 7995 (MP-Q61).", "WF02b 11: MATCH and VMAS checks by API; manual only as a fallback, with evidence in the case (MP-Q65).", "WF02b: add state OFFER_SENT between approval (step 12) and set-up (step 13); the representative accepts the offer and agreement with SCA; the offer lapses after [14] days (MP-Q19)."],
     questions: [
       { id: "MP-Q19", q: "Where does the merchant agree to the tariff, reserve and agreement? v8.1 goes from approval straight to set-up.", prop: "Add OFFER_SENT: the offer in the portal, accepted with SCA by the applicant who is the representative. Qualified e-signature only if Legal requires it.", owner: "Legal", decided: true },
       { id: "MP-Q60", q: "When does onboarding need a credit review (underwriting), and who signs it?", prop: "Only when a credit trigger is met: goods or services delivered later (travel, tickets, events, pre-orders, memberships of more than [3] months); expected monthly volume above [€250,000]; payouts faster than the schemes pay Paytinno; or reserve and deposit below the estimated exposure (volume times days to delivery plus the refund and chargeback window). The CRO or a delegated credit approver signs; the onboarding review team cannot approve its own credit decision.", owner: "CRO", decided: true },
+      { id: "MP-Q65", q: "How are MATCH and VMAS checked: through BPC, directly with Mastercard and Visa, or by hand?", prop: "By API, directly or through BPC, whichever the schemes and BPC allow. A manual check in the scheme's own tool only when the API cannot be used, with a screenshot or export kept in the case.", owner: "CTO", decided: true },
       { id: "MP-Q61", q: "Which sectors are high risk, and what extra checks does each get? v8.1 names only gambling (MCC 7995).", prop: "Compliance keeps one list in the risk policy, the same list the AML system scores on. At least: gambling (National Revenue Agency licence), crypto (registration or MiCA licence), online pharmacy and medicines (Bulgarian Drug Agency permit), adult content, dating, tobacco, e-cigarettes and alcohol (age checks), forex and CFDs (investment firm licence), nutraceuticals and free trials (subscription terms), travel and ticketing (credit review). Each gets a licence check where one applies, the scheme high-risk registration where Visa or Mastercard require it, a website and sales-model review, four eyes and KYB refresh every 12 months.", owner: "Compliance", decided: true }
     ]
   });
 
   W("MP-09", {
-    title: "Deposit, set-up and activation", area: "Onboarding", status: "amended", source: "WF02b steps 13 to 17; PRD WF11 AWAITING_DEPOSIT; admin spec 5.4 access.grant",
+    title: "Deposit, set-up and activation", area: "Onboarding", status: "part", source: "WF02b steps 13 to 17; PRD WF11 AWAITING_DEPOSIT; admin spec 5.4 access.grant",
     trigger: "The offer is accepted (MP-08).", object: "OnboardingCase PROVISIONING to ACTIVE",
-    screens: ["application", "home"], lanes: ["MER", "S3", "S18", "S6", "S4", "S21", "S10", "S13", "S17"],
+    screens: ["application", "home"], lanes: ["MER", "S3", "S18", "S6", "S4", "S21", "S10", "S13", "EXT", "S17"],
     summary: "If a deposit is required, the merchant transfers it first. Then accounts in OraSYS and the merchant in BPC. Only when both confirm is the merchant active and the full portal opens.",
     steps: [
       ["#", "Deposit (when the offer has one)"],
@@ -251,7 +254,7 @@ window.WF = (function () {
       ["S13", "S6", "Reconciled: deposit received in full from an account in the merchant's name.", { rule: "S10 is not activated before the deposit is in and reconciled" }],
       ["#", "Set-up"],
       ["S6", "S21", "Merchant in M001; settlement, reserve and control accounts; payout account on the verified list.", { api: "A05 / M0391", ref: "WF02b 13" }],
-      ["S6", "S10", "BPC merchant onboarding: acquirer merchant ID, terminals, hosted page and SDK keys.", { api: "IF45 via A09", sla: "10 s, 3 attempts, idempotent", fail: "persistent error: COMPENSATING and an S4 case", ref: "WF02b 14" }],
+      ["S6", "S10", "BPC merchant onboarding: acquirer merchant ID, terminals, hosted page and SDK keys.", { api: "IF45 via A09", sla: "10 s, 3 attempts, idempotent", fail: "persistent error: COMPENSATING and an S4 case (MP-Q63)", ref: "WF02b 14", gap: "Can the BPC API create merchants, terminals and keys at all? (CTO question 21, MP-Q62)" }],
       ["S6", "S6", "Records the ID mapping and waits for both confirmations.", { ref: "WF02b 15" }],
       ["S6", "S21", "Accounts ACTIVE; tariff set in M008.", { ref: "WF02b 16" }],
       ["#", "Access"],
@@ -263,7 +266,9 @@ window.WF = (function () {
     rules: ["No acceptance until both OraSYS and BPC confirm.", "The deposit is paid by transfer only, never taken from settlements."],
     amends: ["WF02b states: add AWAITING_DEPOSIT between OFFER_SENT and PROVISIONING, as PRD WF11 needs; unpaid after [30] days the offer lapses (MP-Q20)."],
     questions: [
-      { id: "MP-Q20", q: "AWAITING_DEPOSIT (PRD WF11) is not in the WF02b state machine.", prop: "Add it between the offer and PROVISIONING. Show the deposit IBAN and reference in the portal. Unpaid after [30] days: offer lapses.", owner: "CTO", decided: true }
+      { id: "MP-Q20", q: "AWAITING_DEPOSIT (PRD WF11) is not in the WF02b state machine.", prop: "Add it between the offer and PROVISIONING. Show the deposit IBAN and reference in the portal. Unpaid after [30] days: offer lapses.", owner: "CTO", decided: true },
+      { id: "MP-Q62", q: "Can the BPC API create the merchant, its terminals and its hosted page and SDK keys? (CTO question 21)", prop: "Confirm with BPC. If not, set-up in BPC is a manual task in S4 with its own state (SETUP_MANUAL), an SLA of [2] business days and four eyes on the data typed into BPC. ACTIVE still needs both confirmations.", owner: "CTO" },
+      { id: "MP-Q63", q: "What happens when set-up half-fails, for example OraSYS opens the accounts but BPC keeps failing? v8.1 only says compensation and an S4 case (risk R10).", prop: "OraSYS first, then BPC, each with an idempotency key per case. On a persistent failure the accounts stay blocked, not deleted, and an S4 case either retries or reverses: deactivate the BPC merchant if it was created, then close the empty accounts. Never active on one side only. Staff see both sides' state in the case.", owner: "CTO" }
     ]
   });
 
@@ -313,7 +318,7 @@ window.WF = (function () {
   W("MP-12", {
     title: "Refund a payment", area: "Payments", status: "amended", source: "WF11 steps 15 to 17; PRD refund link to disputes",
     trigger: "A user refunds all or part of a captured payment.", object: "Refund (BPC), posting through NC2",
-    screens: ["payment", "refunds"], lanes: ["MER", "S3", "S18", "S6", "S4", "S19", "S10", "S21"],
+    screens: ["payment", "refunds"], lanes: ["MER", "S3", "S18", "S6", "S4", "S19", "S10", "S21", "S13"],
     summary: "Checks before sending: refundable amount, open dispute, the user's mandate. SCA binds amount and payment. The ledger effect comes only from NC2.",
     steps: [
       ["MER", "S3", "Refund on the payment page: full or part, and a reason.", { ref: "WF11 15" }],
@@ -685,15 +690,18 @@ window.WF = (function () {
     steps: [
       ["MER", "S3", "Admin asks to close: date and reason; SCA and a second admin.", { sca: true }],
       ["S18", "S4", "Closure case: open disputes, reserve, last statement.", {}],
+      ["OPS", "S4", "Paytinno ends the agreement: staff record the reason. Only if it is a listing reason in the scheme rules (for example fraud, laundering, excessive chargebacks or fraud, a data breach) is the merchant added to MATCH and VMAS, by API, with four eyes and within the scheme deadline. Other closures are not listed.", { dec: "MP-Q66", rule: "Not every termination is a listing" }],
       ["S4", "S10", "Acceptance stops on the date.", {}],
       ["S21", "S21", "Final payout of available funds; reserve kept [180] days then released.", {}],
       ["S17", "MER", "Notice account_closing with dates.", {}],
       ["S3", "MER", "Read-only: statements, payments, documents for [5] years; disputes still answerable until the tail ends.", {}]
     ],
     states: [["ACTIVE", "requested", "CLOSING"], ["CLOSING", "reserve released and no open disputes", "CLOSED (read-only)"]],
-    rules: ["Paytinno-initiated closure follows the agreement's notice, or immediately for cause."],
+    rules: ["Paytinno-initiated closure follows the agreement's notice, or immediately for cause.", "A MATCH or VMAS listing follows the scheme's reason list, not staff preference: listed when a reason applies, never otherwise."],
+    amends: ["S4 closure: record the termination reason; add MATCH and VMAS listing by API only for the scheme listing reasons (MP-Q66)."],
     questions: [
-      { id: "MP-Q39", q: "Who keeps read access after closure, and for how long?", prop: "Admins and Finance, 5 years (AML record keeping), then the users are disabled.", owner: "Legal" }
+      { id: "MP-Q39", q: "Who keeps read access after closure, and for how long?", prop: "Admins and Finance, 5 years (AML record keeping), then the users are disabled.", owner: "Legal" },
+      { id: "MP-Q66", q: "When does a terminated merchant go on MATCH and VMAS?", prop: "Only when the termination reason is one the scheme rules list. When one applies, listing is required, so it is not optional for staff. Commercial reasons, the merchant's own request and inactivity are never listed. Compliance keeps the mapping from our reasons to the scheme reason codes.", owner: "Compliance", decided: true }
     ]
   });
 

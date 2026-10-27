@@ -8,13 +8,13 @@ If a deposit is required, the merchant transfers it first. Then accounts in OraS
 
 | | |
 |---|---|
-| Status | v8.1, gaps closed |
+| Status | v8.1 with gaps |
 | For | Every merchant |
 | Area | Onboarding |
 | Source | WF02b steps 13 to 17; PRD WF11 AWAITING_DEPOSIT; admin spec 5.4 access.grant |
 | Starts when | The offer is accepted (MP-08). |
 | Object | OnboardingCase PROVISIONING to ACTIVE |
-| Systems | Merchant (user), Portal (S3), Gateway, BFF (S18), Onboarding (S6), Admin (S4), Core (S21, S5), BPC (S10 via A09), Reconciliation (S13), Messages (S17), Outside (bank, scheme) |
+| Systems | Merchant (user), Portal (S3), Gateway, BFF (S18), Onboarding (S6), Admin (S4), Core (S21, S5), BPC (S10 via A09), Reconciliation (S13), Outside (bank, scheme), Messages (S17) |
 | Portal screens | Application, Home |
 
 ## Sequence
@@ -30,19 +30,19 @@ sequenceDiagram
   participant S21 as Core S21, S5
   participant S10 as BPC S10 via A09
   participant S13 as Reconciliation S13
-  participant S17 as Messages S17
   participant EXT as Outside bank, scheme
-  Note over MER,EXT: Deposit (when the offer has one)
+  participant S17 as Messages S17
+  Note over MER,S17: Deposit (when the offer has one)
   S3->>MER: Shows the deposit amount, our IBAN and the<br/>payment reference.
   MER->>EXT: Transfers from the company's account.
   S21->>S21: Credits the rolling reserve account.
   S13->>S6: Reconciled: deposit received in full from an<br/>account in the merchant's name.
-  Note over MER,EXT: Set-up
+  Note over MER,S17: Set-up
   S6->>S21: Merchant in M001, settlement, reserve and<br/>control accounts, payout account on the<br/>verified list.
   S6->>S10: BPC merchant onboarding: acquirer merchant ID,<br/>terminals, hosted page and SDK keys.
   S6->>S6: Records the ID mapping and waits for both<br/>confirmations.
   S6->>S21: Accounts ACTIVE, tariff set in M008.
-  Note over MER,EXT: Access
+  Note over MER,S17: Access
   S6->>S18: The person gets MERCHANT_ADMIN on the<br/>merchant.
   S18->>S17: Welcome notice.
   S3->>MER: The full portal opens: test keys, team,<br/>payouts. Live keys after the go-live check<br/>(MP-10).
@@ -59,7 +59,7 @@ sequenceDiagram
 | 4 | Reconciliation (S13) | Onboarding (S6) | Reconciled: deposit received in full from an account in the merchant's name. |  | Rule: S10 is not activated before the deposit is in and reconciled |
 | | | | **Set-up** | | |
 | 5 | Onboarding (S6) | Core (S21, S5) | Merchant in M001; settlement, reserve and control accounts; payout account on the verified list. | `A05 / M0391` | WF02b 13 |
-| 6 | Onboarding (S6) | BPC (S10 via A09) | BPC merchant onboarding: acquirer merchant ID, terminals, hosted page and SDK keys. | `IF45 via A09` | WF02b 14<br>Time: 10 s, 3 attempts, idempotent<br>**If it fails:** persistent error: COMPENSATING and an S4 case |
+| 6 | Onboarding (S6) | BPC (S10 via A09) | BPC merchant onboarding: acquirer merchant ID, terminals, hosted page and SDK keys. | `IF45 via A09` | WF02b 14<br>Time: 10 s, 3 attempts, idempotent<br>**If it fails:** persistent error: COMPENSATING and an S4 case (MP-Q63)<br>**Open gap:** Can the BPC API create merchants, terminals and keys at all? (CTO question 21, MP-Q62) |
 | 7 | Onboarding (S6) | Onboarding (S6) | Records the ID mapping and waits for both confirmations. |  | WF02b 15 |
 | 8 | Onboarding (S6) | Core (S21, S5) | Accounts ACTIVE; tariff set in M008. |  | WF02b 16 |
 | | | | **Access** | | |
@@ -113,3 +113,19 @@ AWAITING_DEPOSIT (PRD WF11) is not in the WF02b state machine.
 **Decision:** Add it between the offer and PROVISIONING. Show the deposit IBAN and reference in the portal. Unpaid after [30] days: offer lapses.
 
 Decided, awaiting sign-off by: CTO
+
+### MP-Q62
+
+Can the BPC API create the merchant, its terminals and its hosted page and SDK keys? (CTO question 21)
+
+**Proposed:** Confirm with BPC. If not, set-up in BPC is a manual task in S4 with its own state (SETUP_MANUAL), an SLA of [2] business days and four eyes on the data typed into BPC. ACTIVE still needs both confirmations.
+
+Owner: CTO
+
+### MP-Q63
+
+What happens when set-up half-fails, for example OraSYS opens the accounts but BPC keeps failing? v8.1 only says compensation and an S4 case (risk R10).
+
+**Proposed:** OraSYS first, then BPC, each with an idempotency key per case. On a persistent failure the accounts stay blocked, not deleted, and an S4 case either retries or reverses: deactivate the BPC merchant if it was created, then close the empty accounts. Never active on one side only. Staff see both sides' state in the case.
+
+Owner: CTO

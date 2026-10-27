@@ -4,7 +4,7 @@
 
 [All workflows](README.md)
 
-40 open, 22 decided and awaiting sign-off. CTO question numbers refer to the v8.1 question list.
+43 open, 24 decided and awaiting sign-off. CTO question numbers refer to the v8.1 question list.
 
 ## Open
 
@@ -52,8 +52,11 @@ Decisions the portal still needs. Each has a proposed answer to agree or change.
 | [MP-Q57](#mp-q57) | Who registers merchant domains with Apple: BPC as the processor, or Paytinno as a payment platform? | CTO | [MP-40](workflows/MP-40-apple-pay-and-google-pay.md) |
 | [MP-Q58](#mp-q58) | Who builds and maintains the plugins, and for which platforms first? | Product | [MP-41](workflows/MP-41-shop-plugins.md) |
 | [MP-Q59](#mp-q59) | Can BPC issue keys limited to payments and refunds? | CTO | [MP-41](workflows/MP-41-shop-plugins.md) |
+| [MP-Q62](#mp-q62) | Can the BPC API create the merchant, its terminals and its hosted page and SDK keys? (CTO question 21) | CTO | [MP-09](workflows/MP-09-deposit-set-up-and-activation.md) |
+| [MP-Q63](#mp-q63) | What happens when set-up half-fails, for example OraSYS opens the accounts but BPC keeps failing? v8.1 only says compensation and an S4 case (risk R10). | CTO | [MP-09](workflows/MP-09-deposit-set-up-and-activation.md) |
+| [MP-Q64](#mp-q64) | When will the onboarding service (S6) exist? Until then the admin stands in for it. Where do onboarding cases live in the meantime, and how do they move to S6? | CTO | [MP-05](workflows/MP-05-fill-in-and-send-the-application.md) |
 
-By owner: BPC 2, COO 2, CRO 6, CTO 9, Compliance 8, Legal 5, OraSYS 2, Product 6.
+By owner: BPC 2, COO 2, CRO 6, CTO 12, Compliance 8, Legal 5, OraSYS 2, Product 6.
 
 ## Decided, awaiting sign-off
 
@@ -83,8 +86,10 @@ Answers adopted as the design to close gaps in v8.1. Each owner signs off or cha
 | [MP-Q37](#mp-q37) | Where are support conversations handled? The admin has no case management for them. | COO | [MP-25](workflows/MP-25-messages-and-notices.md) |
 | [MP-Q60](#mp-q60) | When does onboarding need a credit review (underwriting), and who signs it? | CRO | [MP-08](workflows/MP-08-onboarding-review-and-the-offer.md) |
 | [MP-Q61](#mp-q61) | Which sectors are high risk, and what extra checks does each get? v8.1 names only gambling (MCC 7995). | Compliance | [MP-08](workflows/MP-08-onboarding-review-and-the-offer.md) |
+| [MP-Q65](#mp-q65) | How are MATCH and VMAS checked: through BPC, directly with Mastercard and Visa, or by hand? | CTO | [MP-08](workflows/MP-08-onboarding-review-and-the-offer.md) |
+| [MP-Q66](#mp-q66) | When does a terminated merchant go on MATCH and VMAS? | Compliance | [MP-27](workflows/MP-27-close-the-account.md) |
 
-By owner: COO 2, CRO 1, CTO 12, Compliance 4, Finance 1, Legal 2.
+By owner: COO 2, CRO 1, CTO 13, Compliance 5, Finance 1, Legal 2.
 
 ## Details
 
@@ -583,3 +588,43 @@ Which sectors are high risk, and what extra checks does each get? v8.1 names onl
 **Decision:** Compliance keeps one list in the risk policy, the same list the AML system scores on. At least: gambling (National Revenue Agency licence), crypto (registration or MiCA licence), online pharmacy and medicines (Bulgarian Drug Agency permit), adult content, dating, tobacco, e-cigarettes and alcohol (age checks), forex and CFDs (investment firm licence), nutraceuticals and free trials (subscription terms), travel and ticketing (credit review). Each gets a licence check where one applies, the scheme high-risk registration where Visa or Mastercard require it, a website and sales-model review, four eyes and KYB refresh every 12 months.
 
 Decided, awaiting sign-off by: Compliance. Workflow: [MP-08 Onboarding review and the offer](workflows/MP-08-onboarding-review-and-the-offer.md)
+
+### MP-Q62
+
+Can the BPC API create the merchant, its terminals and its hosted page and SDK keys? (CTO question 21)
+
+**Proposed:** Confirm with BPC. If not, set-up in BPC is a manual task in S4 with its own state (SETUP_MANUAL), an SLA of [2] business days and four eyes on the data typed into BPC. ACTIVE still needs both confirmations.
+
+Owner: CTO. Workflow: [MP-09 Deposit, set-up and activation](workflows/MP-09-deposit-set-up-and-activation.md)
+
+### MP-Q63
+
+What happens when set-up half-fails, for example OraSYS opens the accounts but BPC keeps failing? v8.1 only says compensation and an S4 case (risk R10).
+
+**Proposed:** OraSYS first, then BPC, each with an idempotency key per case. On a persistent failure the accounts stay blocked, not deleted, and an S4 case either retries or reverses: deactivate the BPC merchant if it was created, then close the empty accounts. Never active on one side only. Staff see both sides' state in the case.
+
+Owner: CTO. Workflow: [MP-09 Deposit, set-up and activation](workflows/MP-09-deposit-set-up-and-activation.md)
+
+### MP-Q64
+
+When will the onboarding service (S6) exist? Until then the admin stands in for it. Where do onboarding cases live in the meantime, and how do they move to S6?
+
+**Proposed:** The CTO to give a date. Until then the admin keeps the cases with the same states and IDs that S6 will use, so they move across as they are, without a second onboarding.
+
+Owner: CTO. Workflow: [MP-05 Fill in and send the application](workflows/MP-05-fill-in-and-send-the-application.md)
+
+### MP-Q65
+
+How are MATCH and VMAS checked: through BPC, directly with Mastercard and Visa, or by hand?
+
+**Decision:** By API, directly or through BPC, whichever the schemes and BPC allow. A manual check in the scheme's own tool only when the API cannot be used, with a screenshot or export kept in the case.
+
+Decided, awaiting sign-off by: CTO. Workflow: [MP-08 Onboarding review and the offer](workflows/MP-08-onboarding-review-and-the-offer.md)
+
+### MP-Q66
+
+When does a terminated merchant go on MATCH and VMAS?
+
+**Decision:** Only when the termination reason is one the scheme rules list. When one applies, listing is required, so it is not optional for staff. Commercial reasons, the merchant's own request and inactivity are never listed. Compliance keeps the mapping from our reasons to the scheme reason codes.
+
+Decided, awaiting sign-off by: Compliance. Workflow: [MP-27 Close the account](workflows/MP-27-close-the-account.md)

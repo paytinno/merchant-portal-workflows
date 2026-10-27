@@ -8,7 +8,7 @@ Six steps: company, people, business, documents, payout account, review. Saved a
 
 | | |
 |---|---|
-| Status | v8.1, gaps closed |
+| Status | v8.1 with gaps |
 | For | Every merchant |
 | Area | Onboarding |
 | Source | WF02b steps 1 to 4; admin spec application.submitted |
@@ -63,7 +63,7 @@ sequenceDiagram
 | 10 | Portal (S3) | Gateway, BFF (S18) | Sends the application. Needs permission application:create. | `POST /v1/merchants/applications {legalName, eik, representativeRole, ubos[], mcc, expectedVolume, channels[], documents[]}` | WF02b 2<br>Time: 2 s<br>**If it fails:** 401, 403, 4xx |
 | 11 | Gateway, BFF (S18) | Onboarding (S6) | Opens the case for the person in the token. The representative in the body is data, not proof of who applies. |  | WF02b 3 |
 | 12 | Onboarding (S6) | Onboarding (S6) | Creates the customer ID for the company; links the person and the owners. State STARTED. |  | WF02b 4 |
-| 13 | Onboarding (S6) | Admin (S4) | The application appears in the admin. Until S6 exists, the admin stands in for it. | `webhook application.submitted` | admin spec 6 |
+| 13 | Onboarding (S6) | Admin (S4) | The application appears in the admin. Until S6 exists, the admin stands in for it. | `webhook application.submitted` | admin spec 6<br>**Open gap:** When does S6 exist, and how do cases move from the admin to it? (MP-Q64) |
 | 14 | Admin (S4) | Portal (S3) | Status line STARTED. | `POST /admin/v1/applications/{appId}/status` | admin spec 5.1 |
 
 ## States
@@ -129,3 +129,11 @@ Who must do an identity check: only the representative (v8.1), or every owner (t
 **Decision:** Representative always. Owners are screened from data; an IDV check for owners only for high-risk merchants or when the register and the declaration disagree.
 
 Decided, awaiting sign-off by: Compliance
+
+### MP-Q64
+
+When will the onboarding service (S6) exist? Until then the admin stands in for it. Where do onboarding cases live in the meantime, and how do they move to S6?
+
+**Proposed:** The CTO to give a date. Until then the admin keeps the cases with the same states and IDs that S6 will use, so they move across as they are, without a second onboarding.
+
+Owner: CTO

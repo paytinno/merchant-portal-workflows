@@ -14,7 +14,7 @@ Staff review the merchant and set limits, tariff, reserve and deposit with four 
 | Source | WF02b steps 10 to 12 (v8.1 calls it underwriting) |
 | Starts when | Checks are complete (MP-06). |
 | Object | Onboarding review case (S4), offer |
-| Systems | Merchant (user), Portal (S3), Gateway, BFF (S18), Onboarding (S6), Admin (S4), Paytinno staff (OPS), Messages (S17) |
+| Systems | Merchant (user), Portal (S3), Gateway, BFF (S18), Onboarding (S6), Admin (S4), Paytinno staff (OPS), Outside (bank, scheme), Messages (S17) |
 | Portal screens | Application |
 
 ## Sequence
@@ -28,9 +28,11 @@ sequenceDiagram
   participant S6 as Onboarding S6
   participant S4 as Admin S4
   participant OPS as Paytinno staff OPS
+  participant EXT as Outside bank, scheme
   participant S17 as Messages S17
   S6->>S4: Onboarding review case. Every high-risk sector<br/>on Compliance's list gets its extra checks:<br/>licence, scheme registration, website and<br/>sales model.
-  OPS->>S4: MATCH and VMAS checks, limits, tariff, rolling<br/>reserve %, guarantee deposit, MCC.
+  S4->>EXT: MATCH and VMAS checks by API. Manual check in<br/>the scheme's own tool only when the API cannot<br/>be used, the result and evidence go into the<br/>case.
+  OPS->>S4: Limits, tariff, rolling reserve %, guarantee<br/>deposit, MCC.
   OPS->>S4: Exposure test. If a credit trigger is met, a<br/>credit review (underwriting) by the credit<br/>approver sets the reserve, deposit and payout<br/>delay that cover the exposure.
   S4->>S6: Approved with conditions, or rejected.<br/>Approver differs from preparer.
   S4->>S3: Rejected: status CLOSED_REJECTED and a neutral<br/>notice.
@@ -46,15 +48,16 @@ sequenceDiagram
 | # | From | To | Step | Call | Notes |
 |---|---|---|---|---|---|
 | 1 | Onboarding (S6) | Admin (S4) | Onboarding review case. Every high-risk sector on Compliance's list gets its extra checks: licence, scheme registration, website and sales model. |  | WF02b 10<br>**Decided:** [MP-Q61](../open-questions.md#mp-q61) |
-| 2 | Paytinno staff (OPS) | Admin (S4) | MATCH and VMAS checks; limits, tariff, rolling reserve %, guarantee deposit, MCC. |  | WF02b 11<br>Time: 2 business days<br>Rule: Four eyes above a threshold or for high-risk sectors |
-| 3 | Paytinno staff (OPS) | Admin (S4) | Exposure test. If a credit trigger is met, a credit review (underwriting) by the credit approver sets the reserve, deposit and payout delay that cover the exposure. |  | Rule: Without a trigger there is no credit review<br>**Decided:** [MP-Q60](../open-questions.md#mp-q60)<br>Added to v8.1 |
-| 4 | Admin (S4) | Onboarding (S6) | Approved with conditions, or rejected. Approver differs from preparer. |  | WF02b 12 |
-| 5 | Admin (S4) | Portal (S3) | Rejected: status CLOSED_REJECTED and a neutral notice. | `merchant.notify application_rejected` | **If it fails:** No reason is given in the portal |
+| 2 | Admin (S4) | Outside (bank, scheme) | MATCH and VMAS checks by API. Manual check in the scheme's own tool only when the API cannot be used; the result and evidence go into the case. |  | WF02b 11<br>**Decided:** [MP-Q65](../open-questions.md#mp-q65) |
+| 3 | Paytinno staff (OPS) | Admin (S4) | Limits, tariff, rolling reserve %, guarantee deposit, MCC. |  | WF02b 11<br>Time: 2 business days<br>Rule: Four eyes above a threshold or for high-risk sectors |
+| 4 | Paytinno staff (OPS) | Admin (S4) | Exposure test. If a credit trigger is met, a credit review (underwriting) by the credit approver sets the reserve, deposit and payout delay that cover the exposure. |  | Rule: Without a trigger there is no credit review<br>**Decided:** [MP-Q60](../open-questions.md#mp-q60)<br>Added to v8.1 |
+| 5 | Admin (S4) | Onboarding (S6) | Approved with conditions, or rejected. Approver differs from preparer. |  | WF02b 12 |
+| 6 | Admin (S4) | Portal (S3) | Rejected: status CLOSED_REJECTED and a neutral notice. | `merchant.notify application_rejected` | **If it fails:** No reason is given in the portal |
 | | | | **Offer** | | |
-| 6 | Admin (S4) | Portal (S3) | Approved: the offer appears: tariff, reserve %, deposit, limits, payout schedule, the agreement. |  | **Decided:** [MP-Q19](../open-questions.md#mp-q19)<br>Added to v8.1 |
-| 7 | Merchant (user) | Portal (S3) | The admin applicant accepts with SCA. The agreement version and evidence are stored. |  | **SCA**<br>**Decided:** [MP-Q19](../open-questions.md#mp-q19) |
-| 8 | Portal (S3) | Gateway, BFF (S18) | Acceptance. | `POST /v1/merchants/applications/{appId}/offer/accept` |  |
-| 9 | Gateway, BFF (S18) | Onboarding (S6) | Moves on to AWAITING_DEPOSIT or PROVISIONING (MP-09). |  |  |
+| 7 | Admin (S4) | Portal (S3) | Approved: the offer appears: tariff, reserve %, deposit, limits, payout schedule, the agreement. |  | **Decided:** [MP-Q19](../open-questions.md#mp-q19)<br>Added to v8.1 |
+| 8 | Merchant (user) | Portal (S3) | The admin applicant accepts with SCA. The agreement version and evidence are stored. |  | **SCA**<br>**Decided:** [MP-Q19](../open-questions.md#mp-q19) |
+| 9 | Portal (S3) | Gateway, BFF (S18) | Acceptance. | `POST /v1/merchants/applications/{appId}/offer/accept` |  |
+| 10 | Gateway, BFF (S18) | Onboarding (S6) | Moves on to AWAITING_DEPOSIT or PROVISIONING (MP-09). |  |  |
 
 ## States
 
@@ -91,6 +94,7 @@ For the CTO's next version of the architecture (v8.2).
 
 - WF02b 10 to 12: call it the onboarding review and the state ONBOARDING_REVIEW, not UNDERWRITING. Underwriting is only the credit review, when a credit trigger is met (MP-Q60).
 - WF02b 10: extra sector checks for every high-risk sector on Compliance's list, not only MCC 7995 (MP-Q61).
+- WF02b 11: MATCH and VMAS checks by API; manual only as a fallback, with evidence in the case (MP-Q65).
 - WF02b: add state OFFER_SENT between approval (step 12) and set-up (step 13); the representative accepts the offer and agreement with SCA; the offer lapses after [14] days (MP-Q19).
 
 ## Questions
@@ -110,6 +114,14 @@ When does onboarding need a credit review (underwriting), and who signs it?
 **Decision:** Only when a credit trigger is met: goods or services delivered later (travel, tickets, events, pre-orders, memberships of more than [3] months); expected monthly volume above [€250,000]; payouts faster than the schemes pay Paytinno; or reserve and deposit below the estimated exposure (volume times days to delivery plus the refund and chargeback window). The CRO or a delegated credit approver signs; the onboarding review team cannot approve its own credit decision.
 
 Decided, awaiting sign-off by: CRO
+
+### MP-Q65
+
+How are MATCH and VMAS checked: through BPC, directly with Mastercard and Visa, or by hand?
+
+**Decision:** By API, directly or through BPC, whichever the schemes and BPC allow. A manual check in the scheme's own tool only when the API cannot be used, with a screenshot or export kept in the case.
+
+Decided, awaiting sign-off by: CTO
 
 ### MP-Q61
 
