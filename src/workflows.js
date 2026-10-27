@@ -165,10 +165,10 @@ window.WF = (function () {
   });
 
   W("MP-06", {
-    title: "Company checks, identity and screening", area: "Onboarding", status: "v81", source: "WF02b steps 5 to 9",
+    title: "Company checks, identity and screening", area: "Onboarding", status: "part", source: "WF02b steps 5 to 9",
     trigger: "An application is sent (MP-05).", object: "OnboardingCase KYB_PENDING",
-    screens: ["application"], lanes: ["MER", "S3", "S18", "S6", "S11", "S4"],
-    summary: "The representative does an IDV check inside the portal. The company and owners are checked and screened. The portal only ever says \"Checking documents\" or \"In review\".",
+    screens: ["application"], lanes: ["MER", "S3", "S18", "S6", "S11", "S4", "OPS"],
+    summary: "The representative does an IDV check inside the portal. The company and owners are checked and screened. A hit goes to manual review, which ends in one of three ways: cleared, more information, or rejected. The portal only ever says \"Checking documents\" or \"In review\".",
     steps: [
       ["S6", "S11", "Starts KYB and owner checks; issues an IDV token for the representative.", { ref: "WF02b 5", sla: "async" }],
       ["S6", "S3", "Token for the IDV web SDK, through S18.", {}],
@@ -176,12 +176,20 @@ window.WF = (function () {
       ["S11", "S6", "Results come back as webhooks: identity verified, company verified, owners screened. Bad signature: quarantine and SEC2.", { ref: "WF02b 6 to 8" }],
       ["S6", "S11", "AML system: risk and PEP or sanctions screening of the company, representative and every owner.", { sla: "1 s per person, 3 attempts", ref: "WF02b 9" }],
       ["S6", "S4", "Any hit, or the identity does not match the role: manual review case.", { rule: "A hit makes manual review mandatory" }],
-      ["S4", "S3", "Status line KYB_PENDING, then ONBOARDING_REVIEW or MANUAL_REVIEW.", { api: "application.status", rule: "Fixed texts, never the reason" }]
+      ["S4", "S3", "Status line KYB_PENDING, then ONBOARDING_REVIEW or MANUAL_REVIEW.", { api: "application.status", rule: "Fixed texts, never the reason" }],
+      ["#", "Manual review"],
+      ["OPS", "S4", "Reviews the hit or mismatch and records the evidence. A false match is cleared with four eyes.", { sla: "[5] business days", dec: "MP-Q67", added: true }],
+      ["OPS", "S4", "Something is missing or unclear: an RFI to the merchant (MP-07). The question never names the hit.", { dec: "MP-Q67", added: true }],
+      ["OPS", "S4", "A confirmed PEP: enhanced due diligence (source of funds and wealth) and approval by senior management before the case goes on. Being a PEP is not a reason to reject.", { dec: "MP-Q67", added: true, rule: "Senior management approval for a PEP" }],
+      ["OPS", "S4", "A confirmed sanctions match, false documents or a suspicion: the MLRO decides; rejected, with a report to the authorities where the law requires it. The merchant gets the same neutral rejection.", { dec: "MP-Q67", added: true, rule: "No tipping off" }],
+      ["S4", "S6", "Outcome: cleared, information requested, or rejected.", { added: true }]
     ],
-    states: [["STARTED", "IDs recorded", "KYB_PENDING"], ["KYB_PENDING", "checks clear", "ONBOARDING_REVIEW"], ["KYB_PENDING", "hit or review", "MANUAL_REVIEW"], ["KYB_PENDING", "information missing", "INFO_REQUESTED (MP-07)"]],
-    rules: ["No tipping off: the portal never names a screening hit, PEP, sanctions, MATCH or VMAS.", "The portal maps each state to its own fixed text (CONFIG.APP_STATES); the admin's label is a hint only."],
+    states: [["STARTED", "IDs recorded", "KYB_PENDING"], ["KYB_PENDING", "checks clear", "ONBOARDING_REVIEW"], ["KYB_PENDING", "hit or review", "MANUAL_REVIEW"], ["KYB_PENDING", "information missing", "INFO_REQUESTED (MP-07)"], ["MANUAL_REVIEW", "cleared, or PEP approved", "ONBOARDING_REVIEW"], ["MANUAL_REVIEW", "information needed", "INFO_REQUESTED (MP-07), then back to MANUAL_REVIEW"], ["MANUAL_REVIEW", "confirmed match, false documents or suspicion", "CLOSED_REJECTED"]],
+    rules: ["No tipping off: the portal never names a screening hit, PEP, sanctions, MATCH or VMAS.", "The portal maps each state to its own fixed text (CONFIG.APP_STATES); the admin's label is a hint only.", "Manual review always ends in a decision; a case never waits in MANUAL_REVIEW without an owner and a due date."],
+    amends: ["WF02b states: add the exits from MANUAL_REVIEW: cleared to UNDERWRITING (our ONBOARDING_REVIEW), information needed to an RFI, confirmed match or suspicion to CLOSED_REJECTED (MP-Q67)."],
     questions: [
-      { id: "MP-Q09", q: "Should the portal show the admin's free-text status label, or its own fixed text per state? (admin spec P7)", prop: "Fixed texts per state in the portal, in Bulgarian and English. Free text only inside an RFI, which staff write knowingly.", owner: "Compliance" }
+      { id: "MP-Q09", q: "Should the portal show the admin's free-text status label, or its own fixed text per state? (admin spec P7)", prop: "Fixed texts per state in the portal, in Bulgarian and English. Free text only inside an RFI, which staff write knowingly.", owner: "Compliance" },
+      { id: "MP-Q67", q: "v8.1 sends a case to MANUAL_REVIEW but never says where it goes next. What are the exits?", prop: "Three: cleared (false match with four eyes, or a PEP approved by senior management after enhanced due diligence) to ONBOARDING_REVIEW; information needed to an RFI (MP-07) and back; confirmed sanctions match, false documents or suspicion to CLOSED_REJECTED, decided by the MLRO, with a report to the authorities where required. Target [5] business days.", owner: "Compliance", decided: true }
     ]
   });
 

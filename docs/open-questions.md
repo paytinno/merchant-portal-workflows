@@ -4,7 +4,7 @@
 
 [All workflows](README.md)
 
-43 open, 24 decided and awaiting sign-off. CTO question numbers refer to the v8.1 question list.
+43 open, 25 decided and awaiting sign-off. CTO question numbers refer to the v8.1 question list.
 
 ## Open
 
@@ -88,8 +88,9 @@ Answers adopted as the design to close gaps in v8.1. Each owner signs off or cha
 | [MP-Q61](#mp-q61) | Which sectors are high risk, and what extra checks does each get? v8.1 names only gambling (MCC 7995). | Compliance | [MP-08](workflows/MP-08-onboarding-review-and-the-offer.md) |
 | [MP-Q65](#mp-q65) | How are MATCH and VMAS checked: through BPC, directly with Mastercard and Visa, or by hand? | CTO | [MP-08](workflows/MP-08-onboarding-review-and-the-offer.md) |
 | [MP-Q66](#mp-q66) | When does a terminated merchant go on MATCH and VMAS? | Compliance | [MP-27](workflows/MP-27-close-the-account.md) |
+| [MP-Q67](#mp-q67) | v8.1 sends a case to MANUAL_REVIEW but never says where it goes next. What are the exits? | Compliance | [MP-06](workflows/MP-06-company-checks-identity-and-screening.md) |
 
-By owner: COO 2, CRO 1, CTO 13, Compliance 5, Finance 1, Legal 2.
+By owner: COO 2, CRO 1, CTO 13, Compliance 6, Finance 1, Legal 2.
 
 ## Details
 
@@ -628,3 +629,11 @@ When does a terminated merchant go on MATCH and VMAS?
 **Decision:** Only when the termination reason is one the scheme rules list. When one applies, listing is required, so it is not optional for staff. Commercial reasons, the merchant's own request and inactivity are never listed. Compliance keeps the mapping from our reasons to the scheme reason codes.
 
 Decided, awaiting sign-off by: Compliance. Workflow: [MP-27 Close the account](workflows/MP-27-close-the-account.md)
+
+### MP-Q67
+
+v8.1 sends a case to MANUAL_REVIEW but never says where it goes next. What are the exits?
+
+**Decision:** Three: cleared (false match with four eyes, or a PEP approved by senior management after enhanced due diligence) to ONBOARDING_REVIEW; information needed to an RFI (MP-07) and back; confirmed sanctions match, false documents or suspicion to CLOSED_REJECTED, decided by the MLRO, with a report to the authorities where required. Target [5] business days.
+
+Decided, awaiting sign-off by: Compliance. Workflow: [MP-06 Company checks, identity and screening](workflows/MP-06-company-checks-identity-and-screening.md)

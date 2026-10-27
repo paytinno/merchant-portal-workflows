@@ -28,6 +28,10 @@ What the CTO's architecture needs to change (v8.2) so it matches the decided wor
 - WF02b 1: ask whether the company is a micro-enterprise; S6 keeps it for tariff notices (MP-Q33).
 - WF02b 5: IDV check for the representative only; owners screened from data, IDV for owners only when high risk or the data disagree (MP-Q17).
 
+## [MP-06 Company checks, identity and screening](workflows/MP-06-company-checks-identity-and-screening.md)
+
+- WF02b states: add the exits from MANUAL_REVIEW: cleared to UNDERWRITING (our ONBOARDING_REVIEW), information needed to an RFI, confirmed match or suspicion to CLOSED_REJECTED (MP-Q67).
+
 ## [MP-07 Request for information and the answer](workflows/MP-07-request-for-information-and-the-answer.md)
 
 - Add the RFI to v8.1 as a sub-flow of WF02b and of periodic reviews, as in the admin spec 5.2 (rfi.send, merchant.message).

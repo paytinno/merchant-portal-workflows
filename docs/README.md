@@ -6,12 +6,12 @@ Version 0.1. The intended workflows behind the Paytinno merchant portal (S3), fo
 
 | Status | Meaning | Workflows |
 |---|---|---|
-| In v8.1 | As the CTO's architecture v8.1 writes it | 4 |
-| v8.1 with gaps | In v8.1, with gaps still open | 2 |
+| In v8.1 | As the CTO's architecture v8.1 writes it | 3 |
+| v8.1 with gaps | In v8.1, with gaps still open | 3 |
 | v8.1, gaps closed | In v8.1; every gap closed by a decision. The changes v8.1 needs are listed | 9 |
 | Proposed | Not in v8.1. Needs the CTO team's agreement | 26 |
 
-Also: [Questions](open-questions.md) (43 open, 24 decided and awaiting sign-off), [Changes to v8.1](changes-to-v8.1.md), [Merchant types](merchant-types.md), [Roles and rights](roles-and-rights.md), [Systems](systems.md), [Sources and contradictions](sources.md).
+Also: [Questions](open-questions.md) (43 open, 25 decided and awaiting sign-off), [Changes to v8.1](changes-to-v8.1.md), [Merchant types](merchant-types.md), [Roles and rights](roles-and-rights.md), [Systems](systems.md), [Sources and contradictions](sources.md).
 
 ## Access
 
@@ -27,7 +27,7 @@ Also: [Questions](open-questions.md) (43 open, 24 decided and awaiting sign-off)
 | ID | Workflow | Status | Source | Steps | Questions |
 |---|---|---|---|---|---|
 | MP-05 | [Fill in and send the application](workflows/MP-05-fill-in-and-send-the-application.md)<br>Six steps: company, people, business, documents, payout account, review. Saved as a draft on every step; sent once complete. | v8.1 with gaps | WF02b steps 1 to 4; admin spec application.submitted | 14 | 4 |
-| MP-06 | [Company checks, identity and screening](workflows/MP-06-company-checks-identity-and-screening.md)<br>The representative does an IDV check inside the portal. The company and owners are checked and screened. The portal only ever says "Checking documents" or "In review". | In v8.1 | WF02b steps 5 to 9 | 7 | 1 |
+| MP-06 | [Company checks, identity and screening](workflows/MP-06-company-checks-identity-and-screening.md)<br>The representative does an IDV check inside the portal. The company and owners are checked and screened. A hit goes to manual review, which ends in one of three ways: cleared, more information, or rejected. The portal only ever says "Checking documents" or "In review". | v8.1 with gaps | WF02b steps 5 to 9 | 12 | 2 |
 | MP-07 | [Request for information and the answer](workflows/MP-07-request-for-information-and-the-answer.md)<br>Staff ask, the merchant answers in the portal with text and documents. The application status shows "We need something" while it is open. | v8.1, gaps closed | Admin spec 5.2 rfi.send and merchant.message; not a v8.1 workflow | 11 | 1 |
 | MP-08 | [Onboarding review and the offer](workflows/MP-08-onboarding-review-and-the-offer.md)<br>Staff review the merchant and set limits, tariff, reserve and deposit with four eyes. A credit review (underwriting) is added only when the merchant creates credit exposure for Paytinno. Then the merchant sees the offer and accepts it with SCA before set-up starts. | v8.1, gaps closed | WF02b steps 10 to 12 (v8.1 calls it underwriting) | 10 | 4 |
 | MP-09 | [Deposit, set-up and activation](workflows/MP-09-deposit-set-up-and-activation.md)<br>If a deposit is required, the merchant transfers it first. Then accounts in OraSYS and the merchant in BPC. Only when both confirm is the merchant active and the full portal opens. | v8.1 with gaps | WF02b steps 13 to 17; PRD WF11 AWAITING_DEPOSIT; admin spec 5.4 access.grant | 11 | 3 |
