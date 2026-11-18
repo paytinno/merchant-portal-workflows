@@ -11,7 +11,7 @@ Merchants hear about problems from us first: a banner, a status page and notices
 | Status | Proposed |
 | For | Every merchant |
 | Area | Business |
-| Source | DORA Art. 19(3) (tell clients about major ICT incidents that affect their financial interests); v8.1 incident handling |
+| Source | DORA Art. 19(3) (tell clients about major ICT incidents that affect their financial interests); v8.7 incident handling |
 | Starts when | Something merchants feel breaks (payments, refunds, payouts, portal, API, webhooks), or maintenance is planned. |
 | Object | Incident or maintenance notice |
 | Systems | Paytinno staff (OPS), Admin (S4), Messages (S17), Portal (S3), Merchant (user) |
@@ -89,11 +89,11 @@ stateDiagram-v2
 - Texts approved by the incident manager; when DORA applies, also by Compliance.
 - The status page must work when the platform does not.
 
-## Changes v8.1 needs
+## Changes v8.7 needs
 
-For the CTO's next version of the architecture (v8.2).
+For the CTO's next version of the architecture.
 
-- v8.1 incident handling: add notices to merchants for major ICT incidents (DORA Art. 19(3)), a status page outside the platform, portal banners and planned maintenance notices.
+- v8.7 incident handling: add notices to merchants for major ICT incidents (DORA Art. 19(3)), a status page outside the platform, portal banners and planned maintenance notices.
 
 ## Questions
 

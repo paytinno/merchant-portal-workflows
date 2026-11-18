@@ -8,10 +8,10 @@ Staff ask, the merchant answers in the portal with text and documents. The appli
 
 | | |
 |---|---|
-| Status | v8.1, gaps closed |
+| Status | v8.7, gaps closed |
 | For | Every merchant |
 | Area | Onboarding |
-| Source | Admin spec 5.2 rfi.send and merchant.message; not a v8.1 workflow |
+| Source | Admin spec 5.2 rfi.send and merchant.message; not a v8.7 workflow |
 | Starts when | Staff need a document or an answer, during onboarding or for a live merchant. |
 | Object | RFI (S4), message thread |
 | Systems | Merchant (user), Portal (S3), Gateway, BFF (S18), Admin (S4), Paytinno staff (OPS), Messages (S17) |
@@ -48,7 +48,7 @@ sequenceDiagram
 |---|---|---|---|---|---|
 | 1 | Paytinno staff (OPS) | Admin (S4) | Writes the request: what is needed (item codes and plain text), due date. |  |  |
 | 2 | Admin (S4) | Gateway, BFF (S18) | Sends the request; for an application also the status INFO_REQUESTED. | `POST /admin/v1/rfi {appId \| merchantId, text, items[], dueAt}` | admin spec 5.2 |
-| 3 | Gateway, BFF (S18) | Messages (S17) | Email: "We need something from you" with a link only. The request itself is not in the email. |  | Rule: Emails carry a link, never the content<br>Added to v8.1 |
+| 3 | Gateway, BFF (S18) | Messages (S17) | Email: "We need something from you" with a link only. The request itself is not in the email. |  | Rule: Emails carry a link, never the content<br>Added to v8.7 |
 | 4 | Merchant (user) | Portal (S3) | Opens Messages, writes an answer, attaches documents. |  |  |
 | 5 | Portal (S3) | Gateway, BFF (S18) | Sends the answer. | `POST /v1/messages {inReplyTo: rfiId, text, attachments[docRef]}` |  |
 | 6 | Gateway, BFF (S18) | Admin (S4) | The answer arrives in the admin. | `webhook merchant.message` | admin spec 6 |
@@ -93,11 +93,11 @@ stateDiagram-v2
 - The merchant is told not to type ID or card numbers in messages; documents are attached as files.
 - Text up to 4,000 characters.
 
-## Changes v8.1 needs
+## Changes v8.7 needs
 
-For the CTO's next version of the architecture (v8.2).
+For the CTO's next version of the architecture.
 
-- Add the RFI to v8.1 as a sub-flow of WF02b and of periodic reviews, as in the admin spec 5.2 (rfi.send, merchant.message).
+- Add the RFI to v8.7 as a sub-flow of WF02b and of periodic reviews, as in the admin spec 5.2 (rfi.send, merchant.message).
 - Overdue RFI: onboarding withdrawn after [30] days; for a live merchant staff decide (MP-Q18).
 
 ## Questions

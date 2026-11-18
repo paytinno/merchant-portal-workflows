@@ -11,7 +11,7 @@ Small exports download at once; large ones run as a job and are ready to downloa
 | Status | Proposed |
 | For | Every merchant |
 | Area | Developers |
-| Source | Not in v8.1 |
+| Source | Not in v8.7 |
 | Starts when | A user exports payments, payouts or a reconciliation file. |
 | Object | Export job |
 | Systems | Merchant (user), Portal (S3), Gateway, BFF (S18), BPC (S10 via A09), Core (S21, S5) |

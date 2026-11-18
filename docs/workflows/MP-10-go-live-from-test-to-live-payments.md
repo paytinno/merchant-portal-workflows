@@ -80,6 +80,6 @@ stateDiagram-v2
 
 Can test keys be given as soon as the application is sent, so developers start during review (as the design prototype shows)?
 
-**Proposed:** Yes, if BPC offers a sandbox merchant without onboarding. Otherwise at activation as v8.1 says.
+**Proposed:** Yes, if BPC offers a sandbox merchant without onboarding. Otherwise at activation as v8.7 says.
 
 Owner: CTO

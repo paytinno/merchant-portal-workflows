@@ -8,7 +8,7 @@ The representative does an IDV check inside the portal. The company and owners a
 
 | | |
 |---|---|
-| Status | v8.1 with gaps |
+| Status | v8.7 with gaps |
 | For | Every merchant |
 | Area | Onboarding |
 | Source | WF02b steps 5 to 9 |
@@ -32,7 +32,7 @@ sequenceDiagram
   S6->>S11: Starts KYB and owner checks, issues an IDV<br/>token for the representative.
   S6->>S3: Token for the IDV web SDK, through S18.
   MER->>S3: The representative does the ID document and<br/>selfie check in the portal.
-  S11->>S6: Results come back as webhooks: identity<br/>verified, company verified, owners screened.<br/>Bad signature: quarantine and SEC2.
+  S11->>S6: Results come back as webhooks through S22 and<br/>Q1 (identity.verified, company.verified,<br/>ubo.screened), then as events to the saga:<br/>RepresentativeVerified, KybVerified,<br/>UboScreened or NeedsReview. Bad signature:<br/>quarantine and SEC2.
   S6->>S11: AML system: risk and PEP or sanctions<br/>screening of the company, representative and<br/>every owner.
   S6->>S4: Any hit, or the identity does not match the<br/>role: manual review case.
   S4->>S3: Status line KYB_PENDING, then<br/>ONBOARDING_REVIEW or MANUAL_REVIEW.
@@ -51,16 +51,16 @@ sequenceDiagram
 | 1 | Onboarding (S6) | IDV, AML (S11 via A01) | Starts KYB and owner checks; issues an IDV token for the representative. |  | WF02b 5<br>Time: async |
 | 2 | Onboarding (S6) | Portal (S3) | Token for the IDV web SDK, through S18. |  |  |
 | 3 | Merchant (user) | Portal (S3) | The representative does the ID document and selfie check in the portal. |  | WF02b 5 |
-| 4 | IDV, AML (S11 via A01) | Onboarding (S6) | Results come back as webhooks: identity verified, company verified, owners screened. Bad signature: quarantine and SEC2. |  | WF02b 6 to 8 |
+| 4 | IDV, AML (S11 via A01) | Onboarding (S6) | Results come back as webhooks through S22 and Q1 (identity.verified, company.verified, ubo.screened), then as events to the saga: RepresentativeVerified, KybVerified, UboScreened or NeedsReview. Bad signature: quarantine and SEC2. |  | WF02b 6 to 8 |
 | 5 | Onboarding (S6) | IDV, AML (S11 via A01) | AML system: risk and PEP or sanctions screening of the company, representative and every owner. |  | WF02b 9<br>Time: 1 s per person, 3 attempts |
 | 6 | Onboarding (S6) | Admin (S4) | Any hit, or the identity does not match the role: manual review case. |  | Rule: A hit makes manual review mandatory |
 | 7 | Admin (S4) | Portal (S3) | Status line KYB_PENDING, then ONBOARDING_REVIEW or MANUAL_REVIEW. | `application.status` | Rule: Fixed texts, never the reason |
 | | | | **Manual review** | | |
-| 8 | Paytinno staff (OPS) | Admin (S4) | Reviews the hit or mismatch and records the evidence. A false match is cleared with four eyes. |  | Time: [5] business days<br>**Decided:** [MP-Q67](../open-questions.md#mp-q67)<br>Added to v8.1 |
-| 9 | Paytinno staff (OPS) | Admin (S4) | Something is missing or unclear: an RFI to the merchant (MP-07). The question never names the hit. |  | **Decided:** [MP-Q67](../open-questions.md#mp-q67)<br>Added to v8.1 |
-| 10 | Paytinno staff (OPS) | Admin (S4) | A confirmed PEP: enhanced due diligence (source of funds and wealth) and approval by senior management before the case goes on. Being a PEP is not a reason to reject. |  | Rule: Senior management approval for a PEP<br>**Decided:** [MP-Q67](../open-questions.md#mp-q67)<br>Added to v8.1 |
-| 11 | Paytinno staff (OPS) | Admin (S4) | A confirmed sanctions match, false documents or a suspicion: the MLRO decides; rejected, with a report to the authorities where the law requires it. The merchant gets the same neutral rejection. |  | Rule: No tipping off<br>**Decided:** [MP-Q67](../open-questions.md#mp-q67)<br>Added to v8.1 |
-| 12 | Admin (S4) | Onboarding (S6) | Outcome: cleared, information requested, or rejected. |  | Added to v8.1 |
+| 8 | Paytinno staff (OPS) | Admin (S4) | Reviews the hit or mismatch and records the evidence. A false match is cleared with four eyes. |  | Time: [5] business days<br>**Decided:** [MP-Q67](../open-questions.md#mp-q67)<br>Added to v8.7 |
+| 9 | Paytinno staff (OPS) | Admin (S4) | Something is missing or unclear: an RFI to the merchant (MP-07). The question never names the hit. |  | **Decided:** [MP-Q67](../open-questions.md#mp-q67)<br>Added to v8.7 |
+| 10 | Paytinno staff (OPS) | Admin (S4) | A confirmed PEP: enhanced due diligence (source of funds and wealth) and approval by senior management before the case goes on. Being a PEP is not a reason to reject. |  | Rule: Senior management approval for a PEP<br>**Decided:** [MP-Q67](../open-questions.md#mp-q67)<br>Added to v8.7 |
+| 11 | Paytinno staff (OPS) | Admin (S4) | A confirmed sanctions match, false documents or a suspicion: the MLRO decides; rejected, with a report to the authorities where the law requires it. The merchant gets the same neutral rejection. |  | Rule: No tipping off<br>**Decided:** [MP-Q67](../open-questions.md#mp-q67)<br>Added to v8.7 |
+| 12 | Admin (S4) | Onboarding (S6) | Outcome: cleared, information requested, or rejected. |  | Added to v8.7 |
 
 ## States
 
@@ -99,9 +99,9 @@ stateDiagram-v2
 - The portal maps each state to its own fixed text (CONFIG.APP_STATES); the admin's label is a hint only.
 - Manual review always ends in a decision; a case never waits in MANUAL_REVIEW without an owner and a due date.
 
-## Changes v8.1 needs
+## Changes v8.7 needs
 
-For the CTO's next version of the architecture (v8.2).
+For the CTO's next version of the architecture.
 
 - WF02b states: add the exits from MANUAL_REVIEW: cleared to UNDERWRITING (our ONBOARDING_REVIEW), information needed to an RFI, confirmed match or suspicion to CLOSED_REJECTED (MP-Q67).
 
@@ -117,7 +117,7 @@ Owner: Compliance
 
 ### MP-Q67
 
-v8.1 sends a case to MANUAL_REVIEW but never says where it goes next. What are the exits?
+v8.7 sends a case to MANUAL_REVIEW but never says where it goes next. What are the exits?
 
 **Decision:** Three: cleared (false match with four eyes, or a PEP approved by senior management after enhanced due diligence) to ONBOARDING_REVIEW; information needed to an RFI (MP-07) and back; confirmed sanctions match, false documents or suspicion to CLOSED_REJECTED, decided by the MLRO, with a report to the authorities where required. Target [5] business days.
 

@@ -44,7 +44,7 @@ sequenceDiagram
 | # | From | To | Step | Call | Notes |
 |---|---|---|---|---|---|
 | 1 | Merchant (user) | Portal (S3) | Create a key (test or live) with a label, or roll or revoke one. |  |  |
-| 2 | Gateway, BFF (S18) | Identity, SCA (S19) | SCA bound to the key label and action. |  | WF02a 22<br>**SCA** |
+| 2 | Gateway, BFF (S18) | Identity, SCA (S19) | SCA bound to the key label and action. |  | WF02c 1<br>**SCA** |
 | 3 | Portal (S3) | Gateway, BFF (S18) | Command. | `POST /v1/keys {mode, label} \| POST /v1/keys/{id}/roll \| DELETE /v1/keys/{id}` |  |
 | 4 | Gateway, BFF (S18) | BPC (S10 via A09) | Through A09. | `IF45 via A09` | **Open gap:** BPC API coverage for keys is open (questions 21, 33). Until then an S4 operator does it (MP-Q10). |
 | 5 | BPC (S10 via A09) | Portal (S3) | The secret, once. The portal shows it and forgets it. |  | Rule: Shown once |
@@ -74,6 +74,7 @@ stateDiagram-v2
 
 ## Rules
 
+- At launch (v8.7 S3 scope), until the BPC API covers it, Paytinno staff do this in S4 through A09 on the merchant's request; the portal then sends a request and shows its status (questions 21 and 33, risk R07; MP-Q68).
 - Live keys only after go-live (MP-10).
 - Secrets never in email, messages or logs.
 
@@ -83,6 +84,14 @@ stateDiagram-v2
 
 If BPC cannot create keys through its API, how does the secret reach the merchant without staff seeing it?
 
-**Proposed:** Do not launch key self-service with an operator in the middle. Either BPC API support, or BPC's own console link for the first key. Confirm with BPC before build.
+**Proposed:** Do not launch key self-service with an operator in the middle. Either BPC API support, or S4 triggers the key through A09 and only the merchant sees the secret (MP-Q68). v8.7 does not use BPC's console, so a console link is out. Confirm with BPC before build.
 
 Owner: BPC
+
+### MP-Q68
+
+v8.7 puts API keys and payout account changes after launch: Paytinno staff do them in S4 until the BPC API covers them (questions 21 and 33). How does the merchant ask on day one?
+
+**Proposed:** The portal sends the same request either way, signed with SCA. Without the API, staff carry it out in S4 with four eyes within [1] business day and the portal shows the status. For a key, staff only trigger it: S4 asks A09 for the key and S18 shows the secret once to the merchant, so no one at Paytinno sees it (MP-Q10). When the API arrives nothing changes for merchants.
+
+Owner: CTO

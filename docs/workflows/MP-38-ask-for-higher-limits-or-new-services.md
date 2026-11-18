@@ -11,7 +11,7 @@ The merchant sees its limits and how much it has used, and asks for changes. Sta
 | Status | Proposed |
 | For | Every merchant |
 | Area | Business |
-| Source | WF02b 10 to 12 (the onboarding review sets limits, MCC and channels); not as a merchant request in v8.1 |
+| Source | WF02b 10 to 12 (the onboarding review sets limits, MCC and channels); not as a merchant request in v8.7 |
 | Starts when | A merchant needs a higher limit, a new channel (links, terminals, manual capture, saved cards), new customer countries, or a lower reserve. |
 | Object | Change request (S4 review case) |
 | Systems | Merchant (user), Portal (S3), Gateway, BFF (S18), Admin (S4), Paytinno staff (OPS), Onboarding (S6), BPC (S10 via A09), Messages (S17) |
@@ -86,9 +86,9 @@ stateDiagram-v2
 
 - Refusals use the same neutral words as onboarding (no tipping off).
 
-## Changes v8.1 needs
+## Changes v8.7 needs
 
-For the CTO's next version of the architecture (v8.2).
+For the CTO's next version of the architecture.
 
 - WF02b onboarding review: add a new review on the merchant's request (limits, channels, countries, reserve) with the same four-eyes rules, and new terms accepted like the offer (MP-08).
 

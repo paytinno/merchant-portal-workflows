@@ -8,7 +8,7 @@ Captured payments become payable after settlement, available after the reserve, 
 
 | | |
 |---|---|
-| Status | In v8.1 |
+| Status | In v8.7 |
 | For | Every merchant |
 | Area | Money |
 | Source | WF10 steps 4 to 12 |

@@ -4,7 +4,7 @@
 
 [All workflows](README.md)
 
-43 open, 25 decided and awaiting sign-off. CTO question numbers refer to the v8.1 question list.
+43 open, 26 decided and awaiting sign-off. CTO question numbers refer to the v8.7 question list.
 
 ## Open
 
@@ -12,8 +12,7 @@ Decisions the portal still needs. Each has a proposed answer to agree or change.
 
 | ID | Question | Owner | Workflow |
 |---|---|---|---|
-| [MP-Q01](#mp-q01) | v8.1 names only ONBOARDING_APPLICANT and MERCHANT_ADMIN. There is no role list or permission table. | Product | [MP-22](workflows/MP-22-invite-change-and-remove-users.md) |
-| [MP-Q02](#mp-q02) | Registration with an email that already exists returns 409 in v8.1. That is an account lookup for anyone. | CTO | [MP-01](workflows/MP-01-register-and-create-a-passkey.md) |
+| [MP-Q01](#mp-q01) | v8.7 names only ONBOARDING_APPLICANT and MERCHANT_ADMIN. There is no role list or permission table. | Product | [MP-22](workflows/MP-22-invite-change-and-remove-users.md) |
 | [MP-Q03](#mp-q03) | The BNB has not confirmed a passkey with dynamic linking as SCA on the web. For the portal it is the only method (no password, no push to the app). | Compliance | [MP-01](workflows/MP-01-register-and-create-a-passkey.md) |
 | [MP-Q04](#mp-q04) | One passkey per person makes lost phones a frequent recovery case. | Product | [MP-01](workflows/MP-01-register-and-create-a-passkey.md) |
 | [MP-Q05](#mp-q05) | Who sets limits, and are there defaults? | Product | [MP-23](workflows/MP-23-approvals-by-a-second-person.md) |
@@ -22,7 +21,7 @@ Decisions the portal still needs. Each has a proposed answer to agree or change.
 | [MP-Q21](#mp-q21) | Can test keys be given as soon as the application is sent, so developers start during review (as the design prototype shows)? | CTO | [MP-10](workflows/MP-10-go-live-from-test-to-live-payments.md) |
 | [MP-Q22](#mp-q22) | Cache payment data in S18 when BPC is slow or down? (CTO question 22) | CTO | [MP-11](workflows/MP-11-see-payments-and-one-payment.md) |
 | [MP-Q23](#mp-q23) | Can the BPC API search by order reference, card last 4 and amount? | BPC | [MP-11](workflows/MP-11-see-payments-and-one-payment.md) |
-| [MP-Q27](#mp-q27) | Reserve release: v8.1 proposes 180 days; the PRD says "on schedule" with no number. | CRO | [MP-17](workflows/MP-17-rolling-reserve-and-reserve-top-up.md) |
+| [MP-Q27](#mp-q27) | Reserve release: v8.7 proposes 180 days; the PRD says "on schedule" with no number. | CRO | [MP-17](workflows/MP-17-rolling-reserve-and-reserve-top-up.md) |
 | [MP-Q28](#mp-q28) | Which payout schedules does M0391 support (daily, weekly, monthly, minimum amount)? | OraSYS | [MP-13](workflows/MP-13-balances-settlement-and-automatic-payouts.md) |
 | [MP-Q29](#mp-q29) | "Funds stay with us by choice" (WF10 12): is that allowed, for how long, and how are those funds safeguarded? | Compliance | [MP-14](workflows/MP-14-pay-out-now-and-payout-settings.md) |
 | [MP-Q30](#mp-q30) | How is "account in the merchant's name" verified? | Compliance | [MP-15](workflows/MP-15-change-the-payout-account.md) |
@@ -53,50 +52,52 @@ Decisions the portal still needs. Each has a proposed answer to agree or change.
 | [MP-Q58](#mp-q58) | Who builds and maintains the plugins, and for which platforms first? | Product | [MP-41](workflows/MP-41-shop-plugins.md) |
 | [MP-Q59](#mp-q59) | Can BPC issue keys limited to payments and refunds? | CTO | [MP-41](workflows/MP-41-shop-plugins.md) |
 | [MP-Q62](#mp-q62) | Can the BPC API create the merchant, its terminals and its hosted page and SDK keys? (CTO question 21) | CTO | [MP-09](workflows/MP-09-deposit-set-up-and-activation.md) |
-| [MP-Q63](#mp-q63) | What happens when set-up half-fails, for example OraSYS opens the accounts but BPC keeps failing? v8.1 only says compensation and an S4 case (risk R10). | CTO | [MP-09](workflows/MP-09-deposit-set-up-and-activation.md) |
+| [MP-Q63](#mp-q63) | What happens when set-up half-fails, for example OraSYS opens the accounts but BPC keeps failing? v8.7 only says compensation and an S4 case (risk R10). | CTO | [MP-09](workflows/MP-09-deposit-set-up-and-activation.md) |
 | [MP-Q64](#mp-q64) | When will the onboarding service (S6) exist? Until then the admin stands in for it. Where do onboarding cases live in the meantime, and how do they move to S6? | CTO | [MP-05](workflows/MP-05-fill-in-and-send-the-application.md) |
+| [MP-Q68](#mp-q68) | v8.7 puts API keys and payout account changes after launch: Paytinno staff do them in S4 until the BPC API covers them (questions 21 and 33). How does the merchant ask on day one? | CTO | [MP-20](workflows/MP-20-api-keys-create-roll-revoke.md) |
 
 By owner: BPC 2, COO 2, CRO 6, CTO 12, Compliance 8, Legal 5, OraSYS 2, Product 6.
 
 ## Decided, awaiting sign-off
 
-Answers adopted as the design to close gaps in v8.1. Each owner signs off or changes it.
+Answers adopted as the design to close gaps in v8.7. Each owner signs off or changes it.
 
 | ID | Question | Owner | Workflow |
 |---|---|---|---|
+| [MP-Q02](#mp-q02) | Registration with an email that already exists returned 409 in v8.1. That is an account lookup for anyone. | CTO | [MP-01](workflows/MP-01-register-and-create-a-passkey.md) |
 | [MP-Q05b](#mp-q05b) | How do staff check identity in recovery without a second admin? | Compliance | [MP-04](workflows/MP-04-lockout-and-lost-passkey.md) |
-| [MP-Q06](#mp-q06) | No idle timeout is defined (only 8 h session and 30 day refresh). | CTO | [MP-02](workflows/MP-02-sign-in-switch-business-and-check-rights.md) |
-| [MP-Q07](#mp-q07) | How does a call say which business it is for, when one person serves several? | CTO | [MP-02](workflows/MP-02-sign-in-switch-business-and-check-rights.md) |
-| [MP-Q08](#mp-q08) | WF02a step 26 continues to "WF10 step 14, WF11 step 7". WF10 14 is a read and WF11 7 is issuing. | CTO | [MP-03](workflows/MP-03-strong-customer-authentication-for-actions.md) |
+| [MP-Q06](#mp-q06) | Session times in S18 are open in v8.7 (S18 and Security). | CTO | [MP-02](workflows/MP-02-sign-in-switch-business-and-check-rights.md) |
+| [MP-Q07](#mp-q07) | How does a call say which business it is for, when one person serves several? v8.7 says the request carries the merchant ID but not how. | CTO | [MP-02](workflows/MP-02-sign-in-switch-business-and-check-rights.md) |
+| [MP-Q08](#mp-q08) | In v8.1, WF02a step 26 continued to the wrong steps. WF02c step 5 in v8.7 fixes the refund (WF11 step 16) but leaves payout and payout account change "to be specified". | CTO | [MP-03](workflows/MP-03-strong-customer-authentication-for-actions.md) |
 | [MP-Q11](#mp-q11) | Is a webhook signing secret a key needing SCA? It lets anyone fake events to the merchant. | CTO | [MP-21](workflows/MP-21-webhooks.md) |
-| [MP-Q12](#mp-q12) | The PRD and v8.1 WF11 disagree: states (PRD stages vs OPEN/SUBMITTED/WON/LOST), channel (staff in VROL/Mastercom vs A09 to BPC), ledger (CB sub-account vs reserve and receivable). | CTO | [MP-16](workflows/MP-16-answer-a-chargeback.md) |
+| [MP-Q12](#mp-q12) | The PRD and v8.7 WF11 disagree: states (PRD stages vs OPEN/SUBMITTED/WON/LOST), channel (staff in VROL/Mastercom vs A09 to BPC), ledger (CB sub-account vs reserve and receivable). | CTO | [MP-16](workflows/MP-16-answer-a-chargeback.md) |
 | [MP-Q13](#mp-q13) | Who works disputes at launch? (CTO question 29) | COO | [MP-16](workflows/MP-16-answer-a-chargeback.md) |
-| [MP-Q14](#mp-q14) | Accepting a dispute is final and costs money, but it is not on the SCA list in WF02a 22. WF11 15 says SCA for actions with a money effect. | CTO | [MP-03](workflows/MP-03-strong-customer-authentication-for-actions.md) |
+| [MP-Q14](#mp-q14) | Accepting a dispute is final and costs money, but it is not on the SCA list in WF02c 1. WF11 15 says SCA for actions with a money effect. | CTO | [MP-03](workflows/MP-03-strong-customer-authentication-for-actions.md) |
 | [MP-Q15](#mp-q15) | Should the portal pre-fill from the Commercial Register? | CTO | [MP-05](workflows/MP-05-fill-in-and-send-the-application.md) |
-| [MP-Q16](#mp-q16) | Where is the draft kept before it is sent? v8.1 starts the case only at submission. | CTO | [MP-05](workflows/MP-05-fill-in-and-send-the-application.md) |
-| [MP-Q17](#mp-q17) | Who must do an identity check: only the representative (v8.1), or every owner (the design prototype)? | Compliance | [MP-05](workflows/MP-05-fill-in-and-send-the-application.md) |
+| [MP-Q16](#mp-q16) | Where is the draft kept before it is sent, and for how long? v8.1 started the case only at submission. v8.5 adopted the DRAFT state in S6; the period is DC-12. | DPO and MLRO | [MP-05](workflows/MP-05-fill-in-and-send-the-application.md) |
+| [MP-Q17](#mp-q17) | Who must do an identity check: only the representative (v8.7), or every owner (the design prototype)? | Compliance | [MP-05](workflows/MP-05-fill-in-and-send-the-application.md) |
 | [MP-Q18](#mp-q18) | What happens when an RFI is overdue? | Compliance | [MP-07](workflows/MP-07-request-for-information-and-the-answer.md) |
-| [MP-Q19](#mp-q19) | Where does the merchant agree to the tariff, reserve and agreement? v8.1 goes from approval straight to set-up. | Legal | [MP-08](workflows/MP-08-onboarding-review-and-the-offer.md) |
+| [MP-Q19](#mp-q19) | Where does the merchant agree to the tariff, reserve and agreement? v8.7 goes from approval straight to set-up. | Legal | [MP-08](workflows/MP-08-onboarding-review-and-the-offer.md) |
 | [MP-Q20](#mp-q20) | AWAITING_DEPOSIT (PRD WF11) is not in the WF02b state machine. | CTO | [MP-09](workflows/MP-09-deposit-set-up-and-activation.md) |
-| [MP-Q24](#mp-q24) | Where does the "no refund while disputed" check run? The PRD says S21a; in v8.1 portal refunds go S18 to A09 to BPC. | CTO | [MP-12](workflows/MP-12-refund-a-payment.md) |
+| [MP-Q24](#mp-q24) | Where does the "no refund while disputed" check run? The PRD says S21a; in v8.7 portal refunds go S18 to A09 to BPC. | CTO | [MP-12](workflows/MP-12-refund-a-payment.md) |
 | [MP-Q25](#mp-q25) | What if the merchant's balance is lower than the refund? | Finance | [MP-12](workflows/MP-12-refund-a-payment.md) |
 | [MP-Q26](#mp-q26) | Cancelling an authorisation that is not captured is not described anywhere. | CTO | [MP-12](workflows/MP-12-refund-a-payment.md) |
 | [MP-Q33](#mp-q33) | Notice periods differ for micro-enterprises, but onboarding does not ask whether the merchant is one. | Legal | [MP-19](workflows/MP-19-tariff-change-notice.md) |
 | [MP-Q34](#mp-q34) | Two signing schemes and retry policies (BPC payment webhooks and Paytinno chargeback webhooks). | CTO | [MP-21](workflows/MP-21-webhooks.md) |
 | [MP-Q37](#mp-q37) | Where are support conversations handled? The admin has no case management for them. | COO | [MP-25](workflows/MP-25-messages-and-notices.md) |
 | [MP-Q60](#mp-q60) | When does onboarding need a credit review (underwriting), and who signs it? | CRO | [MP-08](workflows/MP-08-onboarding-review-and-the-offer.md) |
-| [MP-Q61](#mp-q61) | Which sectors are high risk, and what extra checks does each get? v8.1 names only gambling (MCC 7995). | Compliance | [MP-08](workflows/MP-08-onboarding-review-and-the-offer.md) |
+| [MP-Q61](#mp-q61) | Which sectors are high risk, and what extra checks does each get? v8.7 names only gambling (MCC 7995). | Compliance | [MP-08](workflows/MP-08-onboarding-review-and-the-offer.md) |
 | [MP-Q65](#mp-q65) | How are MATCH and VMAS checked: through BPC, directly with Mastercard and Visa, or by hand? | CTO | [MP-08](workflows/MP-08-onboarding-review-and-the-offer.md) |
 | [MP-Q66](#mp-q66) | When does a terminated merchant go on MATCH and VMAS? | Compliance | [MP-27](workflows/MP-27-close-the-account.md) |
-| [MP-Q67](#mp-q67) | v8.1 sends a case to MANUAL_REVIEW but never says where it goes next. What are the exits? | Compliance | [MP-06](workflows/MP-06-company-checks-identity-and-screening.md) |
+| [MP-Q67](#mp-q67) | v8.7 sends a case to MANUAL_REVIEW but never says where it goes next. What are the exits? | Compliance | [MP-06](workflows/MP-06-company-checks-identity-and-screening.md) |
 
-By owner: COO 2, CRO 1, CTO 13, Compliance 6, Finance 1, Legal 2.
+By owner: COO 2, CRO 1, CTO 13, Compliance 6, DPO and MLRO 1, Finance 1, Legal 2.
 
 ## Details
 
 ### MP-Q01
 
-v8.1 names only ONBOARDING_APPLICANT and MERCHANT_ADMIN. There is no role list or permission table.
+v8.7 names only ONBOARDING_APPLICANT and MERCHANT_ADMIN. There is no role list or permission table.
 
 **Proposed:** Admin, Finance, Developer, Support, Viewer with the table under Roles and rights.
 
@@ -104,11 +105,11 @@ Owner: Product. Workflow: [MP-22 Invite, change and remove users](workflows/MP-2
 
 ### MP-Q02
 
-Registration with an email that already exists returns 409 in v8.1. That is an account lookup for anyone.
+Registration with an email that already exists returned 409 in v8.1. That is an account lookup for anyone.
 
-**Proposed:** Always answer 202 "if the address can be used, we sent codes". If the email exists, send that person an email saying someone tried to register with it.
+**Decision:** The same answer whatever the email; an existing user gets an email instead. Adopted by the CTO in WF02a step 2.
 
-Owner: CTO. Workflow: [MP-01 Register and create a passkey](workflows/MP-01-register-and-create-a-passkey.md)
+Decided, awaiting sign-off by: CTO. Workflow: [MP-01 Register and create a passkey](workflows/MP-01-register-and-create-a-passkey.md)
 
 ### MP-Q03
 
@@ -144,15 +145,15 @@ Owner: Product. Workflow: [MP-23 Approvals by a second person](workflows/MP-23-a
 
 ### MP-Q06
 
-No idle timeout is defined (only 8 h session and 30 day refresh).
+Session times in S18 are open in v8.7 (S18 and Security).
 
-**Decision:** [30] min idle, 8 h absolute, refresh only while active. Money actions need SCA anyway.
+**Decision:** [30] min idle, 8 h absolute, the refresh token used only while active. Money actions need SCA anyway.
 
 Decided, awaiting sign-off by: CTO. Workflow: [MP-02 Sign in, switch business and check rights](workflows/MP-02-sign-in-switch-business-and-check-rights.md)
 
 ### MP-Q07
 
-How does a call say which business it is for, when one person serves several?
+How does a call say which business it is for, when one person serves several? v8.7 says the request carries the merchant ID but not how.
 
 **Decision:** Header X-Merchant-Id on every call; S18 checks it against S6. The sidebar business switcher sets it.
 
@@ -160,9 +161,9 @@ Decided, awaiting sign-off by: CTO. Workflow: [MP-02 Sign in, switch business an
 
 ### MP-Q08
 
-WF02a step 26 continues to "WF10 step 14, WF11 step 7". WF10 14 is a read and WF11 7 is issuing.
+In v8.1, WF02a step 26 continued to the wrong steps. WF02c step 5 in v8.7 fixes the refund (WF11 step 16) but leaves payout and payout account change "to be specified".
 
-**Decision:** Refund continues to WF11 step 16; payout to MP-14; payout account to MP-15; key roll to MP-20. Fix in v8.2.
+**Decision:** Refund continues to WF11 step 16; payout to MP-14; payout account to MP-15; key roll to MP-20. WF02c still needs these and its states.
 
 Decided, awaiting sign-off by: CTO. Workflow: [MP-03 Strong customer authentication for actions](workflows/MP-03-strong-customer-authentication-for-actions.md)
 
@@ -178,7 +179,7 @@ Owner: Compliance. Workflow: [MP-06 Company checks, identity and screening](work
 
 If BPC cannot create keys through its API, how does the secret reach the merchant without staff seeing it?
 
-**Proposed:** Do not launch key self-service with an operator in the middle. Either BPC API support, or BPC's own console link for the first key. Confirm with BPC before build.
+**Proposed:** Do not launch key self-service with an operator in the middle. Either BPC API support, or S4 triggers the key through A09 and only the merchant sees the secret (MP-Q68). v8.7 does not use BPC's console, so a console link is out. Confirm with BPC before build.
 
 Owner: BPC. Workflow: [MP-20 API keys: create, roll, revoke](workflows/MP-20-api-keys-create-roll-revoke.md)
 
@@ -192,9 +193,9 @@ Decided, awaiting sign-off by: CTO. Workflow: [MP-21 Webhooks](workflows/MP-21-w
 
 ### MP-Q12
 
-The PRD and v8.1 WF11 disagree: states (PRD stages vs OPEN/SUBMITTED/WON/LOST), channel (staff in VROL/Mastercom vs A09 to BPC), ledger (CB sub-account vs reserve and receivable).
+The PRD and v8.7 WF11 disagree: states (PRD stages vs OPEN/SUBMITTED/WON/LOST), channel (staff in VROL/Mastercom vs A09 to BPC), ledger (CB sub-account vs reserve and receivable).
 
-**Decision:** Use the PRD for the merchant side and update WF11 in v8.2. The portal shows PRD stages and maps them to the v8.1 states for reporting.
+**Decision:** Use the PRD for the merchant side and update WF11 in the next version. The portal shows PRD stages and maps them to the v8.7 states for reporting.
 
 Decided, awaiting sign-off by: CTO. Workflow: [MP-16 Answer a chargeback](workflows/MP-16-answer-a-chargeback.md)
 
@@ -208,9 +209,9 @@ Decided, awaiting sign-off by: COO. Workflow: [MP-16 Answer a chargeback](workfl
 
 ### MP-Q14
 
-Accepting a dispute is final and costs money, but it is not on the SCA list in WF02a 22. WF11 15 says SCA for actions with a money effect.
+Accepting a dispute is final and costs money, but it is not on the SCA list in WF02c 1. WF11 15 says SCA for actions with a money effect.
 
-**Decision:** Require SCA for Accept and Escalate. Add to the WF02a 22 list.
+**Decision:** Require SCA for Accept and Escalate. Add to the WF02c 1 list.
 
 Decided, awaiting sign-off by: CTO. Workflow: [MP-03 Strong customer authentication for actions](workflows/MP-03-strong-customer-authentication-for-actions.md)
 
@@ -224,15 +225,15 @@ Decided, awaiting sign-off by: CTO. Workflow: [MP-05 Fill in and send the applic
 
 ### MP-Q16
 
-Where is the draft kept before it is sent? v8.1 starts the case only at submission.
+Where is the draft kept before it is sent, and for how long? v8.1 started the case only at submission. v8.5 adopted the DRAFT state in S6; the period is DC-12.
 
-**Decision:** Draft in S6 as an OnboardingCase in state DRAFT, keyed by person, kept [90] days. S18 only routes (it holds no business logic). Documents uploaded to the draft are deleted with it.
+**Decision:** Draft in S6 as an OnboardingCase in state DRAFT, bound to the person. Kept [90] days untouched, then deleted with its documents. Our answer to DC-12.
 
-Decided, awaiting sign-off by: CTO. Workflow: [MP-05 Fill in and send the application](workflows/MP-05-fill-in-and-send-the-application.md)
+Decided, awaiting sign-off by: DPO and MLRO. Workflow: [MP-05 Fill in and send the application](workflows/MP-05-fill-in-and-send-the-application.md)
 
 ### MP-Q17
 
-Who must do an identity check: only the representative (v8.1), or every owner (the design prototype)?
+Who must do an identity check: only the representative (v8.7), or every owner (the design prototype)?
 
 **Decision:** Representative always. Owners are screened from data; an IDV check for owners only for high-risk merchants or when the register and the declaration disagree.
 
@@ -248,7 +249,7 @@ Decided, awaiting sign-off by: Compliance. Workflow: [MP-07 Request for informat
 
 ### MP-Q19
 
-Where does the merchant agree to the tariff, reserve and agreement? v8.1 goes from approval straight to set-up.
+Where does the merchant agree to the tariff, reserve and agreement? v8.7 goes from approval straight to set-up.
 
 **Decision:** Add OFFER_SENT: the offer in the portal, accepted with SCA by the applicant who is the representative. Qualified e-signature only if Legal requires it.
 
@@ -266,7 +267,7 @@ Decided, awaiting sign-off by: CTO. Workflow: [MP-09 Deposit, set-up and activat
 
 Can test keys be given as soon as the application is sent, so developers start during review (as the design prototype shows)?
 
-**Proposed:** Yes, if BPC offers a sandbox merchant without onboarding. Otherwise at activation as v8.1 says.
+**Proposed:** Yes, if BPC offers a sandbox merchant without onboarding. Otherwise at activation as v8.7 says.
 
 Owner: CTO. Workflow: [MP-10 Go live: from test to live payments](workflows/MP-10-go-live-from-test-to-live-payments.md)
 
@@ -288,7 +289,7 @@ Owner: BPC. Workflow: [MP-11 See payments and one payment](workflows/MP-11-see-p
 
 ### MP-Q24
 
-Where does the "no refund while disputed" check run? The PRD says S21a; in v8.1 portal refunds go S18 to A09 to BPC.
+Where does the "no refund while disputed" check run? The PRD says S21a; in v8.7 portal refunds go S18 to A09 to BPC.
 
 **Decision:** S18 asks S4 synchronously (DisputeCase by payment) before the A09 call. S4 also re-checks on every stage change (PRD).
 
@@ -312,7 +313,7 @@ Decided, awaiting sign-off by: CTO. Workflow: [MP-12 Refund a payment](workflows
 
 ### MP-Q27
 
-Reserve release: v8.1 proposes 180 days; the PRD says "on schedule" with no number.
+Reserve release: v8.7 proposes 180 days; the PRD says "on schedule" with no number.
 
 **Proposed:** 180 days rolling, daily release, per merchant override set in the onboarding review, or the credit review (MP-Q60).
 
@@ -584,7 +585,7 @@ Decided, awaiting sign-off by: CRO. Workflow: [MP-08 Onboarding review and the o
 
 ### MP-Q61
 
-Which sectors are high risk, and what extra checks does each get? v8.1 names only gambling (MCC 7995).
+Which sectors are high risk, and what extra checks does each get? v8.7 names only gambling (MCC 7995).
 
 **Decision:** Compliance keeps one list in the risk policy, the same list the AML system scores on. At least: gambling (National Revenue Agency licence), crypto (registration or MiCA licence), online pharmacy and medicines (Bulgarian Drug Agency permit), adult content, dating, tobacco, e-cigarettes and alcohol (age checks), forex and CFDs (investment firm licence), nutraceuticals and free trials (subscription terms), travel and ticketing (credit review). Each gets a licence check where one applies, the scheme high-risk registration where Visa or Mastercard require it, a website and sales-model review, four eyes and KYB refresh every 12 months.
 
@@ -600,7 +601,7 @@ Owner: CTO. Workflow: [MP-09 Deposit, set-up and activation](workflows/MP-09-dep
 
 ### MP-Q63
 
-What happens when set-up half-fails, for example OraSYS opens the accounts but BPC keeps failing? v8.1 only says compensation and an S4 case (risk R10).
+What happens when set-up half-fails, for example OraSYS opens the accounts but BPC keeps failing? v8.7 only says compensation and an S4 case (risk R10).
 
 **Proposed:** OraSYS first, then BPC, each with an idempotency key per case. On a persistent failure the accounts stay blocked, not deleted, and an S4 case either retries or reverses: deactivate the BPC merchant if it was created, then close the empty accounts. Never active on one side only. Staff see both sides' state in the case.
 
@@ -632,8 +633,16 @@ Decided, awaiting sign-off by: Compliance. Workflow: [MP-27 Close the account](w
 
 ### MP-Q67
 
-v8.1 sends a case to MANUAL_REVIEW but never says where it goes next. What are the exits?
+v8.7 sends a case to MANUAL_REVIEW but never says where it goes next. What are the exits?
 
 **Decision:** Three: cleared (false match with four eyes, or a PEP approved by senior management after enhanced due diligence) to ONBOARDING_REVIEW; information needed to an RFI (MP-07) and back; confirmed sanctions match, false documents or suspicion to CLOSED_REJECTED, decided by the MLRO, with a report to the authorities where required. Target [5] business days.
 
 Decided, awaiting sign-off by: Compliance. Workflow: [MP-06 Company checks, identity and screening](workflows/MP-06-company-checks-identity-and-screening.md)
+
+### MP-Q68
+
+v8.7 puts API keys and payout account changes after launch: Paytinno staff do them in S4 until the BPC API covers them (questions 21 and 33). How does the merchant ask on day one?
+
+**Proposed:** The portal sends the same request either way, signed with SCA. Without the API, staff carry it out in S4 with four eyes within [1] business day and the portal shows the status. For a key, staff only trigger it: S4 asks A09 for the key and S18 shows the secret once to the merchant, so no one at Paytinno sees it (MP-Q10). When the API arrives nothing changes for merchants.
+
+Owner: CTO. Workflow: [MP-20 API keys: create, roll, revoke](workflows/MP-20-api-keys-create-roll-revoke.md)

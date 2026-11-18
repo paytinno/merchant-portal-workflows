@@ -54,14 +54,14 @@
       if (o.sla) tags.push('<span class="tg">' + esc(o.sla) + "</span>");
       if (o.sca) tags.push('<span class="tg sca">SCA</span>');
       if (o.rule) tags.push('<span class="tg rule">' + esc(o.rule) + "</span>");
-      if (o.added) tags.push('<span class="tg add">Added to v8.1</span>');
+      if (o.added) tags.push('<span class="tg add">Added to v8.7</span>');
       if (o.dec) tags.push('<a class="tg dec" href="#/questions?s=decided&q=' + esc(o.dec) + '">Decided: ' + esc(o.dec) + "</a>");
       return '<div class="row' + (o.sca ? " sca" : "") + '" style="' + cols + '">' + cells + '<div class="t">' + esc(text) + (o.api ? '<span class="api">' + esc(o.api) + "</span>" : "") +
         (o.fail ? '<span class="if">If it fails: ' + esc(o.fail) + "</span>" : "") +
         (o.gap ? '<span class="if" style="color:var(--amber)">Gap: ' + esc(o.gap) + "</span>" : "") +
         (tags.length ? '<span class="tags">' + tags.join("") + "</span>" : "") + "</div></div>";
     }).join("");
-    return '<div class="lanes">' + head + rows + '</div><div class="legend"><span><b>1</b>step, starts at the sender</span><span><i></i>call or message</span><span><i class="sca"></i>signed with SCA</span><span style="color:var(--red)">If it fails</span><span style="color:var(--amber)">Open gap in v8.1</span><span style="color:var(--green)">Decided (closes a gap)</span></div>';
+    return '<div class="lanes">' + head + rows + '</div><div class="legend"><span><b>1</b>step, starts at the sender</span><span><i></i>call or message</span><span><i class="sca"></i>signed with SCA</span><span style="color:var(--red)">If it fails</span><span style="color:var(--amber)">Open gap in v8.7</span><span style="color:var(--green)">Decided (closes a gap)</span></div>';
   }
 
   function qcard(q, withWf) {
@@ -84,7 +84,7 @@
       "<section><h2>Steps</h2>" + diagram(w) + "</section>" +
       '<div class="cols"><section><h2>States</h2>' + (w.states.length ? table([{ h: "From", v: s => '<span class="mono">' + esc(s[0] || "start") + "</span>" }, { h: "When", v: s => esc(s[1]) }, { h: "To", v: s => '<span class="mono">' + esc(s[2]) + "</span>" }], w.states) : '<p class="empty">No states of its own.</p>') + "</section>" +
       "<section><h2>Rules</h2>" + (w.rules.length ? '<ul class="list">' + w.rules.map(r => '<li><span class="what">' + esc(r) + "</span></li>").join("") + "</ul>" : '<p class="empty">None.</p>') + "</section></div>" +
-      listBox("Changes v8.1 needs", w.amends, "For the CTO's next version of the architecture (v8.2).") +
+      listBox("Changes v8.7 needs", w.amends, "For the CTO's next version of the architecture.") +
       listBox("Depends on", w.deps, "Confirmations needed from outside Paytinno. Not design gaps.") +
       "<section><h2>Open questions</h2>" + (w.questions.length ? '<div class="qs">' + w.questions.map(q => qcard(Object.assign({ wf: w.id }, q))).join("") + "</div>" : '<p class="empty">None.</p>') + "</section>";
   }
@@ -96,10 +96,10 @@
       const all = WF.list; const qs = WF.questions().filter(x => !x.decided);
       const used = Object.keys(WF.STATUS).filter(k => all.some(w => w.status === k));
       return {
-        sub: "The intended workflows behind the Paytinno merchant portal (S3), for review with the CTO's team before build. Each says what the merchant does, which systems take part, what each call is, and what is still open. The badge on each row says how it relates to the CTO's architecture v8.1.",
+        sub: "The intended workflows behind the Paytinno merchant portal (S3), for review with the CTO's team before build. Each says what the merchant does, which systems take part, what each call is, and what is still open. The badge on each row says how it relates to the CTO's architecture v8.7.",
         tools: '<a class="btn" href="#/spec">Full spec to print</a>',
         html: strip([["Workflows", String(all.length)]].concat(used.map(k => [WF.STATUS[k][1], String(all.filter(w => w.status === k).length), k === "part" ? "amber" : ""])).concat([["Open questions", String(qs.length), "amber"], ["Decided, awaiting sign-off", String(WF.questions().length - qs.length)]])) +
-          '<p class="small muted mb">' + used.map(k => wfb(k) + " " + esc({ v81: "as v8.1 writes it", part: "in v8.1, gaps still open", amended: "in v8.1, every gap closed by a decision", new: "not in v8.1, needs the CTO team's agreement" }[k])).join("&nbsp;&nbsp; ") + "</p>" +
+          '<p class="small muted mb">' + used.map(k => wfb(k) + " " + esc({ v81: "as v8.7 writes it", part: "in v8.7, gaps still open", amended: "in v8.7, every gap closed by a decision", new: "not in v8.7, needs the CTO team's agreement" }[k])).join("&nbsp;&nbsp; ") + "</p>" +
           WF.AREAS.map(a => { const ws = all.filter(w => w.area === a); if (!ws.length) return ""; return "<section><h2>" + esc(a) + "</h2>" + table([
             { h: "ID", v: w => '<span class="wfid">' + w.id + "</span>" },
             { h: "Workflow", v: w => '<a href="#/workflow/' + w.id + '">' + esc(w.title) + "</a>" + ((w.segments || []).length ? " " + forTypes(w) : "") + '<span class="sub">' + esc(w.summary) + "</span>" },
@@ -134,7 +134,7 @@
       const rows = all.filter(x => inS(x) && (!own || x.owner === own));
       const link = (k, v) => { const n = new URLSearchParams(q); n.delete("q"); if (v) n.set(k, v); else n.delete(k); if (k === "s") n.delete("o"); return "#/questions?" + n.toString(); };
       return {
-        sub: s === "decided" ? "Answers adopted as the design. Each still needs sign-off by its owner, who can change it; tell Claude and the workflows are updated." : "Decisions the portal still needs. Each has a proposed answer to agree or change. CTO question numbers refer to the v8.1 question list.",
+        sub: s === "decided" ? "Answers adopted as the design. Each still needs sign-off by its owner, who can change it; tell Claude and the workflows are updated." : "Decisions the portal still needs. Each has a proposed answer to agree or change. CTO question numbers refer to the v8.7 question list.",
         html: '<div class="tabs">' + [["open", "Open"], ["decided", "Decided, awaiting sign-off"], ["all", "All"]].map(([k, l]) => '<a href="' + link("s", k === "open" ? "" : k) + '"' + (s === k ? ' aria-current="page"' : "") + ">" + l + "<span>" + all.filter(x => k === "all" || (k === "decided" ? !!x.decided : !x.decided)).length + "</span></a>").join("") + "</div>" +
           '<div class="flt"><span class="small muted">Owner</span>' + [""].concat(owners).map(o => '<a class="chip" href="' + link("o", o) + '"' + (own === o ? ' style="border-color:var(--accent);color:var(--ink)"' : "") + ">" + esc(o || "Everyone") + "</a>").join(" ") + "</div>" +
           (rows.length ? '<div class="qs">' + rows.map(x => qcard(x, true)).join("") + "</div>" : '<p class="empty">None.</p>'),
@@ -143,13 +143,13 @@
     }
   };
   pages.changes = {
-    nav: "Changes to v8.1", icon: "changes", title: "Changes to v8.1",
+    nav: "Changes to v8.7", icon: "changes", title: "Changes to v8.7",
     badge: () => WF.list.reduce((n, w) => n + (w.amends || []).length, 0),
     render() {
       const ws = WF.list.filter(w => (w.amends || []).length || (w.deps || []).length);
       const deps = []; WF.list.forEach(w => (w.deps || []).forEach(d => deps.push([w, d])));
       return {
-        sub: "What the CTO's architecture needs to change (v8.2) so it matches the decided workflows. Each line names the v8.1 workflow or step and the decision behind it.",
+        sub: "What the CTO's architecture needs to change (in its next version) so it matches the decided workflows. Each line names the v8.7 workflow or step and the decision behind it.",
         html: ws.map(w => (w.amends || []).length ? '<section><h2><a href="#/workflow/' + w.id + '">' + w.id + " " + esc(w.title) + "</a> " + wfb(w.status) + '</h2><ul class="list">' + w.amends.map(t => '<li><span class="what">' + esc(t) + "</span></li>").join("") + "</ul></section>" : "").join("") +
           (deps.length ? '<section><h2>Depends on</h2><p class="small muted mb">Confirmations needed from outside Paytinno.</p><ul class="list">' + deps.map(([w, d]) => '<li><span class="what">' + esc(d) + '</span><a class="wfid" href="#/workflow/' + w.id + '">' + w.id + "</a></li>").join("") + "</ul></section>" : "")
       };
@@ -162,7 +162,7 @@
       const cell = (p, r) => { if (!p.roles.includes(r)) return '<span class="no">No</span>'; let t = '<span class="y">Yes</span>'; if (p.sca) t += ' <span class="s">SCA</span>'; if (p.second) t += ' <span class="a">' + (p.second.from ? "2nd from " + eur(p.second.from) : "2nd") + "</span>"; return t; };
       const L = CONFIG.LIMITS;
       return {
-        sub: "Proposed (MP-Q01). v8.1 names only ONBOARDING_APPLICANT and MERCHANT_ADMIN. Roles live in S6; S18 checks them on every call. The screens hide what a role cannot do, but S18 is the control.",
+        sub: "Proposed (MP-Q01). v8.7 names only ONBOARDING_APPLICANT and MERCHANT_ADMIN. Roles live in S6; S18 checks them on every call. The screens hide what a role cannot do, but S18 is the control.",
         html: '<section><h2>Who can do what</h2>' + table([{ h: "Action", v: x => esc(x[1].label) + '<span class="sub mono">' + esc(x[0]) + "</span>" + (x[1].src ? '<span class="sub">' + esc(x[1].src) + "</span>" : "") }].concat(R.map(r => ({ h: CONFIG.ROLES[r].label, v: x => cell(x[1], r) }))), Object.entries(CONFIG.PERMS), { cls: "matrix" }) + '<p class="note"><span class="s">SCA</span> the person signs with a passkey (dynamic linking). <span class="a">2nd</span> a second person approves (MP-23), always or from the amount shown.</p></section>' +
           '<div class="cols"><section><h2>Roles</h2>' + table([{ h: "Role", v: r => "<b>" + esc(CONFIG.ROLES[r].label) + '</b><span class="sub mono">' + CONFIG.ROLES[r].code + "</span>" }, { h: "For", v: r => esc(CONFIG.ROLES[r].desc) }], R) + "</section>" +
           "<section><h2>Default limits per person</h2>" + table([{ h: "Role", v: r => esc(CONFIG.ROLES[r].label) }, { h: "Refund", r: 1, v: r => eur(CONFIG.MANDATE[r].refund) }, { h: "Payout", r: 1, v: r => CONFIG.MANDATE[r].payout ? eur(CONFIG.MANDATE[r].payout) : "None" }], Object.keys(CONFIG.MANDATE)) + '<p class="note">An admin can lower a person\'s limit. Paytinno sets the business\'s maximum in the onboarding review (MP-Q05).</p>' +
@@ -186,13 +186,13 @@
     render() {
       const qs = WF.questions();
       return {
-        sub: "Paytinno merchant portal (S3): workflows for review, version " + WF.VERSION + ". Based on CTO architecture v8.1, PRD WF11 Acquiring v6 and the admin-portal message spec v0.1.",
+        sub: "Paytinno merchant portal (S3): workflows for review, version " + WF.VERSION + ". Based on CTO architecture v8.7, PRD WF11 Acquiring v6 and the admin-portal message spec v0.1.",
         tools: '<button class="btn primary" type="button" onclick="window.print()">Print or save as PDF</button>',
         html: '<section><h2>Contents</h2><div class="toc card">' + WF.list.map(w => '<a href="#/spec" data-go="' + w.id + '"><span class="wfid">' + w.id + '</span><span class="tt">' + esc(w.title) + "</span> " + wfb(w.status) + "</a>").join("") + "</div></section>" +
           WF.list.map(w => '<section id="s-' + w.id + '" style="margin-top:36px"><h2 style="font-size:17px">' + w.id + " " + esc(w.title) + '</h2><p class="mb">' + esc(w.summary) + "</p>" + detail(w, true) + "</section>").join("") +
           '<section style="margin-top:36px"><h2 style="font-size:17px">Open questions (' + qs.filter(x => !x.decided).length + ')</h2><div class="qs">' + qs.filter(x => !x.decided).map(x => qcard(x, true)).join("") + "</div></section>" +
           '<section style="margin-top:36px"><h2 style="font-size:17px">Decided, awaiting sign-off (' + qs.filter(x => x.decided).length + ')</h2><div class="qs">' + qs.filter(x => x.decided).map(x => qcard(x, true)).join("") + "</div></section>" +
-          '<section style="margin-top:36px"><h2 style="font-size:17px">Changes v8.1 needs</h2>' + WF.list.filter(w => (w.amends || []).length).map(w => "<h3 style=\"font-size:14px;margin:14px 0 6px\">" + w.id + " " + esc(w.title) + "</h3><ul class=\"plain\">" + w.amends.map(t => "<li>" + esc(t) + "</li>").join("") + "</ul>").join("") + "</section>",
+          '<section style="margin-top:36px"><h2 style="font-size:17px">Changes v8.7 needs</h2>' + WF.list.filter(w => (w.amends || []).length).map(w => "<h3 style=\"font-size:14px;margin:14px 0 6px\">" + w.id + " " + esc(w.title) + "</h3><ul class=\"plain\">" + w.amends.map(t => "<li>" + esc(t) + "</li>").join("") + "</ul>").join("") + "</section>",
         after(root) { root.querySelectorAll("[data-go]").forEach(a => a.onclick = e => { e.preventDefault(); document.getElementById("s-" + a.dataset.go).scrollIntoView(); }); }
       };
     }

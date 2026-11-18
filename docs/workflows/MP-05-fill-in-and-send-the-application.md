@@ -8,7 +8,7 @@ Six steps: company, people, business, documents, payout account, review. Saved a
 
 | | |
 |---|---|
-| Status | v8.1 with gaps |
+| Status | v8.7 with gaps |
 | For | Every merchant |
 | Area | Onboarding |
 | Source | WF02b steps 1 to 4; admin spec application.submitted |
@@ -30,16 +30,17 @@ sequenceDiagram
   Note over MER,S4: Draft
   MER->>S3: Enters the company ID (EIK).
   S3->>S18: Looks up the company in the Commercial<br/>Register, through the KYB connector's lookup,<br/>to fill in name, form, address and managers.<br/>Pre-filled fields are marked and kept as the<br/>register gave them.
-  S3->>S18: Saves the draft after every step. S18 only<br/>routes, S6 keeps the draft as an<br/>OnboardingCase in state DRAFT, for the person<br/>in the token.
-  S18->>S6: Stores the draft. Kept [90] days without<br/>changes, then deleted with its documents.
-  MER->>S3: People: the representative and the legal<br/>basis, every owner of 25% or more, managers.<br/>Each becomes a personRef. Only the<br/>representative does an IDV check (MP-06),<br/>owners are screened from these data.
+  S3->>S18: Saves the draft after every step, in the<br/>signed-in session with right<br/>application:create. Nothing is kept in the<br/>browser.
+  S18->>S6: First save opens the OnboardingCase in DRAFT,<br/>bound to the sub of the session. S6 keeps the<br/>company answers, only the person who created<br/>the draft can read or change it.
+  MER->>S3: People: the representative and the legal<br/>basis, every owner of 25% or more, managers,<br/>PEPs. The portal turns these answers into a<br/>questionnaire stored as a document in the KYC<br/>document store (D-03), not in S6's tables.<br/>Only the representative does an IDV check<br/>(MP-06), owners are screened from these data.
+  S6->>S6: A draft untouched for [90] days is deleted<br/>with its documents.
   MER->>S3: Business: what it sells (MCC), websites,<br/>channels, expected monthly volume, average and<br/>largest payment, customer countries, whether<br/>the company is a micro-enterprise.
   MER->>S3: Uploads documents to the vault. PDF, JPG or<br/>PNG up to 10 MB, scanned for malware.
   MER->>S3: Payout account: IBAN, holder name, bank<br/>statement.
   MER->>S3: Review and three statements: information is<br/>true, I may act for the company, I accept the<br/>merchant terms.
   Note over MER,S4: Send
-  S3->>S18: Sends the application. Needs permission<br/>application:create.
-  S18->>S6: Opens the case for the person in the token.<br/>The representative in the body is data, not<br/>proof of who applies.
+  S3->>S18: Sends the application. Needs permission<br/>application:create (role ONBOARDING_APPLICANT<br/>or a merchant admin). The questionnaire is<br/>already saved.
+  S18->>S6: The case moves from DRAFT to STARTED with<br/>version 1 of the application, which never<br/>changes, checks and decisions point to it. S18<br/>passes {issuer, sub}, the representative in<br/>the body is data, not proof of who applies.
   S6->>S6: Creates the customer ID for the company, links<br/>the person and the owners. State STARTED.
   S6->>S4: The application appears in the admin. Until S6<br/>exists, the admin stands in for it.
   S4->>S3: Status line STARTED.
@@ -52,19 +53,20 @@ sequenceDiagram
 | | | | **Draft** | | |
 | 1 | Merchant (user) | Portal (S3) | Enters the company ID (EIK). |  |  |
 | 2 | Portal (S3) | Gateway, BFF (S18) | Looks up the company in the Commercial Register, through the KYB connector's lookup, to fill in name, form, address and managers. Pre-filled fields are marked and kept as the register gave them. | `GET /v1/registry/companies/{eik}` | **If it fails:** not found: the applicant types it<br>**Decided:** [MP-Q15](../open-questions.md#mp-q15) |
-| 3 | Portal (S3) | Gateway, BFF (S18) | Saves the draft after every step. S18 only routes; S6 keeps the draft as an OnboardingCase in state DRAFT, for the person in the token. | `PUT /v1/merchants/applications/drafts/{draftId} → S6` | **Decided:** [MP-Q16](../open-questions.md#mp-q16) |
-| 4 | Gateway, BFF (S18) | Onboarding (S6) | Stores the draft. Kept [90] days without changes, then deleted with its documents. |  | **Decided:** [MP-Q16](../open-questions.md#mp-q16) |
-| 5 | Merchant (user) | Portal (S3) | People: the representative and the legal basis; every owner of 25% or more; managers. Each becomes a personRef. Only the representative does an IDV check (MP-06); owners are screened from these data. |  | Rule: Owners listed must explain 100% of ownership or say why not<br>**Decided:** [MP-Q17](../open-questions.md#mp-q17) |
-| 6 | Merchant (user) | Portal (S3) | Business: what it sells (MCC), websites, channels, expected monthly volume, average and largest payment, customer countries, whether the company is a micro-enterprise. |  | Rule: Micro-enterprise status sets the notice period for tariff changes (MP-19)<br>**Decided:** [MP-Q33](../open-questions.md#mp-q33) |
-| 7 | Merchant (user) | Portal (S3) | Uploads documents to the vault. PDF, JPG or PNG up to 10 MB, scanned for malware. | `POST /v1/documents (multipart) → {docRef}` | Rule: Documents stay in the vault; the admin sees references only |
-| 8 | Merchant (user) | Portal (S3) | Payout account: IBAN, holder name, bank statement. |  | Rule: Checked in MP-15 rules: in the merchant's name |
-| 9 | Merchant (user) | Portal (S3) | Review and three statements: information is true; I may act for the company; I accept the merchant terms. |  |  |
+| 3 | Portal (S3) | Gateway, BFF (S18) | Saves the draft after every step, in the signed-in session with right application:create. Nothing is kept in the browser. | `PUT /v1/merchants/applications/drafts/{draftId} → S6` | WF02b 1 |
+| 4 | Gateway, BFF (S18) | Onboarding (S6) | First save opens the OnboardingCase in DRAFT, bound to the sub of the session. S6 keeps the company answers; only the person who created the draft can read or change it. |  | WF02b 1 |
+| 5 | Merchant (user) | Portal (S3) | People: the representative and the legal basis; every owner of 25% or more; managers; PEPs. The portal turns these answers into a questionnaire stored as a document in the KYC document store (D-03), not in S6's tables. Only the representative does an IDV check (MP-06); owners are screened from these data. |  | WF02b 1<br>Rule: Owners listed must explain 100% of ownership or say why not<br>**Decided:** [MP-Q17](../open-questions.md#mp-q17) |
+| 6 | Onboarding (S6) | Onboarding (S6) | A draft untouched for [90] days is deleted with its documents. |  | **Open gap:** The period is question DC-12 in v8.7 (DPO and MLRO)<br>**Decided:** [MP-Q16](../open-questions.md#mp-q16) |
+| 7 | Merchant (user) | Portal (S3) | Business: what it sells (MCC), websites, channels, expected monthly volume, average and largest payment, customer countries, whether the company is a micro-enterprise. |  | Rule: Micro-enterprise status sets the notice period for tariff changes (MP-19)<br>**Decided:** [MP-Q33](../open-questions.md#mp-q33) |
+| 8 | Merchant (user) | Portal (S3) | Uploads documents to the vault. PDF, JPG or PNG up to 10 MB, scanned for malware. | `POST /v1/documents (multipart) → {docRef}` | Rule: Documents stay in the vault; the admin sees references only |
+| 9 | Merchant (user) | Portal (S3) | Payout account: IBAN, holder name, bank statement. |  | Rule: Checked in MP-15 rules: in the merchant's name |
+| 10 | Merchant (user) | Portal (S3) | Review and three statements: information is true; I may act for the company; I accept the merchant terms. |  |  |
 | | | | **Send** | | |
-| 10 | Portal (S3) | Gateway, BFF (S18) | Sends the application. Needs permission application:create. | `POST /v1/merchants/applications {legalName, eik, representativeRole, ubos[], mcc, expectedVolume, channels[], documents[]}` | WF02b 2<br>Time: 2 s<br>**If it fails:** 401, 403, 4xx |
-| 11 | Gateway, BFF (S18) | Onboarding (S6) | Opens the case for the person in the token. The representative in the body is data, not proof of who applies. |  | WF02b 3 |
-| 12 | Onboarding (S6) | Onboarding (S6) | Creates the customer ID for the company; links the person and the owners. State STARTED. |  | WF02b 4 |
-| 13 | Onboarding (S6) | Admin (S4) | The application appears in the admin. Until S6 exists, the admin stands in for it. | `webhook application.submitted` | admin spec 6<br>**Open gap:** When does S6 exist, and how do cases move from the admin to it? (MP-Q64) |
-| 14 | Admin (S4) | Portal (S3) | Status line STARTED. | `POST /admin/v1/applications/{appId}/status` | admin spec 5.1 |
+| 11 | Portal (S3) | Gateway, BFF (S18) | Sends the application. Needs permission application:create (role ONBOARDING_APPLICANT or a merchant admin). The questionnaire is already saved. | `POST /v1/merchants/applications {legalName, eik, mcc, expectedVolume, channels[], …company answers}` | WF02b 2<br>Time: 2 s<br>**If it fails:** 401, 403, 4xx |
+| 12 | Gateway, BFF (S18) | Onboarding (S6) | The case moves from DRAFT to STARTED with version 1 of the application, which never changes; checks and decisions point to it. S18 passes {issuer, sub}; the representative in the body is data, not proof of who applies. |  | WF02b 3<br>**If it fails:** no draft or questionnaire: refused |
+| 13 | Onboarding (S6) | Onboarding (S6) | Creates the customer ID for the company; links the person and the owners. State STARTED. |  | WF02b 4 |
+| 14 | Onboarding (S6) | Admin (S4) | The application appears in the admin. Until S6 exists, the admin stands in for it. | `webhook application.submitted` | admin spec 6<br>**Open gap:** When does S6 exist, and how do cases move from the admin to it? (MP-Q64) |
+| 15 | Admin (S4) | Portal (S3) | Status line STARTED. | `POST /admin/v1/applications/{appId}/status` | admin spec 5.1 |
 
 ## States
 
@@ -94,12 +96,13 @@ stateDiagram-v2
 - No acceptance before the whole onboarding is done.
 - Sales do not send applications for merchants at launch.
 - The applicant can withdraw until a decision is made.
+- One sent version per application; it is frozen (v8.5).
 
-## Changes v8.1 needs
+## Changes v8.7 needs
 
-For the CTO's next version of the architecture (v8.2).
+For the CTO's next version of the architecture.
 
-- WF02b states: add DRAFT before STARTED, kept by S6 for [90] days (MP-Q16).
+- DC-12: keep drafts not sent for [90] days, then delete them with their documents (MP-Q16).
 - WF02b 1: Commercial Register pre-fill through the KYB connector's lookup (MP-Q15).
 - WF02b 1: ask whether the company is a micro-enterprise; S6 keeps it for tariff notices (MP-Q33).
 - WF02b 5: IDV check for the representative only; owners screened from data, IDV for owners only when high risk or the data disagree (MP-Q17).
@@ -116,15 +119,15 @@ Decided, awaiting sign-off by: CTO
 
 ### MP-Q16
 
-Where is the draft kept before it is sent? v8.1 starts the case only at submission.
+Where is the draft kept before it is sent, and for how long? v8.1 started the case only at submission. v8.5 adopted the DRAFT state in S6; the period is DC-12.
 
-**Decision:** Draft in S6 as an OnboardingCase in state DRAFT, keyed by person, kept [90] days. S18 only routes (it holds no business logic). Documents uploaded to the draft are deleted with it.
+**Decision:** Draft in S6 as an OnboardingCase in state DRAFT, bound to the person. Kept [90] days untouched, then deleted with its documents. Our answer to DC-12.
 
-Decided, awaiting sign-off by: CTO
+Decided, awaiting sign-off by: DPO and MLRO
 
 ### MP-Q17
 
-Who must do an identity check: only the representative (v8.1), or every owner (the design prototype)?
+Who must do an identity check: only the representative (v8.7), or every owner (the design prototype)?
 
 **Decision:** Representative always. Owners are screened from data; an IDV check for owners only for high-risk merchants or when the register and the declaration disagree.
 

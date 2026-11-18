@@ -81,7 +81,7 @@ stateDiagram-v2
 
 ### MP-Q27
 
-Reserve release: v8.1 proposes 180 days; the PRD says "on schedule" with no number.
+Reserve release: v8.7 proposes 180 days; the PRD says "on schedule" with no number.
 
 **Proposed:** 180 days rolling, daily release, per merchant override set in the onboarding review, or the credit review (MP-Q60).
 

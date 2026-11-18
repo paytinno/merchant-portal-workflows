@@ -8,7 +8,7 @@ One sender, one signature, one retry policy: Paytinno sends every event through 
 
 | | |
 |---|---|
-| Status | v8.1, gaps closed |
+| Status | v8.7, gaps closed |
 | For | Every merchant |
 | Area | Developers |
 | Source | WF10 3 (BPC webhooks); WF21 (merchant notices through Q5, A07, Q4); PRD WF11 (chargeback webhooks through S17); module spec v7.1 |
@@ -85,13 +85,13 @@ stateDiagram-v2
 - Event IDs are unique; resends keep the ID.
 - Payment events from Paytinno follow the core journal, so they can arrive after the gateway's checkout callback.
 
-## Changes v8.1 needs
+## Changes v8.7 needs
 
-For the CTO's next version of the architecture (v8.2).
+For the CTO's next version of the architecture.
 
 - WF10 3 and PRD WF11: all merchant webhooks come from Paytinno through S17 with one signature (X-Paytinno-Signature) and one retry policy: backoff for 24 h, then pull through GET /v1/events. Replaces the PRD's "once a day, 3 attempts" (MP-Q34).
 - WF10 3: the portal does not register webhooks at BPC. Only the per-order checkout callback stays with the BPC gateway.
-- WF02a 22: webhook endpoints and secrets need SCA (MP-Q11).
+- WF02c 1: webhook endpoints and secrets need SCA (MP-Q11).
 
 ## Depends on
 

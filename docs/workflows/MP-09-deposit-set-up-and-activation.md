@@ -8,7 +8,7 @@ If a deposit is required, the merchant transfers it first. Then accounts in OraS
 
 | | |
 |---|---|
-| Status | v8.1 with gaps |
+| Status | v8.7 with gaps |
 | For | Every merchant |
 | Area | Onboarding |
 | Source | WF02b steps 13 to 17; PRD WF11 AWAITING_DEPOSIT; admin spec 5.4 access.grant |
@@ -97,10 +97,13 @@ stateDiagram-v2
 
 - No acceptance until both OraSYS and BPC confirm.
 - The deposit is paid by transfer only, never taken from settlements.
+- S19 only authenticates; the MERCHANT_ADMIN role and mandates come from S6 and apply from the next request.
+- If the merchant also gets a payment account with an IBAN, the IBAN and the Verification of Payee name are registered as in WF01 (IF34).
+- The decision record stays in S6; the event to S23 is phase 2 (IF28).
 
-## Changes v8.1 needs
+## Changes v8.7 needs
 
-For the CTO's next version of the architecture (v8.2).
+For the CTO's next version of the architecture.
 
 - WF02b states: add AWAITING_DEPOSIT between OFFER_SENT and PROVISIONING, as PRD WF11 needs; unpaid after [30] days the offer lapses (MP-Q20).
 
@@ -124,7 +127,7 @@ Owner: CTO
 
 ### MP-Q63
 
-What happens when set-up half-fails, for example OraSYS opens the accounts but BPC keeps failing? v8.1 only says compensation and an S4 case (risk R10).
+What happens when set-up half-fails, for example OraSYS opens the accounts but BPC keeps failing? v8.7 only says compensation and an S4 case (risk R10).
 
 **Proposed:** OraSYS first, then BPC, each with an idempotency key per case. On a persistent failure the accounts stay blocked, not deleted, and an S4 case either retries or reverses: deactivate the BPC merchant if it was created, then close the empty accounts. Never active on one side only. Staff see both sides' state in the case.
 

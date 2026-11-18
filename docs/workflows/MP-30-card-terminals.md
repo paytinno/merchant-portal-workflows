@@ -105,9 +105,9 @@ stateDiagram-v2
 - Terminal payments are card-present: chip and PIN or contactless instead of 3-D Secure.
 - SoftPOS (a phone as terminal) is phase 2.
 
-## Changes v8.1 needs
+## Changes v8.7 needs
 
-For the CTO's next version of the architecture (v8.2).
+For the CTO's next version of the architecture.
 
 - WF02b 14 and the S4 module: add how a merchant orders, activates, blocks, replaces and returns terminals, and who ships and supports them.
 

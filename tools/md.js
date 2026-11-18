@@ -60,7 +60,7 @@ window.buildDocs = function () {
       n++; const o = s[3] || {}; const notes = [];
       if (o.ref) notes.push(o.ref); if (o.sla) notes.push("Time: " + o.sla); if (o.sca) notes.push("**SCA**"); if (o.rule) notes.push("Rule: " + o.rule);
       if (o.fail) notes.push("**If it fails:** " + o.fail); if (o.gap) notes.push("**Open gap:** " + o.gap);
-      if (o.dec) notes.push("**Decided:** [" + o.dec + "](../open-questions.md#" + o.dec.toLowerCase() + ")"); if (o.added) notes.push("Added to v8.1");
+      if (o.dec) notes.push("**Decided:** [" + o.dec + "](../open-questions.md#" + o.dec.toLowerCase() + ")"); if (o.added) notes.push("Added to v8.7");
       return "| " + n + " | " + cell(lane(s[0])) + " | " + cell(lane(s[1])) + " | " + cell(s[2]) + " | " + (o.api ? "`" + cell(o.api) + "`" : "") + " | " + cell(notes.join("<br>")) + " |";
     });
     files["docs/" + file(w)] = generated +
@@ -72,7 +72,7 @@ window.buildDocs = function () {
       "## Steps\n\n| # | From | To | Step | Call | Notes |\n|---|---|---|---|---|---|\n" + rows.join("\n") + "\n\n" +
       "## States\n\n" + (states(w) || "No states of its own.") + "\n\n" +
       "## Rules\n\n" + (w.rules.length ? w.rules.map(r => "- " + r).join("\n") : "None.") + "\n\n" +
-      bullets("Changes v8.1 needs", w.amends, "For the CTO's next version of the architecture (v8.2).") +
+      bullets("Changes v8.7 needs", w.amends, "For the CTO's next version of the architecture.") +
       bullets("Depends on", w.deps, "Confirmations needed from outside Paytinno. Not design gaps.") +
       "## Questions\n\n" + (w.questions.length ? w.questions.map(q => qblock(q)).join("\n") : "None.\n");
   });
@@ -80,21 +80,21 @@ window.buildDocs = function () {
   /* ---------- index ---------- */
   const qs = W.questions(); const qOpen = qs.filter(q => !q.decided), qDone = qs.filter(q => q.decided);
   const count = s => W.list.filter(w => w.status === s).length;
-  const MEANING = { v81: "As the CTO's architecture v8.1 writes it", part: "In v8.1, with gaps still open", amended: "In v8.1; every gap closed by a decision. The changes v8.1 needs are listed", new: "Not in v8.1. Needs the CTO team's agreement" };
+  const MEANING = { v81: "As the CTO's architecture v8.7 writes it", part: "In v8.7, with gaps still open", amended: "In v8.7; every gap closed by a decision. The changes v8.7 needs are listed", new: "Not in v8.7. Needs the CTO team's agreement" };
   files["docs/README.md"] = generated +
     "# Merchant portal workflows\n\n" +
     "Version " + W.VERSION + ". The intended workflows behind the Paytinno merchant portal (S3), for review with the CTO's team before build.\n\n" +
     "| Status | Meaning | Workflows |\n|---|---|---|\n" + Object.keys(W.STATUS).filter(k => count(k)).map(k => "| " + status(k) + " | " + MEANING[k] + " | " + count(k) + " |").join("\n") + "\n\n" +
-    "Also: [Questions](open-questions.md) (" + qOpen.length + " open, " + qDone.length + " decided and awaiting sign-off), [Changes to v8.1](changes-to-v8.1.md), [Merchant types](merchant-types.md), [Roles and rights](roles-and-rights.md), [Systems](systems.md), [Sources and contradictions](sources.md).\n\n" +
+    "Also: [Questions](open-questions.md) (" + qOpen.length + " open, " + qDone.length + " decided and awaiting sign-off), [Changes to v8.7](changes-to-v8.7.md), [Merchant types](merchant-types.md), [Roles and rights](roles-and-rights.md), [Systems](systems.md), [Sources and contradictions](sources.md).\n\n" +
     W.AREAS.map(a => { const ws = W.list.filter(w => w.area === a); return ws.length ? "## " + a + "\n\n| ID | Workflow | Status | Source | Steps | Questions |\n|---|---|---|---|---|---|\n" + ws.map(w => "| " + w.id + " | [" + cell(w.title) + "](" + file(w) + ")" + ((w.segments || []).length ? " *(only: " + w.segments.map(k => W.SEGMENTS[k][0]).join(", ") + ")*" : "") + "<br>" + cell(w.summary) + " | " + status(w.status) + " | " + cell(w.source) + " | " + steps(w).length + " | " + w.questions.length + " |").join("\n") + "\n" : ""; }).join("\n");
 
   /* ---------- open questions ---------- */
   const qtable = list => "| ID | Question | Owner | Workflow |\n|---|---|---|---|\n" + list.map(q => { const w = W.byId(q.wf); return "| [" + q.id + "](#" + q.id.toLowerCase() + ") | " + cell(q.q) + " | " + q.owner + " | [" + q.wf + "](" + file(w) + ") |"; }).join("\n") + "\n\n";
   const byOwner = list => "By owner: " + [...new Set(list.map(q => q.owner))].sort().map(o => o + " " + list.filter(q => q.owner === o).length).join(", ") + ".\n\n";
   files["docs/open-questions.md"] = generated +
-    "# Questions\n\n[All workflows](README.md)\n\n" + qOpen.length + " open, " + qDone.length + " decided and awaiting sign-off. CTO question numbers refer to the v8.1 question list.\n\n" +
+    "# Questions\n\n[All workflows](README.md)\n\n" + qOpen.length + " open, " + qDone.length + " decided and awaiting sign-off. CTO question numbers refer to the v8.7 question list.\n\n" +
     "## Open\n\nDecisions the portal still needs. Each has a proposed answer to agree or change.\n\n" + qtable(qOpen) + byOwner(qOpen) +
-    "## Decided, awaiting sign-off\n\nAnswers adopted as the design to close gaps in v8.1. Each owner signs off or changes it.\n\n" + qtable(qDone) + byOwner(qDone) +
+    "## Decided, awaiting sign-off\n\nAnswers adopted as the design to close gaps in v8.7. Each owner signs off or changes it.\n\n" + qtable(qDone) + byOwner(qDone) +
     "## Details\n\n" + qs.map(q => qblock(q, file(W.byId(q.wf)))).join("\n");
 
   /* ---------- merchant types ---------- */
@@ -104,10 +104,10 @@ window.buildDocs = function () {
     Object.keys(W.SEGMENTS).map(k => "| " + W.SEGMENTS[k][0] + " | " + cell(W.SEGMENTS[k][1]) + " | " + W.forSegment(k).map(w => "[" + w.id + " " + cell(w.title) + "](" + file(w) + ")").join("<br>") + " | To decide |").join("\n") +
     "\n\n" + W.list.filter(w => !(w.segments || []).length).length + " of " + W.list.length + " workflows apply to every merchant.\n";
 
-  /* ---------- changes to v8.1 ---------- */
+  /* ---------- changes to v8.7 ---------- */
   const deps = []; W.list.forEach(w => (w.deps || []).forEach(d => deps.push("- " + d + " ([" + w.id + "](" + file(w) + "))")));
-  files["docs/changes-to-v8.1.md"] = generated +
-    "# Changes to v8.1\n\n[All workflows](README.md)\n\nWhat the CTO's architecture needs to change (v8.2) so it matches the decided workflows. Each line names the v8.1 workflow or step and the decision behind it.\n\n" +
+  files["docs/changes-to-v8.7.md"] = generated +
+    "# Changes to v8.7\n\n[All workflows](README.md)\n\nWhat the CTO's architecture needs to change (in its next version) so it matches the decided workflows. Each line names the v8.7 workflow or step and the decision behind it.\n\n" +
     W.list.filter(w => (w.amends || []).length).map(w => "## [" + w.id + " " + w.title + "](" + file(w) + ")\n\n" + w.amends.map(t => "- " + t).join("\n") + "\n").join("\n") +
     (deps.length ? "\n## Depends on\n\nConfirmations needed from outside Paytinno.\n\n" + deps.join("\n") + "\n" : "");
 
@@ -115,7 +115,7 @@ window.buildDocs = function () {
   const R = Object.keys(C.ROLES);
   const rc = (p, r) => { if (!p.roles.includes(r)) return "No"; const t = ["Yes"]; if (p.sca) t.push("SCA"); if (p.second) t.push(p.second.from ? "2nd from " + eur(p.second.from) : "2nd"); return t.join(", "); };
   files["docs/roles-and-rights.md"] = generated +
-    "# Roles and rights\n\n[All workflows](README.md)\n\nProposed (MP-Q01). v8.1 names only ONBOARDING_APPLICANT and MERCHANT_ADMIN. Roles live in S6; S18 checks them on every call. The screens hide what a role cannot do, but S18 is the control.\n\n" +
+    "# Roles and rights\n\n[All workflows](README.md)\n\nProposed (MP-Q01). v8.7 names only ONBOARDING_APPLICANT and MERCHANT_ADMIN. Roles live in S6; S18 checks them on every call. The screens hide what a role cannot do, but S18 is the control.\n\n" +
     "## Roles\n\n| Role | Code | For |\n|---|---|---|\n" + R.map(r => "| " + C.ROLES[r].label + " | `" + C.ROLES[r].code + "` | " + cell(C.ROLES[r].desc) + " |").join("\n") + "\n\n" +
     "## Who can do what\n\nSCA: the person signs with a passkey (dynamic linking). 2nd: a second person approves (MP-23), always or from the amount shown.\n\n" +
     "| Action | " + R.map(r => C.ROLES[r].label).join(" | ") + " | Source |\n|---|" + R.map(() => "---").join("|") + "|---|\n" +
@@ -127,7 +127,7 @@ window.buildDocs = function () {
     "## Application status texts\n\nThe portal shows its own fixed text for each state, never free text from staff (MP-Q09, no tipping off).\n\n| State | Label | Text |\n|---|---|---|\n" + C.APP_STATES.map(s => "| `" + s.k + "` | " + s.label + " | " + cell(s.text) + " |").join("\n") + "\n";
 
   /* ---------- systems ---------- */
-  files["docs/systems.md"] = generated + "# Systems in the diagrams\n\n[All workflows](README.md)\n\nNames from the CTO's architecture v8.1. A01 and A05 are client libraries in S18 and S6; A09 is the BPC API library, which never writes the ledger.\n\n| Code | System | v8.1 module |\n|---|---|---|\n" +
+  files["docs/systems.md"] = generated + "# Systems in the diagrams\n\n[All workflows](README.md)\n\nNames from the CTO's architecture v8.7. A01 and A05 are client libraries in S18 and S6; A09 is the BPC API library, which never writes the ledger.\n\n| Code | System | v8.7 module |\n|---|---|---|\n" +
     Object.entries(C.LANES).map(([k, v]) => "| `" + k + "` | " + v[0] + " | " + v[1] + " |").join("\n") + "\n\n| System | Workflows |\n|---|---|\n" +
     Object.keys(C.LANES).map(k => "| " + C.LANES[k][0] + " | " + W.list.filter(w => lanesOf(w).includes(k)).map(w => "[" + w.id + "](" + file(w) + ")").join(", ") + " |").join("\n") + "\n";
 

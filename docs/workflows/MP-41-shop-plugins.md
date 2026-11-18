@@ -11,7 +11,7 @@ The merchant installs the plugin, makes a key for it, adds the plugin's webhook 
 | Status | Proposed |
 | For | Only Shop platforms (WooCommerce, OpenCart, CloudCart and similar). Whether each merchant type is in year-one scope is still to decide. |
 | Area | Developers |
-| Source | Not in v8.1; module spec v7.1 (sandbox certification of every merchant integration) |
+| Source | Not in v8.7; module spec v7.1 (sandbox certification of every merchant integration) |
 | Starts when | A merchant with a WooCommerce, OpenCart, CloudCart or similar shop connects it to Paytinno. |
 | Object | Plugin installation |
 | Systems | Merchant (user), Portal (S3), Gateway, BFF (S18), Shop platform (WooCommerce etc.), BPC (S10 via A09), Messages (S17) |
@@ -77,9 +77,9 @@ stateDiagram-v2
 - Plugins use the hosted page or the JS SDK; card numbers never reach the shop's server.
 - Plugin keys cannot pay out or change settings.
 
-## Changes v8.1 needs
+## Changes v8.7 needs
 
-For the CTO's next version of the architecture (v8.2).
+For the CTO's next version of the architecture.
 
 - One-pager S3 item 6 (gateway keys): add restricted keys, payments and refunds only, for plugins.
 

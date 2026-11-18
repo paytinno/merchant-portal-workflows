@@ -1,17 +1,17 @@
 # Merchant portal workflows
 
-The intended workflows behind the Paytinno merchant portal (module S3 in the CTO's architecture v8.1). They are written for review
+The intended workflows behind the Paytinno merchant portal (module S3 in the CTO's architecture v8.7). They are written for review
 with the CTO's team **before** anything is built.
 
-**Start here: [docs/README.md](docs/README.md).** It lists all 41 workflows, the questions, the changes v8.1 needs,
+**Start here: [docs/README.md](docs/README.md).** It lists all 41 workflows, the questions, the changes v8.7 needs,
 the merchant types, the roles and rights, and the sources.
 
 | Status | Meaning |
 |---|---|
-| In v8.1 | As the CTO's architecture v8.1 writes it |
-| v8.1 with gaps | In v8.1, with open questions still to answer |
-| v8.1, gaps closed | In v8.1; every gap closed by a decision that awaits its owner's sign-off |
-| Proposed | Not in v8.1. Needs the CTO team's agreement |
+| In v8.7 | As the CTO's architecture v8.7 writes it |
+| v8.7 with gaps | In v8.7, with open questions still to answer |
+| v8.7, gaps closed | In v8.7; every gap closed by a decision that awaits its owner's sign-off |
+| Proposed | Not in v8.7. Needs the CTO team's agreement |
 
 Some workflows are only for certain merchant types, for example shops with card terminals or gambling operators. Whether
 each type is in year-one scope is still to decide; see [docs/merchant-types.md](docs/merchant-types.md).
@@ -20,7 +20,7 @@ Every workflow has:
 * a sequence diagram
 * a step table: who calls whom, the API call, time limits, SCA, what happens when it fails, the decision behind a step
 * states and rules
-* the changes v8.1 needs, and what it depends on outside Paytinno
+* the changes v8.7 needs, and what it depends on outside Paytinno
 * questions, each with a proposed answer (or the decision) and an owner
 
 ## What is in this repository
@@ -68,9 +68,12 @@ open the matching screen in the prototype.
 
 ## Sources
 
-* CTO architecture v8.1 (13 Oct 2026): one-page modules, and low-level workflows WF02a, WF02b, WF10 and WF11.
-* Module specs. The file is still v7.1, and its S3 page describes the old bought portal.
-* PRD WF11 Acquiring v6 (V. Tulev, 15 Oct 2026).
+* CTO architecture v8.7 and module specs v8.7.1, including the S3 portal page (read 18 Nov 2026).
+* Low-level workflows v8.3: WF02a at v8.7, WF02b at v8.5, WF02c (SCA in the portal), WF10, WF11 and WF21.
+* PRD WF11 Acquiring v6 (15 Oct 2026).
+
+Version 0.1 of this repository was written against v8.1 (13 Oct 2026). Version 0.2 is written against v8.7; the git history
+shows what moved.
 * Admin and portal message spec v0.1 (`paytinno-admin/docs/portal-connector.md`).
 
 See [docs/sources.md](docs/sources.md) for where these sources disagree.

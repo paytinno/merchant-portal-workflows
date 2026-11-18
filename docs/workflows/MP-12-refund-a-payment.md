@@ -8,7 +8,7 @@ Checks before sending: refundable amount, open dispute, the user's mandate. SCA 
 
 | | |
 |---|---|
-| Status | v8.1, gaps closed |
+| Status | v8.7, gaps closed |
 | For | Every merchant |
 | Area | Payments |
 | Source | WF11 steps 15 to 17; PRD refund link to disputes |
@@ -63,7 +63,7 @@ sequenceDiagram
 | 10 | Gateway, BFF (S18) | Portal (S3) | Refund shown as sent; then as done when BPC confirms. |  |  |
 | 11 | Reconciliation (S13) | Reconciliation (S13) | Refunds reconciled against the journal. |  | R08 |
 | | | | **Not captured yet: cancel instead** | | |
-| 12 | Merchant (user) | Portal (S3) | Cancel on an authorised payment. Same roles as refund; no SCA because no money leaves. |  | **Decided:** [MP-Q26](../open-questions.md#mp-q26)<br>Added to v8.1 |
+| 12 | Merchant (user) | Portal (S3) | Cancel on an authorised payment. Same roles as refund; no SCA because no money leaves. |  | **Decided:** [MP-Q26](../open-questions.md#mp-q26)<br>Added to v8.7 |
 | 13 | Gateway, BFF (S18) | BPC (S10 via A09) | Reversal of the authorisation through A09. The card holder's hold is released. | `POST /v1/payments/{id}/cancel + Idempotency-Key → IF45 via A09` | **If it fails:** already captured: refused, refund instead<br>**Decided:** [MP-Q26](../open-questions.md#mp-q26) |
 
 ## States
@@ -100,9 +100,9 @@ stateDiagram-v2
 - A payment not yet captured is cancelled, not refunded.
 - The card holder sees the money in 5 to 10 business days (bank dependent).
 
-## Changes v8.1 needs
+## Changes v8.7 needs
 
-For the CTO's next version of the architecture (v8.2).
+For the CTO's next version of the architecture.
 
 - WF11 15 to 17: before the A09 call, S18 checks open disputes with S4 (MP-Q24) and funds with S21 (MP-Q25). Replaces the PRD's block in "S21a".
 - WF11: add cancelling an authorisation that is not captured, through A09 (MP-Q26).
@@ -111,7 +111,7 @@ For the CTO's next version of the architecture (v8.2).
 
 ### MP-Q24
 
-Where does the "no refund while disputed" check run? The PRD says S21a; in v8.1 portal refunds go S18 to A09 to BPC.
+Where does the "no refund while disputed" check run? The PRD says S21a; in v8.7 portal refunds go S18 to A09 to BPC.
 
 **Decision:** S18 asks S4 synchronously (DisputeCase by payment) before the A09 call. S4 also re-checks on every stage change (PRD).
 

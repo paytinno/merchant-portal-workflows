@@ -11,7 +11,7 @@ Paid from the operator's available balance to the card the player deposited with
 | Status | Proposed |
 | For | Only Gambling operators (MCC 7995, licensed by the National Revenue Agency). Whether each merchant type is in year-one scope is still to decide. |
 | Area | Money |
-| Source | WF02b 10 (extra sector checks); the design boards (payout approvals for a gambling operator); not in v8.1 |
+| Source | WF02b 10 (extra sector checks); the design boards (payout approvals for a gambling operator); not in v8.7 |
 | Starts when | A gambling operator pays a player's winnings or withdrawal. |
 | Object | Player payout (S21): a card payout through BPC or a SEPA transfer |
 | Systems | Merchant (user), Portal (S3), Gateway, BFF (S18), Admin (S4), Onboarding (S6), Identity, SCA (S19), Core (S21, S5), BPC (S10 via A09), Outside (bank, scheme), IDV, AML (S11 via A01), Messages (S17) |
@@ -112,12 +112,12 @@ stateDiagram-v2
 - Player data stays minimal: a player reference and a masked card or IBAN.
 - Before go-live: the operator's licence from the National Revenue Agency is checked, and the operator is registered with Visa and Mastercard as a high-risk merchant category.
 
-## Changes v8.1 needs
+## Changes v8.7 needs
 
-For the CTO's next version of the architecture (v8.2).
+For the CTO's next version of the architecture.
 
 - WF02b 10: gambling is on the high-risk sector list (MP-Q61): the National Revenue Agency licence check and the Visa and Mastercard high-risk registration before activation.
-- Add a player payout workflow to v8.1: funded from the merchant balance, card payouts through A09 or SEPA through NC3, with the operator's own review rules.
+- Add a player payout workflow to v8.7: funded from the merchant balance, card payouts through A09 or SEPA through NC3, with the operator's own review rules.
 
 ## Depends on
 

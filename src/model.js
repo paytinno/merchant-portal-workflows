@@ -1,7 +1,7 @@
 /* Roles, permissions, limits, application status texts and the systems (lanes) behind the merchant portal.
    Part of the intended design: the merchant-portal prototype runs on this file too.
    Values in [brackets] are proposals for the CTO's review; nothing here is agreed yet.
-   Role names ONBOARDING_APPLICANT and MERCHANT_ADMIN come from WF02a/WF02b (v8.1); the others are proposed (MP-Q01). */
+   Role names ONBOARDING_APPLICANT and MERCHANT_ADMIN come from WF02a/WF02b (v8.7); the others are proposed (MP-Q01). */
 window.CONFIG = (function () {
   "use strict";
 
@@ -55,7 +55,7 @@ window.CONFIG = (function () {
     support: { refund: 100,  payout: 0 }
   };
 
-  /* systems (lanes in the workflow diagrams), CTO architecture v8.1 names */
+  /* systems (lanes in the workflow diagrams), CTO architecture v8.7 names */
   const LANES = {
     MER:  ["Merchant", "user"],
     S3:   ["Portal", "S3"],

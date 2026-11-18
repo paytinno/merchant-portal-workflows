@@ -99,11 +99,11 @@ stateDiagram-v2
 - Kept [5] years.
 - A complaint never moves a dispute deadline or an RFI due date.
 
-## Changes v8.1 needs
+## Changes v8.7 needs
 
-For the CTO's next version of the architecture (v8.2).
+For the CTO's next version of the architecture.
 
-- Add a merchant complaint workflow to v8.1: S4 complaint cases with a 15 business day timer, a holding reply up to 35, Compliance approval and a complaints register (PSD2 Art. 101).
+- Add a merchant complaint workflow to v8.7: S4 complaint cases with a 15 business day timer, a holding reply up to 35, Compliance approval and a complaints register (PSD2 Art. 101).
 
 ## Questions
 

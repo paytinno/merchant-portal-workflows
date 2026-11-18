@@ -11,7 +11,7 @@ The first payment is made by the customer, with 3-D Secure and consent to save t
 | Status | Proposed |
 | For | Only Subscriptions and saved cards (Customers who pay again without typing their card). Whether each merchant type is in year-one scope is still to decide. |
 | Area | Payments |
-| Source | PRD WF11 (paymentOptionId, the BPC gateway token); not in v8.1 |
+| Source | PRD WF11 (paymentOptionId, the BPC gateway token); not in v8.7 |
 | Starts when | A customer saves a card at checkout, or a merchant charges a subscription. |
 | Object | Saved card (BPC token), merchant-initiated payment |
 | Systems | Card holder (customer), BPC (S10 via A09), Merchant (user), Portal (S3), Gateway, BFF (S18), Messages (S17) |
@@ -86,9 +86,9 @@ stateDiagram-v2
 - Subscriptions follow the schemes' rules on free trials and reminders.
 - Deleting a saved card refunds nothing.
 
-## Changes v8.1 needs
+## Changes v8.7 needs
 
-For the CTO's next version of the architecture (v8.2).
+For the CTO's next version of the architecture.
 
 - WF10: add saved cards (stored credentials) and merchant-initiated payments: the first payment with SCA and consent, later payments referring to it, tokens visible and deletable in the portal.
 

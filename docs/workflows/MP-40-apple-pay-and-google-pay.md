@@ -11,7 +11,7 @@ On the hosted page the merchant just switches the wallets on. On its own checkou
 | Status | Proposed |
 | For | Only Own checkout (Merchants with the JS SDK on their own website). Whether each merchant type is in year-one scope is still to decide. |
 | Area | Developers |
-| Source | v8.1 names Apple Pay and Google Pay only for card issuing (push provisioning, IF03); S10 gateway |
+| Source | v8.7 names Apple Pay and Google Pay only for card issuing (push provisioning, IF03); S10 gateway |
 | Starts when | A merchant wants to offer Apple Pay or Google Pay at its checkout. |
 | Object | Wallet set-up per website |
 | Systems | Merchant (user), Portal (S3), Gateway, BFF (S18), BPC (S10 via A09), Apple, Google (wallets) |
@@ -81,11 +81,11 @@ stateDiagram-v2
 - Wallet payments are card payments: same fees, refunds and disputes.
 - Only approved websites can be added.
 
-## Changes v8.1 needs
+## Changes v8.7 needs
 
-For the CTO's next version of the architecture (v8.2).
+For the CTO's next version of the architecture.
 
-- S10 gateway: add Apple Pay and Google Pay for merchant checkouts; v8.1 mentions them only for card issuing.
+- S10 gateway: add Apple Pay and Google Pay for merchant checkouts; v8.7 mentions them only for card issuing.
 
 ## Depends on
 

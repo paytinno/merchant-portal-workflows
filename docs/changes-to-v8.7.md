@@ -1,29 +1,29 @@
 <!-- Generated from src/ by tools/build-docs.ps1. Edit src/workflows.js or src/model.js, not this file. -->
 
-# Changes to v8.1
+# Changes to v8.7
 
 [All workflows](README.md)
 
-What the CTO's architecture needs to change (v8.2) so it matches the decided workflows. Each line names the v8.1 workflow or step and the decision behind it.
+What the CTO's architecture needs to change (in its next version) so it matches the decided workflows. Each line names the v8.7 workflow or step and the decision behind it.
 
 ## [MP-02 Sign in, switch business and check rights](workflows/MP-02-sign-in-switch-business-and-check-rights.md)
 
-- WF02a 19 to 20: the portal names the business in an X-Merchant-Id header; S18 checks it against the person's merchants in S6 on every call (MP-Q07).
-- WF02a: add an idle timeout of [30] min next to the 8 h session; refresh only while active (MP-Q06).
+- WF02a 19: v8.7 says each business request carries the merchant ID; name it: an X-Merchant-Id header, checked by S18 against the person's merchants in S6 on every call (MP-Q07).
+- WF02a: session times in S18 are still open in v8.7; set [30] min idle and 8 h absolute (MP-Q06).
 
 ## [MP-03 Strong customer authentication for actions](workflows/MP-03-strong-customer-authentication-for-actions.md)
 
-- WF02a 22: add dispute Accept and Escalate (MP-Q14), webhook secret reveal or roll (MP-Q11) and account closure to the SCA list.
-- WF02a 26: replace "WF10 step 14, WF11 step 7" with the targets listed in step 8 here (MP-Q08).
+- WF02c 1: add dispute Accept and Escalate (MP-Q14), webhook secret reveal or roll (MP-Q11) and account closure to the SCA list.
+- WF02c 5: refund goes to WF11 step 16 (now right); name the WF10 targets for payout and payout account change, and add the states and failures WF02c still leaves to be written (MP-Q08).
 
 ## [MP-04 Lockout and lost passkey](workflows/MP-04-lockout-and-lost-passkey.md)
 
-- WF02a 27: without a second admin, the identity check is an IDV selfie matched to onboarding, then four eyes in S4 (MP-Q05b).
-- WF02a 27: after recovery, notify the person and every admin, and block payout account changes for [24 h].
+- WF02a 22: without a second admin, the identity check is an IDV selfie matched to onboarding, then four eyes in S4 (MP-Q05b).
+- WF02a 22: after recovery, notify the person and every admin, and block payout account changes for [24 h].
 
 ## [MP-05 Fill in and send the application](workflows/MP-05-fill-in-and-send-the-application.md)
 
-- WF02b states: add DRAFT before STARTED, kept by S6 for [90] days (MP-Q16).
+- DC-12: keep drafts not sent for [90] days, then delete them with their documents (MP-Q16).
 - WF02b 1: Commercial Register pre-fill through the KYB connector's lookup (MP-Q15).
 - WF02b 1: ask whether the company is a micro-enterprise; S6 keeps it for tariff notices (MP-Q33).
 - WF02b 5: IDV check for the representative only; owners screened from data, IDV for owners only when high risk or the data disagree (MP-Q17).
@@ -34,7 +34,7 @@ What the CTO's architecture needs to change (v8.2) so it matches the decided wor
 
 ## [MP-07 Request for information and the answer](workflows/MP-07-request-for-information-and-the-answer.md)
 
-- Add the RFI to v8.1 as a sub-flow of WF02b and of periodic reviews, as in the admin spec 5.2 (rfi.send, merchant.message).
+- Add the RFI to v8.7 as a sub-flow of WF02b and of periodic reviews, as in the admin spec 5.2 (rfi.send, merchant.message).
 - Overdue RFI: onboarding withdrawn after [30] days; for a live merchant staff decide (MP-Q18).
 
 ## [MP-08 Onboarding review and the offer](workflows/MP-08-onboarding-review-and-the-offer.md)
@@ -83,7 +83,7 @@ What the CTO's architecture needs to change (v8.2) so it matches the decided wor
 ## [MP-33 Payouts to players](workflows/MP-33-payouts-to-players.md)
 
 - WF02b 10: gambling is on the high-risk sector list (MP-Q61): the National Revenue Agency licence check and the Visa and Mastercard high-risk registration before activation.
-- Add a player payout workflow to v8.1: funded from the merchant balance, card payouts through A09 or SEPA through NC3, with the operator's own review rules.
+- Add a player payout workflow to v8.7: funded from the merchant balance, card payouts through A09 or SEPA through NC3, with the operator's own review rules.
 
 ## [MP-37 Money the merchant owes](workflows/MP-37-money-the-merchant-owes.md)
 
@@ -93,11 +93,11 @@ What the CTO's architecture needs to change (v8.2) so it matches the decided wor
 
 - WF10 3 and PRD WF11: all merchant webhooks come from Paytinno through S17 with one signature (X-Paytinno-Signature) and one retry policy: backoff for 24 h, then pull through GET /v1/events. Replaces the PRD's "once a day, 3 attempts" (MP-Q34).
 - WF10 3: the portal does not register webhooks at BPC. Only the per-order checkout callback stays with the BPC gateway.
-- WF02a 22: webhook endpoints and secrets need SCA (MP-Q11).
+- WF02c 1: webhook endpoints and secrets need SCA (MP-Q11).
 
 ## [MP-40 Apple Pay and Google Pay](workflows/MP-40-apple-pay-and-google-pay.md)
 
-- S10 gateway: add Apple Pay and Google Pay for merchant checkouts; v8.1 mentions them only for card issuing.
+- S10 gateway: add Apple Pay and Google Pay for merchant checkouts; v8.7 mentions them only for card issuing.
 
 ## [MP-41 Shop plugins](workflows/MP-41-shop-plugins.md)
 
@@ -118,11 +118,11 @@ What the CTO's architecture needs to change (v8.2) so it matches the decided wor
 
 ## [MP-32 Complaints](workflows/MP-32-complaints.md)
 
-- Add a merchant complaint workflow to v8.1: S4 complaint cases with a 15 business day timer, a holding reply up to 35, Compliance approval and a complaints register (PSD2 Art. 101).
+- Add a merchant complaint workflow to v8.7: S4 complaint cases with a 15 business day timer, a holding reply up to 35, Compliance approval and a complaints register (PSD2 Art. 101).
 
 ## [MP-36 Incident and maintenance notices](workflows/MP-36-incident-and-maintenance-notices.md)
 
-- v8.1 incident handling: add notices to merchants for major ICT incidents (DORA Art. 19(3)), a status page outside the platform, portal banners and planned maintenance notices.
+- v8.7 incident handling: add notices to merchants for major ICT incidents (DORA Art. 19(3)), a status page outside the platform, portal banners and planned maintenance notices.
 
 ## [MP-38 Ask for higher limits or new services](workflows/MP-38-ask-for-higher-limits-or-new-services.md)
 

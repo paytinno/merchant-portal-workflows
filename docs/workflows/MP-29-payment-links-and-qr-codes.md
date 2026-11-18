@@ -89,9 +89,9 @@ stateDiagram-v2
 - Same limits, risk rules and fees as other online payments; refunds as MP-12.
 - High-risk merchant categories get links only if the onboarding review allows it (MP-38).
 
-## Changes v8.1 needs
+## Changes v8.7 needs
 
-For the CTO's next version of the architecture (v8.2).
+For the CTO's next version of the architecture.
 
 - WF10: add creating, sharing and cancelling payment links and QR codes in the portal. WF10 lists link and QR as checkout channels but has no flow for them.
 

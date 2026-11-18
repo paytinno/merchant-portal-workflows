@@ -11,7 +11,7 @@ Every action in the portal and the API is logged with who, what, when and from w
 | Status | Proposed |
 | For | Every merchant |
 | Area | Team |
-| Source | Not in v8.1; one-pager S3 item 7 (business roles, mandates and approvals) |
+| Source | Not in v8.7; one-pager S3 item 7 (business roles, mandates and approvals) |
 | Starts when | Anyone, or any API key, acts for the merchant; an admin wants to see who did what. |
 | Object | Activity event (append-only) |
 | Systems | Merchant (user), Portal (S3), Gateway, BFF (S18), Onboarding (S6), Messages (S17) |
@@ -54,9 +54,9 @@ No states of its own.
 - API actions name the key's label.
 - Actions kept [5] years; IP addresses [13] months.
 
-## Changes v8.1 needs
+## Changes v8.7 needs
 
-For the CTO's next version of the architecture (v8.2).
+For the CTO's next version of the architecture.
 
 - S18: write an activity event for every portal and API command (who, what, when, from where, SCA evidence and approval IDs), readable by the merchant.
 

@@ -91,9 +91,9 @@ stateDiagram-v2
 - The main balance is never negative; what is owed is shown separately.
 - Reserve top-ups (MP-17) stay transfer-only.
 
-## Changes v8.1 needs
+## Changes v8.7 needs
 
-For the CTO's next version of the architecture (v8.2).
+For the CTO's next version of the architecture.
 
 - WF11 13: describe the receivable: the notice and amount in the portal, netting from future payouts if the agreement allows, transfer, reminders and escalation.
 

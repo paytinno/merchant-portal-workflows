@@ -2,11 +2,11 @@
    This file is the source of truth. docs/ is generated from it (tools/build-docs.ps1); the viewer (index.html) reads it;
    the merchant-portal prototype loads it for its "Behind this screen" panel.
 
-   status: "v81" = in v8.1 as written; "part" = in v8.1 with open gaps; "amended" = in v8.1, every gap closed by a decision
-   (listed in amends: the changes v8.1 needs); "new" = not in v8.1, proposed here.
+   status: "v81" = in v8.7 as written; "part" = in v8.7 with open gaps; "amended" = in v8.7, every gap closed by a decision
+   (listed in amends: the changes v8.7 needs); "new" = not in v8.7, proposed here.
    question: decided: true = the proposed answer is adopted as the design, awaiting sign-off by its owner.
    deps: confirmations needed from outside (BPC, BNB, OraSYS); not design gaps.
-   step: [from, to, text, opts]  opts: {api, ref, sla, sca, fail, rule, gap (open), dec (decided by MP-Qnn), added (not in v8.1)}
+   step: [from, to, text, opts]  opts: {api, ref, sla, sca, fail, rule, gap (open), dec (decided by MP-Qnn), added (not in v8.7)}
    group row: ["#", "title"].  from === to means work inside one system.
    lanes: system codes from src/model.js LANES.
    segments: merchant types the workflow is for (SEGMENTS); none means every merchant.
@@ -25,24 +25,24 @@ window.WF = (function () {
     steps: [
       ["#", "Register"],
       ["MER", "S3", "Enters business email, mobile number and name, and accepts the portal terms. No company data yet.", { ref: "WF02a 1" }],
-      ["S3", "S18", "Sends the registration. Not signed in, behind the I4 rate limit and bot protection.", { api: "POST /v1/portal/users/register {email, phone, name, consentVersion}", sla: "2 s", fail: "429 on rate limit", gap: "v8.1 answers 409 when the email exists. That tells anyone which emails are registered (MP-Q02).", ref: "WF02a 2" }],
+      ["S3", "S18", "Sends the registration. Not signed in; limits per IP, phone, email and country prefix, and SMS cost watched. The answer is the same whether or not the email is registered; an existing user gets an email \"you already have an account\".", { api: "POST /v1/portal/users/register {email, phone, name, consentVersion}", sla: "2 s", fail: "429 on a limit", dec: "MP-Q02", ref: "WF02a 2" }],
       ["S18", "S19", "Creates the user in realm merchant with status PENDING_VERIFICATION.", { fail: "S19 down: 503, nothing is stored", ref: "WF02a 3" }],
       ["S19", "S17", "Sends one code by email and another by SMS. Valid 10 min, 5 attempts, resend at most 3 times an hour.", { sla: "delivery 30 s", ref: "WF02a 4" }],
       ["S17", "MER", "Codes arrive.", { ref: "WF02a 5" }],
       ["MER", "S3", "Types both codes.", { ref: "WF02a 6" }],
       ["S3", "S18", "Sends the codes.", { api: "POST /v1/portal/users/verify {userId, emailCode, smsCode}", fail: "attempts used up: register again", ref: "WF02a 7" }],
-      ["S18", "S19", "Marks email and phone verified (VERIFIED).", { ref: "WF02a 8" }],
-      ["#", "Passkey"],
-      ["S19", "S3", "Passkey creation options: rpId = portal, resident key and user verification required.", { fail: "browser without WebAuthn: message, no password fallback", ref: "WF02a 9" }],
-      ["S3", "S19", "The browser creates the passkey (platform or security key). Attestation is checked against policy but is not a condition for access.", { sla: "60 s", fail: "authenticator refused: try another", ref: "WF02a 10" }],
-      ["S19", "S3", "Tokens through PKCE (amr webauthn). Role ONBOARDING_APPLICANT. Session 8 h, refresh 30 days.", { ref: "WF02a 11" }],
-      ["S18", "S6", "First call with the token registers the person in S6 and returns a person ID. No merchant yet.", { fail: "S6 down: 503, the token stays valid", ref: "WF02a 12" }],
-      ["S3", "MER", "Offers to add a second passkey now, so a lost device does not mean recovery.", { gap: "Proposed, not in v8.1 (MP-Q04)" }]
+      ["S18", "S19", "Marks email and phone verified (VERIFIED). Codes used up or expired: the pending user expires and the person can register again; how long it is kept follows DC-8.", { ref: "WF02a 8" }],
+      ["#", "Passkey (on S19's page)"],
+      ["S3", "S19", "The browser is sent to S19's passkey page (OIDC authorize with PKCE through S18). Creation options: rpId shared by S19's pages and the portal, resident key and user verification required.", { fail: "browser without WebAuthn: message, no password fallback (supported browsers: question 36)", ref: "WF02a 9" }],
+      ["MER", "S19", "On S19's page the browser creates the passkey (platform or security key). Attestation is checked against policy but is not a condition for access.", { sla: "60 s", fail: "authenticator refused: try another", ref: "WF02a 10" }],
+      ["S19", "S18", "The authorization code goes to S18's redirect URI. S18 exchanges it and keeps the tokens (amr webauthn) in its session store; the browser gets only a session cookie (HttpOnly, Secure, SameSite).", { api: "A10", ref: "WF02a 11" }],
+      ["S18", "S6", "First request registers the person in S6 with only {issuer, sub}; email, phone and name stay in S19. S6 returns a person ID with role ONBOARDING_APPLICANT. No merchant yet.", { fail: "S6 down: 503", ref: "WF02a 12" }],
+      ["S3", "MER", "Offers to add a second passkey now, so a lost device does not mean recovery.", { gap: "Proposed, not in v8.7 (MP-Q04)" }]
     ],
-    states: [["", "registration", "PENDING_VERIFICATION"], ["PENDING_VERIFICATION", "both codes right", "VERIFIED"], ["VERIFIED", "passkey saved", "ACTIVE (applicant)"], ["ACTIVE (applicant)", "merchant activated (MP-09)", "ACTIVE (business roles)"], ["ACTIVE (business roles)", "removed by the merchant's admin", "DISABLED"]],
-    rules: ["Realms share no users, sessions or passkeys.", "The account belongs to the person; one person can work for several merchants.", "KYC of the person happens in the application (MP-06), not here.", "S19 events go to SEC2."],
+    states: [["", "registration", "PENDING_VERIFICATION"], ["PENDING_VERIFICATION", "both codes right", "VERIFIED"], ["PENDING_VERIFICATION", "attempts used up or expired", "EXPIRED (DC-8)"], ["VERIFIED", "passkey saved", "ACTIVE (applicant)"], ["ACTIVE (applicant)", "merchant activated (MP-09)", "ACTIVE (business roles)"], ["ACTIVE (business roles)", "removed by the merchant's admin", "DISABLED"]],
+    rules: ["S19 is built in house (self-hosted Keycloak and our own SCA module, ADR-0025); one IdP with realm customer (B2C) and realm merchant.", "Realms share no users, sessions or passkeys.", "Tokens never reach the browser: S18 holds them (ADR-0009).", "The account belongs to the person; one person can work for several merchants.", "KYC of the person happens in the application (MP-06), not here.", "S19 events go to SEC2."],
     questions: [
-      { id: "MP-Q02", q: "Registration with an email that already exists returns 409 in v8.1. That is an account lookup for anyone.", prop: "Always answer 202 \"if the address can be used, we sent codes\". If the email exists, send that person an email saying someone tried to register with it.", owner: "CTO" },
+      { id: "MP-Q02", q: "Registration with an email that already exists returned 409 in v8.1. That is an account lookup for anyone.", prop: "The same answer whatever the email; an existing user gets an email instead. Adopted by the CTO in WF02a step 2.", owner: "CTO", decided: true },
       { id: "MP-Q03", q: "The BNB has not confirmed a passkey with dynamic linking as SCA on the web. For the portal it is the only method (no password, no push to the app).", prop: "Ask the BNB in writing before build. Allow platform passkeys and security keys. Keep the design open for a push to S1 for people who have the app.", owner: "Compliance" },
       { id: "MP-Q04", q: "One passkey per person makes lost phones a frequent recovery case.", prop: "Prompt for a second passkey at registration. Require two for Admin and Finance after activation.", owner: "Product" }
     ]
@@ -50,67 +50,68 @@ window.WF = (function () {
 
   W("MP-02", {
     title: "Sign in, switch business and check rights", area: "Access", status: "amended", source: "WF02a steps 13 to 21",
-    trigger: "A person opens the portal without a valid session, or makes any request.", object: "Session (S19), roles and mandates (S6)",
+    trigger: "A person opens the portal without a valid session, or makes any request.", object: "Session (S18, token from S19), roles and mandates (S6)",
     screens: ["home", "team"], lanes: ["MER", "S3", "S18", "S19", "S6"],
-    summary: "Passkey sign-in. Roles are not in the token: S18 asks S6 on every request which merchants and rights the person has.",
+    summary: "Passkey sign-in on S19's own page; S18 keeps the session and the browser holds only a cookie. Roles are not in the token: S18 asks S6 on every request which merchants and rights the person has.",
     steps: [
       ["MER", "S3", "Opens the portal.", { ref: "WF02a 13" }],
-      ["S3", "S18", "OIDC request with PKCE and state, realm merchant.", { sla: "1 s", ref: "WF02a 14" }],
-      ["S18", "S19", "Sign-in screen. The email only hints which passkey to use.", { ref: "WF02a 15" }],
-      ["S19", "S3", "Passkey request options, discoverable credential. Challenge valid 2 min.", { ref: "WF02a 16" }],
-      ["S3", "S19", "The browser signs with user verification. S19 checks signature, counter and origin.", { fail: "5 failures: locked 15 min and an email (MP-04). A phishing domain fails on rpId.", ref: "WF02a 17" }],
-      ["S19", "S3", "New session. Roles are not in the token.", { ref: "WF02a 18" }],
+      ["S3", "S18", "OIDC request with PKCE and state, realm merchant. S18 sends the browser on to S19; the redirect URI is in S18.", { sla: "1 s", ref: "WF02a 14" }],
+      ["S3", "S19", "The browser lands on S19's sign-in page. The email only hints which passkey to use.", { ref: "WF02a 15", gap: "Whether the portal later embeds S19's web SDK instead of the page (question 34)" }],
+      ["S19", "MER", "Passkey request options, discoverable credential. Challenge valid 2 min.", { ref: "WF02a 16" }],
+      ["MER", "S19", "The browser signs with user verification. S19 checks signature, counter and origin.", { fail: "5 failures: locked 15 min and an email (MP-04). A phishing domain fails on rpId.", ref: "WF02a 17" }],
+      ["S19", "S18", "S18 exchanges the code and opens a session; the browser gets a session cookie. Roles are not in the token.", { api: "A10", ref: "WF02a 18" }],
       ["#", "Every request"],
-      ["S3", "S18", "Every call carries the token and, in a header, the business it is for. The sidebar business switcher sets it.", { api: "Authorization: Bearer, X-Merchant-Id: M-…", dec: "MP-Q07", ref: "WF02a 19" }],
-      ["S18", "S18", "Checks the token against cached keys: expiry, realm, audience.", { sla: "5 ms", fail: "invalid: 401, refresh, then sign in", ref: "WF02a 19" }],
+      ["S3", "S18", "Every call carries the session cookie, CSRF protection on changes, and the business it is for. The sidebar business switcher sets it.", { api: "Cookie, X-Merchant-Id: M-…", dec: "MP-Q07", ref: "WF02a 19" }],
+      ["S18", "S18", "Finds the token by the session and checks it against S19's cached keys (JWKS through A10): expiry, realm, audience.", { sla: "5 ms", fail: "invalid: 401, then sign in", ref: "WF02a 19" }],
       ["S18", "S6", "Reads roles, mandates and merchants for the person, and checks the X-Merchant-Id is one of them. Cached per session with a short TTL.", { sla: "20 ms", fail: "no right: 403. No merchant yet: only application endpoints.", ref: "WF02a 20" }],
       ["S18", "S3", "Answer. Every refusal is logged to SEC2 with person, merchant and action.", { ref: "WF02a 21" }],
       ["#", "Session end"],
-      ["S3", "S3", "Signs out after [30] min without activity and after 8 h in any case. Shows a warning 2 min before.", { dec: "MP-Q06" }]
+      ["S3", "S3", "Signs out after [30] min without activity and after 8 h in any case. Shows a warning 2 min before.", { dec: "MP-Q06" }],
+      ["S3", "S18", "Sign out: S18 deletes the session at once and revokes the refresh token in S19; it never waits for S19.", { ref: "WF02a 23" }]
     ],
-    states: [["", "passkey sign-in", "SESSION"], ["SESSION", "8 h or [30] min idle", "ENDED"], ["SESSION", "role removed in S6", "403 on next call"]],
+    states: [["", "passkey sign-in", "SESSION"], ["SESSION", "8 h, [30] min idle or sign out", "ENDED"], ["SESSION", "role removed in S6", "403 on next call"]],
     rules: ["The menu shows only what the role can use; S18 still checks every call (the screen is not the control).", "A person with several businesses picks one in the sidebar; data never mixes on one screen.", "Portal requests: 1 s p95 (depends on the BPC API)."],
-    amends: ["WF02a 19 to 20: the portal names the business in an X-Merchant-Id header; S18 checks it against the person's merchants in S6 on every call (MP-Q07).", "WF02a: add an idle timeout of [30] min next to the 8 h session; refresh only while active (MP-Q06)."],
+    amends: ["WF02a 19: v8.7 says each business request carries the merchant ID; name it: an X-Merchant-Id header, checked by S18 against the person's merchants in S6 on every call (MP-Q07).", "WF02a: session times in S18 are still open in v8.7; set [30] min idle and 8 h absolute (MP-Q06)."],
     questions: [
-      { id: "MP-Q06", q: "No idle timeout is defined (only 8 h session and 30 day refresh).", prop: "[30] min idle, 8 h absolute, refresh only while active. Money actions need SCA anyway.", owner: "CTO", decided: true },
-      { id: "MP-Q07", q: "How does a call say which business it is for, when one person serves several?", prop: "Header X-Merchant-Id on every call; S18 checks it against S6. The sidebar business switcher sets it.", owner: "CTO", decided: true }
+      { id: "MP-Q06", q: "Session times in S18 are open in v8.7 (S18 and Security).", prop: "[30] min idle, 8 h absolute, the refresh token used only while active. Money actions need SCA anyway.", owner: "CTO", decided: true },
+      { id: "MP-Q07", q: "How does a call say which business it is for, when one person serves several? v8.7 says the request carries the merchant ID but not how.", prop: "Header X-Merchant-Id on every call; S18 checks it against S6. The sidebar business switcher sets it.", owner: "CTO", decided: true }
     ]
   });
 
   W("MP-03", {
-    title: "Strong customer authentication for actions", area: "Access", status: "amended", source: "WF02a steps 22 to 26",
+    title: "Strong customer authentication for actions", area: "Access", status: "amended", source: "WF02c steps 1 to 5 (a skeleton in v8.7; in v8.1 it was WF02a steps 22 to 26)",
     trigger: "A user starts an action that moves money or changes who gets it or who can act.", object: "SCA challenge (S19), evidence ID",
     screens: ["payment", "payouts", "developers", "team", "disputes"], lanes: ["MER", "S3", "S18", "S19", "S6"],
     summary: "The passkey signs exactly what the user sees (amount and payee, or the key, or the person). S18 matches the evidence to the command before sending it on.",
     steps: [
-      ["MER", "S3", "Starts the action. From v8.1: refund, payout to an external account, payout account change, API key roll, invitation with a role above the threshold. Added: accepting or escalating a dispute, revealing or rolling a webhook secret, closing the account.", { ref: "WF02a 22", dec: "MP-Q14" }],
+      ["MER", "S3", "Starts the action. In WF02c: refund, payout to an external account, payout account change, API key roll, invitation with a role above the threshold. Added: accepting or escalating a dispute, revealing or rolling a webhook secret, closing the account.", { ref: "WF02c 1", dec: "MP-Q14" }],
       ["S3", "S18", "Sends the command with an Idempotency-Key. S18 answers that SCA is needed.", { api: "POST /v1/… → 202 {scaRequired, challengeId}" }],
       ["S18", "S6", "Checks the role and the person's mandate for this amount. Over the mandate, the command becomes an approval request (MP-23).", { rule: "Mandates in S6" }],
-      ["S18", "S19", "Asks for a challenge bound to amount and payee, or to the key or person. Valid 5 min.", { ref: "WF02a 23", sca: true }],
-      ["S19", "S3", "The web SDK shows what is being signed. The challenge holds a hash of it.", { ref: "WF02a 24", sca: true, fail: "user declines: nothing is sent" }],
-      ["S3", "S19", "The browser signs with biometrics or PIN. S19 checks signature and binding.", { ref: "WF02a 25", sca: true }],
-      ["S19", "S18", "ScaCompleted {evidenceId}.", { ref: "WF02a 26", sca: true }],
+      ["S18", "S19", "Asks for a challenge bound to amount and payee, or to the key or person. Valid 5 min.", { ref: "WF02c 2", sca: true }],
+      ["S19", "S3", "S19's web SDK in the portal shows what is being signed (sign-in uses S19's page, signing uses the SDK). The challenge holds a hash of it.", { ref: "WF02c 3", sca: true, fail: "user declines: nothing is sent" }],
+      ["S3", "S19", "The browser signs with biometrics or PIN. S19 checks signature and binding.", { ref: "WF02c 4", sca: true }],
+      ["S19", "S18", "ScaCompleted {evidenceId}.", { ref: "WF02c 5", sca: true }],
       ["S18", "S18", "Matches the evidence to the command (same hash) and sends it on: refund to WF11 step 16 (A09), payout to MP-14 (M0391), payout account to MP-15, key roll to MP-20, dispute answer to MP-16 (S4), invitation to MP-22 (S6).", { dec: "MP-Q08", fail: "challenge expired: start again; hash differs: 409, logged" }],
       ["S18", "S3", "Result shown to the user. Evidence kept 5 years.", { rule: "SCA evidence retention 5 years" }]
     ],
     states: [["", "action started", "SCA_REQUIRED"], ["SCA_REQUIRED", "signed", "SUBMITTED"], ["SCA_REQUIRED", "declined or 5 min", "CANCELLED"], ["SCA_REQUIRED", "over mandate", "AWAITING_APPROVAL (MP-23)"]],
     rules: ["Dynamic linking: changing the amount or payee after signing voids the signature.", "For an approval, the requester signs the request and the approver signs the approval; it runs after both.", "One evidence ID per command; reuse is refused."],
-    amends: ["WF02a 22: add dispute Accept and Escalate (MP-Q14), webhook secret reveal or roll (MP-Q11) and account closure to the SCA list.", "WF02a 26: replace \"WF10 step 14, WF11 step 7\" with the targets listed in step 8 here (MP-Q08)."],
+    amends: ["WF02c 1: add dispute Accept and Escalate (MP-Q14), webhook secret reveal or roll (MP-Q11) and account closure to the SCA list.", "WF02c 5: refund goes to WF11 step 16 (now right); name the WF10 targets for payout and payout account change, and add the states and failures WF02c still leaves to be written (MP-Q08)."],
     questions: [
-      { id: "MP-Q08", q: "WF02a step 26 continues to \"WF10 step 14, WF11 step 7\". WF10 14 is a read and WF11 7 is issuing.", prop: "Refund continues to WF11 step 16; payout to MP-14; payout account to MP-15; key roll to MP-20. Fix in v8.2.", owner: "CTO", decided: true },
-      { id: "MP-Q14", q: "Accepting a dispute is final and costs money, but it is not on the SCA list in WF02a 22. WF11 15 says SCA for actions with a money effect.", prop: "Require SCA for Accept and Escalate. Add to the WF02a 22 list.", owner: "CTO", decided: true }
+      { id: "MP-Q08", q: "In v8.1, WF02a step 26 continued to the wrong steps. WF02c step 5 in v8.7 fixes the refund (WF11 step 16) but leaves payout and payout account change \"to be specified\".", prop: "Refund continues to WF11 step 16; payout to MP-14; payout account to MP-15; key roll to MP-20. WF02c still needs these and its states.", owner: "CTO", decided: true },
+      { id: "MP-Q14", q: "Accepting a dispute is final and costs money, but it is not on the SCA list in WF02c 1. WF11 15 says SCA for actions with a money effect.", prop: "Require SCA for Accept and Escalate. Add to the WF02c 1 list.", owner: "CTO", decided: true }
     ]
   });
 
   W("MP-04", {
-    title: "Lockout and lost passkey", area: "Access", status: "amended", source: "WF02a steps 17 and 27",
+    title: "Lockout and lost passkey", area: "Access", status: "amended", source: "WF02a steps 17 and 22",
     trigger: "Five failed signatures, or a person who lost every passkey.", object: "PortalUser LOCKED or RECOVERY",
     screens: ["security"], lanes: ["MER", "S3", "S18", "S19", "S17", "S4", "OPS", "S6"],
     summary: "Recovery re-proves email and phone. For an admin of a live merchant, another admin approves; otherwise Paytinno staff check identity.",
     steps: [
       ["S19", "S17", "After 5 failed signatures: lock for 15 min and email the person.", { ref: "WF02a 17" }],
       ["#", "Recovery"],
-      ["MER", "S3", "Chooses \"I lost my passkey\" and enters the email.", { ref: "WF02a 27" }],
+      ["MER", "S3", "Chooses \"I lost my passkey\" and enters the email.", { ref: "WF02a 22" }],
       ["S18", "S19", "New email and SMS codes, as in registration.", { sla: "codes 10 min" }],
       ["S18", "S6", "Is the person an admin of an active merchant?", {}],
       ["S6", "S3", "Yes, and there is a second admin: an approval request goes to that admin (MP-23).", { rule: "Second admin approves" }],
@@ -119,11 +120,11 @@ window.WF = (function () {
       ["S3", "S19", "New passkey registered; all old passkeys revoked; sessions ended.", {}],
       ["S19", "S17", "Email to the person and to every admin of each merchant the person works for. Payout account changes from this login are blocked for [24 h].", { added: true, dec: "MP-Q05b" }],
       ["#", "No access to email or phone"],
-      ["MER", "S4", "Asks through support. Staff change email or phone with four eyes after an IDV check.", { ref: "WF02a 27" }]
+      ["MER", "S4", "Asks through support. Staff change email or phone with four eyes after an IDV check.", { ref: "WF02a 22" }]
     ],
     states: [["ACTIVE", "5 failures", "LOCKED"], ["LOCKED", "15 min", "ACTIVE"], ["ACTIVE", "recovery started", "RECOVERY"], ["RECOVERY", "new passkey", "ACTIVE"]],
     rules: ["Recovery never restores the old passkey.", "A recovered admin cannot change the payout account for [24 h] (account takeover pattern)."],
-    amends: ["WF02a 27: without a second admin, the identity check is an IDV selfie matched to onboarding, then four eyes in S4 (MP-Q05b).", "WF02a 27: after recovery, notify the person and every admin, and block payout account changes for [24 h]."],
+    amends: ["WF02a 22: without a second admin, the identity check is an IDV selfie matched to onboarding, then four eyes in S4 (MP-Q05b).", "WF02a 22: after recovery, notify the person and every admin, and block payout account changes for [24 h]."],
     questions: [
       { id: "MP-Q05b", q: "How do staff check identity in recovery without a second admin?", prop: "IDV selfie check matched to the face from onboarding (no new documents), then four eyes in S4. Block payout account changes for [24 h] after.", owner: "Compliance", decided: true }
     ]
@@ -139,27 +140,28 @@ window.WF = (function () {
       ["#", "Draft"],
       ["MER", "S3", "Enters the company ID (EIK).", {}],
       ["S3", "S18", "Looks up the company in the Commercial Register, through the KYB connector's lookup, to fill in name, form, address and managers. Pre-filled fields are marked and kept as the register gave them.", { api: "GET /v1/registry/companies/{eik}", dec: "MP-Q15", fail: "not found: the applicant types it" }],
-      ["S3", "S18", "Saves the draft after every step. S18 only routes; S6 keeps the draft as an OnboardingCase in state DRAFT, for the person in the token.", { api: "PUT /v1/merchants/applications/drafts/{draftId} → S6", dec: "MP-Q16" }],
-      ["S18", "S6", "Stores the draft. Kept [90] days without changes, then deleted with its documents.", { dec: "MP-Q16" }],
-      ["MER", "S3", "People: the representative and the legal basis; every owner of 25% or more; managers. Each becomes a personRef. Only the representative does an IDV check (MP-06); owners are screened from these data.", { rule: "Owners listed must explain 100% of ownership or say why not", dec: "MP-Q17" }],
+      ["S3", "S18", "Saves the draft after every step, in the signed-in session with right application:create. Nothing is kept in the browser.", { api: "PUT /v1/merchants/applications/drafts/{draftId} → S6", ref: "WF02b 1" }],
+      ["S18", "S6", "First save opens the OnboardingCase in DRAFT, bound to the sub of the session. S6 keeps the company answers; only the person who created the draft can read or change it.", { ref: "WF02b 1" }],
+      ["MER", "S3", "People: the representative and the legal basis; every owner of 25% or more; managers; PEPs. The portal turns these answers into a questionnaire stored as a document in the KYC document store (D-03), not in S6's tables. Only the representative does an IDV check (MP-06); owners are screened from these data.", { rule: "Owners listed must explain 100% of ownership or say why not", dec: "MP-Q17", ref: "WF02b 1" }],
+      ["S6", "S6", "A draft untouched for [90] days is deleted with its documents.", { dec: "MP-Q16", gap: "The period is question DC-12 in v8.7 (DPO and MLRO)" }],
       ["MER", "S3", "Business: what it sells (MCC), websites, channels, expected monthly volume, average and largest payment, customer countries, whether the company is a micro-enterprise.", { rule: "Micro-enterprise status sets the notice period for tariff changes (MP-19)", dec: "MP-Q33" }],
       ["MER", "S3", "Uploads documents to the vault. PDF, JPG or PNG up to 10 MB, scanned for malware.", { api: "POST /v1/documents (multipart) → {docRef}", rule: "Documents stay in the vault; the admin sees references only" }],
       ["MER", "S3", "Payout account: IBAN, holder name, bank statement.", { rule: "Checked in MP-15 rules: in the merchant's name" }],
       ["MER", "S3", "Review and three statements: information is true; I may act for the company; I accept the merchant terms.", {}],
       ["#", "Send"],
-      ["S3", "S18", "Sends the application. Needs permission application:create.", { api: "POST /v1/merchants/applications {legalName, eik, representativeRole, ubos[], mcc, expectedVolume, channels[], documents[]}", sla: "2 s", fail: "401, 403, 4xx", ref: "WF02b 2" }],
-      ["S18", "S6", "Opens the case for the person in the token. The representative in the body is data, not proof of who applies.", { ref: "WF02b 3" }],
+      ["S3", "S18", "Sends the application. Needs permission application:create (role ONBOARDING_APPLICANT or a merchant admin). The questionnaire is already saved.", { api: "POST /v1/merchants/applications {legalName, eik, mcc, expectedVolume, channels[], …company answers}", sla: "2 s", fail: "401, 403, 4xx", ref: "WF02b 2" }],
+      ["S18", "S6", "The case moves from DRAFT to STARTED with version 1 of the application, which never changes; checks and decisions point to it. S18 passes {issuer, sub}; the representative in the body is data, not proof of who applies.", { ref: "WF02b 3", fail: "no draft or questionnaire: refused" }],
       ["S6", "S6", "Creates the customer ID for the company; links the person and the owners. State STARTED.", { ref: "WF02b 4" }],
       ["S6", "S4", "The application appears in the admin. Until S6 exists, the admin stands in for it.", { api: "webhook application.submitted", ref: "admin spec 6", gap: "When does S6 exist, and how do cases move from the admin to it? (MP-Q64)" }],
       ["S4", "S3", "Status line STARTED.", { api: "POST /admin/v1/applications/{appId}/status", ref: "admin spec 5.1" }]
     ],
     states: [["", "first save", "DRAFT"], ["DRAFT", "sent", "STARTED"], ["DRAFT", "[90] days untouched", "deleted"], ["STARTED and later", "withdrawn by the applicant", "WITHDRAWN"]],
-    rules: ["No acceptance before the whole onboarding is done.", "Sales do not send applications for merchants at launch.", "The applicant can withdraw until a decision is made."],
-    amends: ["WF02b states: add DRAFT before STARTED, kept by S6 for [90] days (MP-Q16).", "WF02b 1: Commercial Register pre-fill through the KYB connector's lookup (MP-Q15).", "WF02b 1: ask whether the company is a micro-enterprise; S6 keeps it for tariff notices (MP-Q33).", "WF02b 5: IDV check for the representative only; owners screened from data, IDV for owners only when high risk or the data disagree (MP-Q17)."],
+    rules: ["No acceptance before the whole onboarding is done.", "Sales do not send applications for merchants at launch.", "The applicant can withdraw until a decision is made.", "One sent version per application; it is frozen (v8.5)."],
+    amends: ["DC-12: keep drafts not sent for [90] days, then delete them with their documents (MP-Q16).", "WF02b 1: Commercial Register pre-fill through the KYB connector's lookup (MP-Q15).", "WF02b 1: ask whether the company is a micro-enterprise; S6 keeps it for tariff notices (MP-Q33).", "WF02b 5: IDV check for the representative only; owners screened from data, IDV for owners only when high risk or the data disagree (MP-Q17)."],
     questions: [
       { id: "MP-Q15", q: "Should the portal pre-fill from the Commercial Register?", prop: "Yes. S18 routes to the register lookup the KYB connector already has. Pre-filled fields are marked and kept as the register said.", owner: "CTO", decided: true },
-      { id: "MP-Q16", q: "Where is the draft kept before it is sent? v8.1 starts the case only at submission.", prop: "Draft in S6 as an OnboardingCase in state DRAFT, keyed by person, kept [90] days. S18 only routes (it holds no business logic). Documents uploaded to the draft are deleted with it.", owner: "CTO", decided: true },
-      { id: "MP-Q17", q: "Who must do an identity check: only the representative (v8.1), or every owner (the design prototype)?", prop: "Representative always. Owners are screened from data; an IDV check for owners only for high-risk merchants or when the register and the declaration disagree.", owner: "Compliance", decided: true },
+      { id: "MP-Q16", q: "Where is the draft kept before it is sent, and for how long? v8.1 started the case only at submission. v8.5 adopted the DRAFT state in S6; the period is DC-12.", prop: "Draft in S6 as an OnboardingCase in state DRAFT, bound to the person. Kept [90] days untouched, then deleted with its documents. Our answer to DC-12.", owner: "DPO and MLRO", decided: true },
+      { id: "MP-Q17", q: "Who must do an identity check: only the representative (v8.7), or every owner (the design prototype)?", prop: "Representative always. Owners are screened from data; an IDV check for owners only for high-risk merchants or when the register and the declaration disagree.", owner: "Compliance", decided: true },
       { id: "MP-Q64", q: "When will the onboarding service (S6) exist? Until then the admin stands in for it. Where do onboarding cases live in the meantime, and how do they move to S6?", prop: "The CTO to give a date. Until then the admin keeps the cases with the same states and IDs that S6 will use, so they move across as they are, without a second onboarding.", owner: "CTO" }
     ]
   });
@@ -173,7 +175,7 @@ window.WF = (function () {
       ["S6", "S11", "Starts KYB and owner checks; issues an IDV token for the representative.", { ref: "WF02b 5", sla: "async" }],
       ["S6", "S3", "Token for the IDV web SDK, through S18.", {}],
       ["MER", "S3", "The representative does the ID document and selfie check in the portal.", { ref: "WF02b 5" }],
-      ["S11", "S6", "Results come back as webhooks: identity verified, company verified, owners screened. Bad signature: quarantine and SEC2.", { ref: "WF02b 6 to 8" }],
+      ["S11", "S6", "Results come back as webhooks through S22 and Q1 (identity.verified, company.verified, ubo.screened), then as events to the saga: RepresentativeVerified, KybVerified, UboScreened or NeedsReview. Bad signature: quarantine and SEC2.", { ref: "WF02b 6 to 8" }],
       ["S6", "S11", "AML system: risk and PEP or sanctions screening of the company, representative and every owner.", { sla: "1 s per person, 3 attempts", ref: "WF02b 9" }],
       ["S6", "S4", "Any hit, or the identity does not match the role: manual review case.", { rule: "A hit makes manual review mandatory" }],
       ["S4", "S3", "Status line KYB_PENDING, then ONBOARDING_REVIEW or MANUAL_REVIEW.", { api: "application.status", rule: "Fixed texts, never the reason" }],
@@ -189,12 +191,12 @@ window.WF = (function () {
     amends: ["WF02b states: add the exits from MANUAL_REVIEW: cleared to UNDERWRITING (our ONBOARDING_REVIEW), information needed to an RFI, confirmed match or suspicion to CLOSED_REJECTED (MP-Q67)."],
     questions: [
       { id: "MP-Q09", q: "Should the portal show the admin's free-text status label, or its own fixed text per state? (admin spec P7)", prop: "Fixed texts per state in the portal, in Bulgarian and English. Free text only inside an RFI, which staff write knowingly.", owner: "Compliance" },
-      { id: "MP-Q67", q: "v8.1 sends a case to MANUAL_REVIEW but never says where it goes next. What are the exits?", prop: "Three: cleared (false match with four eyes, or a PEP approved by senior management after enhanced due diligence) to ONBOARDING_REVIEW; information needed to an RFI (MP-07) and back; confirmed sanctions match, false documents or suspicion to CLOSED_REJECTED, decided by the MLRO, with a report to the authorities where required. Target [5] business days.", owner: "Compliance", decided: true }
+      { id: "MP-Q67", q: "v8.7 sends a case to MANUAL_REVIEW but never says where it goes next. What are the exits?", prop: "Three: cleared (false match with four eyes, or a PEP approved by senior management after enhanced due diligence) to ONBOARDING_REVIEW; information needed to an RFI (MP-07) and back; confirmed sanctions match, false documents or suspicion to CLOSED_REJECTED, decided by the MLRO, with a report to the authorities where required. Target [5] business days.", owner: "Compliance", decided: true }
     ]
   });
 
   W("MP-07", {
-    title: "Request for information and the answer", area: "Onboarding", status: "amended", source: "Admin spec 5.2 rfi.send and merchant.message; not a v8.1 workflow",
+    title: "Request for information and the answer", area: "Onboarding", status: "amended", source: "Admin spec 5.2 rfi.send and merchant.message; not a v8.7 workflow",
     trigger: "Staff need a document or an answer, during onboarding or for a live merchant.", object: "RFI (S4), message thread",
     screens: ["messages", "application"], lanes: ["MER", "S3", "S18", "S4", "OPS", "S17"],
     summary: "Staff ask, the merchant answers in the portal with text and documents. The application status shows \"We need something\" while it is open.",
@@ -214,20 +216,20 @@ window.WF = (function () {
     ],
     states: [["", "sent", "OPEN"], ["OPEN", "merchant answers", "ANSWERED"], ["ANSWERED", "staff accept", "CLOSED"], ["ANSWERED", "staff ask again", "OPEN"], ["OPEN", "due date passes", "OVERDUE"], ["OVERDUE", "merchant answers", "ANSWERED"], ["OVERDUE", "[30] days more, onboarding only", "WITHDRAWN"]],
     rules: ["The merchant is told not to type ID or card numbers in messages; documents are attached as files.", "Text up to 4,000 characters."],
-    amends: ["Add the RFI to v8.1 as a sub-flow of WF02b and of periodic reviews, as in the admin spec 5.2 (rfi.send, merchant.message).", "Overdue RFI: onboarding withdrawn after [30] days; for a live merchant staff decide (MP-Q18)."],
+    amends: ["Add the RFI to v8.7 as a sub-flow of WF02b and of periodic reviews, as in the admin spec 5.2 (rfi.send, merchant.message).", "Overdue RFI: onboarding withdrawn after [30] days; for a live merchant staff decide (MP-Q18)."],
     questions: [
       { id: "MP-Q18", q: "What happens when an RFI is overdue?", prop: "Onboarding: application paused, withdrawn after [30] days with notice. Live merchant: reminder, then a restriction decision in S4 (MP-26), never automatic.", owner: "Compliance", decided: true }
     ]
   });
 
   W("MP-08", {
-    title: "Onboarding review and the offer", area: "Onboarding", status: "amended", source: "WF02b steps 10 to 12 (v8.1 calls it underwriting)",
+    title: "Onboarding review and the offer", area: "Onboarding", status: "amended", source: "WF02b steps 10 to 12 (v8.7 calls it underwriting)",
     trigger: "Checks are complete (MP-06).", object: "Onboarding review case (S4), offer",
     screens: ["application"], lanes: ["MER", "S3", "S18", "S6", "S4", "OPS", "EXT", "S17"],
     summary: "Staff review the merchant and set limits, tariff, reserve and deposit with four eyes. A credit review (underwriting) is added only when the merchant creates credit exposure for Paytinno. Then the merchant sees the offer and accepts it with SCA before set-up starts.",
     steps: [
       ["S6", "S4", "Onboarding review case. Every high-risk sector on Compliance's list gets its extra checks: licence, scheme registration, website and sales model.", { ref: "WF02b 10", dec: "MP-Q61" }],
-      ["S4", "EXT", "MATCH and VMAS checks by API. Manual check in the scheme's own tool only when the API cannot be used; the result and evidence go into the case.", { ref: "WF02b 11", dec: "MP-Q65" }],
+      ["S4", "EXT", "MATCH and VMAS checks under Paytinno's own scheme membership, by API. Manual check in the scheme's own tool only when the API cannot be used; the result and evidence go into the case. A hit means an in-depth review and a four-eyes decision.", { ref: "WF02b 11", dec: "MP-Q65" }],
       ["OPS", "S4", "Limits, tariff, rolling reserve %, guarantee deposit, MCC.", { sla: "2 business days", rule: "Four eyes above a threshold or for high-risk sectors", ref: "WF02b 11" }],
       ["OPS", "S4", "Exposure test. If a credit trigger is met, a credit review (underwriting) by the credit approver sets the reserve, deposit and payout delay that cover the exposure.", { dec: "MP-Q60", added: true, rule: "Without a trigger there is no credit review" }],
       ["S4", "S6", "Approved with conditions, or rejected. Approver differs from preparer.", { ref: "WF02b 12" }],
@@ -242,10 +244,10 @@ window.WF = (function () {
     rules: ["The rejection text is the same whatever the reason.", "The decision record keeps rationale, policy version, tariff, reserve and approvers, and the credit approver when there was a credit review (WF02b 18).", "\"Underwriting\" means only the credit review. The rest is the onboarding review."],
     amends: ["WF02b 10 to 12: call it the onboarding review and the state ONBOARDING_REVIEW, not UNDERWRITING. Underwriting is only the credit review, when a credit trigger is met (MP-Q60).", "WF02b 10: extra sector checks for every high-risk sector on Compliance's list, not only MCC 7995 (MP-Q61).", "WF02b 11: MATCH and VMAS checks by API; manual only as a fallback, with evidence in the case (MP-Q65).", "WF02b: add state OFFER_SENT between approval (step 12) and set-up (step 13); the representative accepts the offer and agreement with SCA; the offer lapses after [14] days (MP-Q19)."],
     questions: [
-      { id: "MP-Q19", q: "Where does the merchant agree to the tariff, reserve and agreement? v8.1 goes from approval straight to set-up.", prop: "Add OFFER_SENT: the offer in the portal, accepted with SCA by the applicant who is the representative. Qualified e-signature only if Legal requires it.", owner: "Legal", decided: true },
+      { id: "MP-Q19", q: "Where does the merchant agree to the tariff, reserve and agreement? v8.7 goes from approval straight to set-up.", prop: "Add OFFER_SENT: the offer in the portal, accepted with SCA by the applicant who is the representative. Qualified e-signature only if Legal requires it.", owner: "Legal", decided: true },
       { id: "MP-Q60", q: "When does onboarding need a credit review (underwriting), and who signs it?", prop: "Only when a credit trigger is met: goods or services delivered later (travel, tickets, events, pre-orders, memberships of more than [3] months); expected monthly volume above [€250,000]; payouts faster than the schemes pay Paytinno; or reserve and deposit below the estimated exposure (volume times days to delivery plus the refund and chargeback window). The CRO or a delegated credit approver signs; the onboarding review team cannot approve its own credit decision.", owner: "CRO", decided: true },
       { id: "MP-Q65", q: "How are MATCH and VMAS checked: through BPC, directly with Mastercard and Visa, or by hand?", prop: "By API, directly or through BPC, whichever the schemes and BPC allow. A manual check in the scheme's own tool only when the API cannot be used, with a screenshot or export kept in the case.", owner: "CTO", decided: true },
-      { id: "MP-Q61", q: "Which sectors are high risk, and what extra checks does each get? v8.1 names only gambling (MCC 7995).", prop: "Compliance keeps one list in the risk policy, the same list the AML system scores on. At least: gambling (National Revenue Agency licence), crypto (registration or MiCA licence), online pharmacy and medicines (Bulgarian Drug Agency permit), adult content, dating, tobacco, e-cigarettes and alcohol (age checks), forex and CFDs (investment firm licence), nutraceuticals and free trials (subscription terms), travel and ticketing (credit review). Each gets a licence check where one applies, the scheme high-risk registration where Visa or Mastercard require it, a website and sales-model review, four eyes and KYB refresh every 12 months.", owner: "Compliance", decided: true }
+      { id: "MP-Q61", q: "Which sectors are high risk, and what extra checks does each get? v8.7 names only gambling (MCC 7995).", prop: "Compliance keeps one list in the risk policy, the same list the AML system scores on. At least: gambling (National Revenue Agency licence), crypto (registration or MiCA licence), online pharmacy and medicines (Bulgarian Drug Agency permit), adult content, dating, tobacco, e-cigarettes and alcohol (age checks), forex and CFDs (investment firm licence), nutraceuticals and free trials (subscription terms), travel and ticketing (credit review). Each gets a licence check where one applies, the scheme high-risk registration where Visa or Mastercard require it, a website and sales-model review, four eyes and KYB refresh every 12 months.", owner: "Compliance", decided: true }
     ]
   });
 
@@ -271,12 +273,12 @@ window.WF = (function () {
       ["S3", "MER", "The full portal opens: test keys, team, payouts. Live keys after the go-live check (MP-10).", { ref: "WF02b 17" }]
     ],
     states: [["OFFER_SENT", "accepted, deposit needed", "AWAITING_DEPOSIT"], ["AWAITING_DEPOSIT", "reconciled", "PROVISIONING"], ["PROVISIONING", "S5 and S10 both confirm", "ACTIVE"], ["PROVISIONING", "one fails", "COMPENSATING, S4 case"], ["AWAITING_DEPOSIT", "[30] days unpaid", "WITHDRAWN"]],
-    rules: ["No acceptance until both OraSYS and BPC confirm.", "The deposit is paid by transfer only, never taken from settlements."],
+    rules: ["No acceptance until both OraSYS and BPC confirm.", "The deposit is paid by transfer only, never taken from settlements.", "S19 only authenticates; the MERCHANT_ADMIN role and mandates come from S6 and apply from the next request.", "If the merchant also gets a payment account with an IBAN, the IBAN and the Verification of Payee name are registered as in WF01 (IF34).", "The decision record stays in S6; the event to S23 is phase 2 (IF28)."],
     amends: ["WF02b states: add AWAITING_DEPOSIT between OFFER_SENT and PROVISIONING, as PRD WF11 needs; unpaid after [30] days the offer lapses (MP-Q20)."],
     questions: [
       { id: "MP-Q20", q: "AWAITING_DEPOSIT (PRD WF11) is not in the WF02b state machine.", prop: "Add it between the offer and PROVISIONING. Show the deposit IBAN and reference in the portal. Unpaid after [30] days: offer lapses.", owner: "CTO", decided: true },
       { id: "MP-Q62", q: "Can the BPC API create the merchant, its terminals and its hosted page and SDK keys? (CTO question 21)", prop: "Confirm with BPC. If not, set-up in BPC is a manual task in S4 with its own state (SETUP_MANUAL), an SLA of [2] business days and four eyes on the data typed into BPC. ACTIVE still needs both confirmations.", owner: "CTO" },
-      { id: "MP-Q63", q: "What happens when set-up half-fails, for example OraSYS opens the accounts but BPC keeps failing? v8.1 only says compensation and an S4 case (risk R10).", prop: "OraSYS first, then BPC, each with an idempotency key per case. On a persistent failure the accounts stay blocked, not deleted, and an S4 case either retries or reverses: deactivate the BPC merchant if it was created, then close the empty accounts. Never active on one side only. Staff see both sides' state in the case.", owner: "CTO" }
+      { id: "MP-Q63", q: "What happens when set-up half-fails, for example OraSYS opens the accounts but BPC keeps failing? v8.7 only says compensation and an S4 case (risk R10).", prop: "OraSYS first, then BPC, each with an idempotency key per case. On a persistent failure the accounts stay blocked, not deleted, and an S4 case either retries or reverses: deactivate the BPC merchant if it was created, then close the empty accounts. Never active on one side only. Staff see both sides' state in the case.", owner: "CTO" }
     ]
   });
 
@@ -298,7 +300,7 @@ window.WF = (function () {
     states: [["ACTIVE (test only)", "checklist done and asked", "GO_LIVE_REVIEW"], ["GO_LIVE_REVIEW", "approved", "LIVE"], ["GO_LIVE_REVIEW", "changes needed", "ACTIVE (test only)"]],
     rules: ["Live keys are never issued before the website check."],
     questions: [
-      { id: "MP-Q21", q: "Can test keys be given as soon as the application is sent, so developers start during review (as the design prototype shows)?", prop: "Yes, if BPC offers a sandbox merchant without onboarding. Otherwise at activation as v8.1 says.", owner: "CTO" }
+      { id: "MP-Q21", q: "Can test keys be given as soon as the application is sent, so developers start during review (as the design prototype shows)?", prop: "Yes, if BPC offers a sandbox merchant without onboarding. Otherwise at activation as v8.7 says.", owner: "CTO" }
     ]
   });
 
@@ -348,7 +350,7 @@ window.WF = (function () {
     rules: ["Total refunds never exceed the captured amount.", "A payment not yet captured is cancelled, not refunded.", "The card holder sees the money in 5 to 10 business days (bank dependent)."],
     amends: ["WF11 15 to 17: before the A09 call, S18 checks open disputes with S4 (MP-Q24) and funds with S21 (MP-Q25). Replaces the PRD's block in \"S21a\".", "WF11: add cancelling an authorisation that is not captured, through A09 (MP-Q26)."],
     questions: [
-      { id: "MP-Q24", q: "Where does the \"no refund while disputed\" check run? The PRD says S21a; in v8.1 portal refunds go S18 to A09 to BPC.", prop: "S18 asks S4 synchronously (DisputeCase by payment) before the A09 call. S4 also re-checks on every stage change (PRD).", owner: "CTO", decided: true },
+      { id: "MP-Q24", q: "Where does the \"no refund while disputed\" check run? The PRD says S21a; in v8.7 portal refunds go S18 to A09 to BPC.", prop: "S18 asks S4 synchronously (DisputeCase by payment) before the A09 call. S4 also re-checks on every stage change (PRD).", owner: "CTO", decided: true },
       { id: "MP-Q25", q: "What if the merchant's balance is lower than the refund?", prop: "Allowed up to available plus pending; above that, refused with \"top up by transfer\". Never a negative balance.", owner: "Finance", decided: true },
       { id: "MP-Q26", q: "Cancelling an authorisation that is not captured is not described anywhere.", prop: "A \"Cancel\" action on authorised payments through A09, same rights as refund, no SCA (no money leaves).", owner: "CTO", decided: true }
     ]
@@ -378,10 +380,10 @@ window.WF = (function () {
       ["S4", "S4", "No answer by the deadline: LOST automatically.", { fail: "Silence means loss" }]
     ],
     states: [["", "chargeback", "OPEN"], ["OPEN", "escalated", "SUBMITTED"], ["OPEN", "accepted or deadline", "LOST"], ["SUBMITTED", "issuer accepts or window passes", "WON"], ["SUBMITTED", "pre-arbitration", "OPEN"], ["SUBMITTED", "arbitration lost", "LOST"]],
-    rules: ["Internal deadline = scheme deadline minus 3 days.", "Visa: 22 days for the merchant; Mastercard: 37 days for second presentment, 22 for pre-arbitration (PRD timers).", "Escalate and Accept are possible only while the stage waits for the merchant and the deadline has not passed.", "Staff comments are shown; internal notes are not."],
+    rules: ["The v8.7 S3 page still lists dispute answers as depending on the BPC API (question 29). Our answer (MP-Q13) does not: the merchant answers in the portal, the case is in S4, and analysts submit to the schemes.", "Internal deadline = scheme deadline minus 3 days.", "Visa: 22 days for the merchant; Mastercard: 37 days for second presentment, 22 for pre-arbitration (PRD timers).", "Escalate and Accept are possible only while the stage waits for the merchant and the deadline has not passed.", "Staff comments are shown; internal notes are not."],
     amends: ["WF11 14 to 17: the merchant's Escalate or Accept goes to the DisputeCase in S4; chargeback analysts submit in VROL or Mastercom (PRD WF11 v6). Not through A09 at launch (MP-Q12).", "WF11 states: keep OPEN, SUBMITTED, WON, LOST, DECLINED for reporting; the portal shows the PRD stage names (MP-Q12).", "WF11 ledger: use the PRD's dispute (CB) sub-account; a shortfall comes from the reserve, then becomes a receivable from the merchant (MP-Q12).", "CTO question 29 answered: Paytinno chargeback analysts in S4 (MP-Q13)."],
     questions: [
-      { id: "MP-Q12", q: "The PRD and v8.1 WF11 disagree: states (PRD stages vs OPEN/SUBMITTED/WON/LOST), channel (staff in VROL/Mastercom vs A09 to BPC), ledger (CB sub-account vs reserve and receivable).", prop: "Use the PRD for the merchant side and update WF11 in v8.2. The portal shows PRD stages and maps them to the v8.1 states for reporting.", owner: "CTO", decided: true },
+      { id: "MP-Q12", q: "The PRD and v8.7 WF11 disagree: states (PRD stages vs OPEN/SUBMITTED/WON/LOST), channel (staff in VROL/Mastercom vs A09 to BPC), ledger (CB sub-account vs reserve and receivable).", prop: "Use the PRD for the merchant side and update WF11 in the next version. The portal shows PRD stages and maps them to the v8.7 states for reporting.", owner: "CTO", decided: true },
       { id: "MP-Q13", q: "Who works disputes at launch? (CTO question 29)", prop: "Paytinno chargeback analysts in S4 (PRD), with the merchant answering in the portal.", owner: "COO", decided: true }
     ]
   });
@@ -404,7 +406,7 @@ window.WF = (function () {
     states: [["", "requested", "TOPUP_OPEN"], ["TOPUP_OPEN", "reconciled", "PAID"], ["TOPUP_OPEN", "deadline", "ESCALATED"]],
     rules: ["The main balance is never negative.", "Top-ups only by transfer from the merchant."],
     questions: [
-      { id: "MP-Q27", q: "Reserve release: v8.1 proposes 180 days; the PRD says \"on schedule\" with no number.", prop: "180 days rolling, daily release, per merchant override set in the onboarding review, or the credit review (MP-Q60).", owner: "CRO" }
+      { id: "MP-Q27", q: "Reserve release: v8.7 proposes 180 days; the PRD says \"on schedule\" with no number.", prop: "180 days rolling, daily release, per merchant override set in the onboarding review, or the credit review (MP-Q60).", owner: "CRO" }
     ]
   });
 
@@ -461,7 +463,7 @@ window.WF = (function () {
     summary: "The highest-risk change in the portal. Name check, second admin, staff check, then a cooling-off period before the first payout. The old account stays in use until then.",
     steps: [
       ["MER", "S3", "Admin enters IBAN and holder name and uploads a bank statement.", {}],
-      ["S18", "S18", "IBAN format and SEPA reach; Verification of Payee name check: match, close match, no match.", { gap: "v8.1 does not say how \"in the merchant's name\" is checked (MP-Q30)." }],
+      ["S18", "S18", "IBAN format and SEPA reach; Verification of Payee name check: match, close match, no match.", { gap: "v8.7 does not say how \"in the merchant's name\" is checked (MP-Q30)." }],
       ["S18", "S19", "SCA bound to the new masked IBAN.", { sca: true }],
       ["S18", "S6", "Second admin approves, if there is one (MP-23).", {}],
       ["S18", "S4", "Change sent to the admin; payouts to the new account stopped until verified.", { api: "webhook payout.account.changed {accountRef, ibanMasked, holderMatches, verified, scaEvidenceId}", ref: "admin spec 6" }],
@@ -470,7 +472,7 @@ window.WF = (function () {
       ["S17", "MER", "Notice to every admin and to the company email: \"Your payout account was changed\".", { api: "merchant.notify payout_account_verified" }]
     ],
     states: [["", "added", "REQUESTED"], ["REQUESTED", "SCA and approval", "VERIFYING"], ["VERIFYING", "staff verify", "VERIFIED (cooling-off)"], ["VERIFIED (cooling-off)", "[24 h]", "PRIMARY"], ["VERIFYING", "refused", "REJECTED"]],
-    rules: ["Payouts go only to a verified account in the merchant's name.", "No change for [24 h] after passkey recovery (MP-04).", "The old account stays primary until the new one is."],
+    rules: ["At launch (v8.7 S3 scope), until the BPC API covers it, Paytinno staff do this in S4 through A09 on the merchant's request; the portal then sends a request and shows its status (questions 21 and 33, risk R07; MP-Q68).", "Payouts go only to a verified account in the merchant's name.", "No change for [24 h] after passkey recovery (MP-04).", "The old account stays primary until the new one is."],
     questions: [
       { id: "MP-Q30", q: "How is \"account in the merchant's name\" verified?", prop: "Verification of Payee name check plus a bank statement; no test transfer. A \"no match\" needs four eyes.", owner: "Compliance" },
       { id: "MP-Q31", q: "Cooling-off before the first payout to a new account?", prop: "[24 h], with notices to all admins so an account takeover is noticed in time.", owner: "CRO" }
@@ -523,7 +525,7 @@ window.WF = (function () {
     summary: "Secrets are shown once and never kept by Paytinno. Rolling keeps the old key working for [24 h] so the merchant can switch without downtime.",
     steps: [
       ["MER", "S3", "Create a key (test or live) with a label, or roll or revoke one.", {}],
-      ["S18", "S19", "SCA bound to the key label and action.", { sca: true, ref: "WF02a 22" }],
+      ["S18", "S19", "SCA bound to the key label and action.", { sca: true, ref: "WF02c 1" }],
       ["S3", "S18", "Command.", { api: "POST /v1/keys {mode, label} | POST /v1/keys/{id}/roll | DELETE /v1/keys/{id}" }],
       ["S18", "S10", "Through A09.", { gap: "BPC API coverage for keys is open (questions 21, 33). Until then an S4 operator does it (MP-Q10).", api: "IF45 via A09" }],
       ["S10", "S3", "The secret, once. The portal shows it and forgets it.", { rule: "Shown once" }],
@@ -531,9 +533,10 @@ window.WF = (function () {
       ["S17", "MER", "Email to admins and developers for every create, roll and revoke.", {}]
     ],
     states: [["", "created", "ACTIVE"], ["ACTIVE", "rolled", "EXPIRING"], ["EXPIRING", "time", "REVOKED"], ["ACTIVE", "revoked", "REVOKED"]],
-    rules: ["Live keys only after go-live (MP-10).", "Secrets never in email, messages or logs."],
+    rules: ["At launch (v8.7 S3 scope), until the BPC API covers it, Paytinno staff do this in S4 through A09 on the merchant's request; the portal then sends a request and shows its status (questions 21 and 33, risk R07; MP-Q68).", "Live keys only after go-live (MP-10).", "Secrets never in email, messages or logs."],
     questions: [
-      { id: "MP-Q10", q: "If BPC cannot create keys through its API, how does the secret reach the merchant without staff seeing it?", prop: "Do not launch key self-service with an operator in the middle. Either BPC API support, or BPC's own console link for the first key. Confirm with BPC before build.", owner: "BPC" }
+      { id: "MP-Q10", q: "If BPC cannot create keys through its API, how does the secret reach the merchant without staff seeing it?", prop: "Do not launch key self-service with an operator in the middle. Either BPC API support, or S4 triggers the key through A09 and only the merchant sees the secret (MP-Q68). v8.7 does not use BPC's console, so a console link is out. Confirm with BPC before build.", owner: "BPC" },
+      { id: "MP-Q68", q: "v8.7 puts API keys and payout account changes after launch: Paytinno staff do them in S4 until the BPC API covers them (questions 21 and 33). How does the merchant ask on day one?", prop: "The portal sends the same request either way, signed with SCA. Without the API, staff carry it out in S4 with four eyes within [1] business day and the portal shows the status. For a key, staff only trigger it: S4 asks A09 for the key and S18 shows the secret once to the merchant, so no one at Paytinno sees it (MP-Q10). When the API arrives nothing changes for merchants.", owner: "CTO" }
     ]
   });
 
@@ -558,7 +561,7 @@ window.WF = (function () {
     ],
     states: [["", "added", "ACTIVE"], ["ACTIVE", "[5] days failing", "DISABLED"], ["DISABLED", "fixed and turned on again", "ACTIVE"]],
     rules: ["The merchant rejects messages older than 5 min.", "Event IDs are unique; resends keep the ID.", "Payment events from Paytinno follow the core journal, so they can arrive after the gateway's checkout callback."],
-    amends: ["WF10 3 and PRD WF11: all merchant webhooks come from Paytinno through S17 with one signature (X-Paytinno-Signature) and one retry policy: backoff for 24 h, then pull through GET /v1/events. Replaces the PRD's \"once a day, 3 attempts\" (MP-Q34).", "WF10 3: the portal does not register webhooks at BPC. Only the per-order checkout callback stays with the BPC gateway.", "WF02a 22: webhook endpoints and secrets need SCA (MP-Q11)."],
+    amends: ["WF10 3 and PRD WF11: all merchant webhooks come from Paytinno through S17 with one signature (X-Paytinno-Signature) and one retry policy: backoff for 24 h, then pull through GET /v1/events. Replaces the PRD's \"once a day, 3 attempts\" (MP-Q34).", "WF10 3: the portal does not register webhooks at BPC. Only the per-order checkout callback stays with the BPC gateway.", "WF02c 1: webhook endpoints and secrets need SCA (MP-Q11)."],
     deps: ["BPC: the gateway accepts a result callback URL per order (CTO question 21)."],
     questions: [
       { id: "MP-Q11", q: "Is a webhook signing secret a key needing SCA? It lets anyone fake events to the merchant.", prop: "Yes: SCA to add an endpoint and to reveal or roll a secret.", owner: "CTO", decided: true },
@@ -568,7 +571,7 @@ window.WF = (function () {
 
 
   W("MP-28", {
-    title: "Reports and exports", area: "Developers", status: "new", source: "Not in v8.1",
+    title: "Reports and exports", area: "Developers", status: "new", source: "Not in v8.7",
     trigger: "A user exports payments, payouts or a reconciliation file.", object: "Export job",
     screens: ["payments", "payouts"], lanes: ["MER", "S3", "S18", "S10", "S21"],
     summary: "Small exports download at once; large ones run as a job and are ready to download in the portal.",
@@ -585,17 +588,17 @@ window.WF = (function () {
 
   /* ================= TEAM ================= */
   W("MP-22", {
-    title: "Invite, change and remove users", area: "Team", status: "new", source: "One-pager S3 item 7; WF02b 17 (\"invites its other users with roles\"); WF02a 22 (role above threshold)",
+    title: "Invite, change and remove users", area: "Team", status: "new", source: "One-pager S3 item 7; WF02b 17 (\"invites its other users with roles\"); WF02a 24 (invited user); WF02c 1 (role above threshold)",
     trigger: "An admin manages the team.", object: "Person to merchant link (S6)",
     screens: ["team"], lanes: ["MER", "S3", "S18", "S19", "S6", "S17"],
     summary: "Invitations by email, accepted through the normal registration. Roles that can move money need SCA to grant.",
     steps: [
       ["MER", "S3", "Admin invites: email, role, limits.", {}],
-      ["S18", "S19", "SCA when the role is Admin or Finance.", { sca: true, ref: "WF02a 22" }],
-      ["S18", "S6", "Invitation stored, valid [7] days.", { api: "POST /v1/team/invitations {email, role, mandate}" }],
+      ["S18", "S19", "SCA when the role is Admin or Finance.", { sca: true, ref: "WF02c 1" }],
+      ["S18", "S6", "Invitation with role and limits, valid [7] days, one use. S6 and S18 keep no email (D-03); where the invited email is held is open in v8.7.", { api: "POST /v1/team/invitations {email, role, mandate}", gap: "DC-11 and question 35: may S19 pre-create the user in realm merchant for the invited email?" }],
       ["S17", "MER", "Email with a link.", {}],
-      ["MER", "S19", "Invitee registers (MP-01) or signs in if they already have a portal account.", {}],
-      ["S6", "S6", "Accepting links the person to the merchant with the role. Admins are told.", {}],
+      ["MER", "S19", "Invitee registers (MP-01) or signs in if they already have a portal account. S19 checks the confirmed email against the invitation.", { ref: "WF02a 24" }],
+      ["S18", "S6", "Accepting links the person ID to the merchant with the role from the invitation. Admins are told.", { ref: "WF02a 24" }],
       ["#", "Change or remove"],
       ["MER", "S3", "Change role (SCA when raising it) or remove. The last admin cannot be removed.", {}],
       ["S6", "S19", "Removal: sessions for this merchant end at the next call; the person keeps other merchants.", {}]
@@ -604,12 +607,12 @@ window.WF = (function () {
     rules: ["At least one admin; two recommended (recovery, approvals).", "Every change is in the team history."],
     questions: [
       { id: "MP-Q35", q: "Do people with money roles (Admin, Finance) need an identity check?", prop: "Yes: IDV inside the portal when accepting an Admin or Finance invitation.", owner: "Compliance" },
-      { id: "MP-Q01", q: "v8.1 names only ONBOARDING_APPLICANT and MERCHANT_ADMIN. There is no role list or permission table.", prop: "Admin, Finance, Developer, Support, Viewer with the table under Roles and rights.", owner: "Product" }
+      { id: "MP-Q01", q: "v8.7 names only ONBOARDING_APPLICANT and MERCHANT_ADMIN. There is no role list or permission table.", prop: "Admin, Finance, Developer, Support, Viewer with the table under Roles and rights.", owner: "Product" }
     ]
   });
 
   W("MP-23", {
-    title: "Approvals by a second person", area: "Team", status: "new", source: "One-pager S3 item 7 (\"business roles, mandates and approvals\"); not modelled in v8.1",
+    title: "Approvals by a second person", area: "Team", status: "new", source: "One-pager S3 item 7 (\"business roles, mandates and approvals\"); not modelled in v8.7",
     trigger: "An action over a person's limit, or one that always needs two people.", object: "Approval request (S6)",
     screens: ["approvals"], lanes: ["MER", "S3", "S18", "S6", "S19", "S17"],
     summary: "The merchant's own four eyes. The request waits until someone else with the right role approves with SCA.",
@@ -713,7 +716,7 @@ window.WF = (function () {
     ]
   });
 
-  /* ================= ADDED 22 OCT 2026: needs found in v8.1 but not covered, and what merchants will expect ================= */
+  /* ================= ADDED 22 OCT 2026: needs found in v8.7 but not covered, and what merchants will expect ================= */
   W("MP-29", {
     title: "Payment links and QR codes", area: "Payments", status: "new", segments: ["links"],
     source: "WF10 trigger (checkout by \"HPP, link, QR, terminal\"); module spec v7.1 Merchant API (\"payments, links, status\")",
@@ -811,7 +814,7 @@ window.WF = (function () {
 
   W("MP-39", {
     title: "Saved cards and recurring payments", area: "Payments", status: "new", segments: ["recurring"],
-    source: "PRD WF11 (paymentOptionId, the BPC gateway token); not in v8.1",
+    source: "PRD WF11 (paymentOptionId, the BPC gateway token); not in v8.7",
     trigger: "A customer saves a card at checkout, or a merchant charges a subscription.", object: "Saved card (BPC token), merchant-initiated payment",
     screens: [], placement: "Payments: a Saved cards tab; each payment shows whether the customer or the merchant started it",
     lanes: ["CH", "S10", "MER", "S3", "S18", "S17"],
@@ -865,7 +868,7 @@ window.WF = (function () {
 
   W("MP-33", {
     title: "Payouts to players", area: "Money", status: "new", segments: ["gambling"],
-    source: "WF02b 10 (extra sector checks); the design boards (payout approvals for a gambling operator); not in v8.1",
+    source: "WF02b 10 (extra sector checks); the design boards (payout approvals for a gambling operator); not in v8.7",
     trigger: "A gambling operator pays a player's winnings or withdrawal.", object: "Player payout (S21): a card payout through BPC or a SEPA transfer",
     screens: [], placement: "Money: a Player payouts page with a review queue and review rules; Developers: payout keys",
     lanes: ["MER", "S3", "S18", "S4", "S6", "S19", "S21", "S10", "EXT", "S11", "S17"],
@@ -888,7 +891,7 @@ window.WF = (function () {
     ],
     states: [["", "requested", "REQUESTED"], ["REQUESTED", "above the operator's rules", "IN_REVIEW"], ["REQUESTED", "within the rules", "APPROVED"], ["IN_REVIEW", "approved", "APPROVED"], ["IN_REVIEW", "held", "HELD"], ["HELD", "approved", "APPROVED"], ["IN_REVIEW", "rejected", "REJECTED"], ["APPROVED", "sent", "SENT"], ["SENT", "confirmed", "PAID"], ["SENT", "declined or returned", "FAILED"]],
     rules: ["Paid only from the operator's available balance; never negative.", "Player data stays minimal: a player reference and a masked card or IBAN.", "Before go-live: the operator's licence from the National Revenue Agency is checked, and the operator is registered with Visa and Mastercard as a high-risk merchant category."],
-    amends: ["WF02b 10: gambling is on the high-risk sector list (MP-Q61): the National Revenue Agency licence check and the Visa and Mastercard high-risk registration before activation.", "Add a player payout workflow to v8.1: funded from the merchant balance, card payouts through A09 or SEPA through NC3, with the operator's own review rules."],
+    amends: ["WF02b 10: gambling is on the high-risk sector list (MP-Q61): the National Revenue Agency licence check and the Visa and Mastercard high-risk registration before activation.", "Add a player payout workflow to v8.7: funded from the merchant balance, card payouts through A09 or SEPA through NC3, with the operator's own review rules."],
     deps: ["BPC: card payouts (original credit transactions) for gambling winnings through A09.", "OraSYS: payout orders to third parties from a merchant balance through M0391."],
     questions: [
       { id: "MP-Q48", q: "Do our licence and the merchant agreement cover paying players from the operator's acquiring balance, and does that make the balance a payment account?", prop: "Legal to confirm before build. If it does, the operator gets a payment account with its own terms.", owner: "Legal" },
@@ -926,7 +929,7 @@ window.WF = (function () {
 
   W("MP-40", {
     title: "Apple Pay and Google Pay", area: "Developers", status: "new", segments: ["sdk"],
-    source: "v8.1 names Apple Pay and Google Pay only for card issuing (push provisioning, IF03); S10 gateway",
+    source: "v8.7 names Apple Pay and Google Pay only for card issuing (push provisioning, IF03); S10 gateway",
     trigger: "A merchant wants to offer Apple Pay or Google Pay at its checkout.", object: "Wallet set-up per website",
     screens: [], placement: "Developers: a Wallets tab with the Apple Pay and Google Pay status of each website",
     lanes: ["MER", "S3", "S18", "S10", "WAL"],
@@ -944,7 +947,7 @@ window.WF = (function () {
     ],
     states: [["", "domain added", "ADDED"], ["ADDED", "file found and registered", "VERIFIED"], ["ADDED", "file missing", "FAILED"], ["FAILED", "fixed", "VERIFIED"], ["VERIFIED", "website removed", "REMOVED"]],
     rules: ["Wallet payments are card payments: same fees, refunds and disputes.", "Only approved websites can be added."],
-    amends: ["S10 gateway: add Apple Pay and Google Pay for merchant checkouts; v8.1 mentions them only for card issuing."],
+    amends: ["S10 gateway: add Apple Pay and Google Pay for merchant checkouts; v8.7 mentions them only for card issuing."],
     deps: ["BPC: Apple Pay and Google Pay on the hosted page and in the JS SDK, and whether BPC is Apple's payment platform for merchant domains."],
     questions: [
       { id: "MP-Q57", q: "Who registers merchant domains with Apple: BPC as the processor, or Paytinno as a payment platform?", prop: "BPC, if it is already an Apple Pay payment platform; otherwise Paytinno applies to Apple.", owner: "CTO" }
@@ -953,7 +956,7 @@ window.WF = (function () {
 
   W("MP-41", {
     title: "Shop plugins", area: "Developers", status: "new", segments: ["platforms"],
-    source: "Not in v8.1; module spec v7.1 (sandbox certification of every merchant integration)",
+    source: "Not in v8.7; module spec v7.1 (sandbox certification of every merchant integration)",
     trigger: "A merchant with a WooCommerce, OpenCart, CloudCart or similar shop connects it to Paytinno.", object: "Plugin installation",
     screens: [], placement: "Developers: a Plugins tab with downloads, set-up steps and the plugin versions in use",
     lanes: ["MER", "S3", "S18", "SHOP", "S10", "S17"],
@@ -980,7 +983,7 @@ window.WF = (function () {
 
   W("MP-34", {
     title: "Activity log", area: "Team", status: "new",
-    source: "Not in v8.1; one-pager S3 item 7 (business roles, mandates and approvals)",
+    source: "Not in v8.7; one-pager S3 item 7 (business roles, mandates and approvals)",
     trigger: "Anyone, or any API key, acts for the merchant; an admin wants to see who did what.", object: "Activity event (append-only)",
     screens: [], placement: "Settings: an Activity page; a History link on each payment, payout, key and user",
     lanes: ["MER", "S3", "S18", "S6", "S17"],
@@ -1024,7 +1027,7 @@ window.WF = (function () {
     ],
     states: [["", "received", "RECEIVED"], ["RECEIVED", "handler assigned", "IN_PROGRESS"], ["IN_PROGRESS", "15 business days not enough", "HOLDING_REPLY"], ["IN_PROGRESS", "final answer", "ANSWERED"], ["HOLDING_REPLY", "final answer", "ANSWERED"], ["ANSWERED", "merchant disagrees", "REOPENED"], ["REOPENED", "final answer", "ANSWERED"], ["ANSWERED", "[30] days", "CLOSED"]],
     rules: ["Free of charge, in Bulgarian or English.", "Kept [5] years.", "A complaint never moves a dispute deadline or an RFI due date."],
-    amends: ["Add a merchant complaint workflow to v8.1: S4 complaint cases with a 15 business day timer, a holding reply up to 35, Compliance approval and a complaints register (PSD2 Art. 101)."],
+    amends: ["Add a merchant complaint workflow to v8.7: S4 complaint cases with a 15 business day timer, a holding reply up to 35, Compliance approval and a complaints register (PSD2 Art. 101)."],
     questions: [
       { id: "MP-Q46", q: "Who handles complaints and approves the answers?", prop: "Compliance owns the process and approves every final answer; the handler is never the person or team complained about.", owner: "Compliance" },
       { id: "MP-Q47", q: "Which escalation routes do we give merchants: the BNB, an out-of-court body, and later the UK ombudsman?", prop: "The BNB always; the conciliation committee for payment disputes where it applies to the merchant; the UK Financial Ombudsman only once there are UK merchants.", owner: "Legal" }
@@ -1033,7 +1036,7 @@ window.WF = (function () {
 
   W("MP-36", {
     title: "Incident and maintenance notices", area: "Business", status: "new",
-    source: "DORA Art. 19(3) (tell clients about major ICT incidents that affect their financial interests); v8.1 incident handling",
+    source: "DORA Art. 19(3) (tell clients about major ICT incidents that affect their financial interests); v8.7 incident handling",
     trigger: "Something merchants feel breaks (payments, refunds, payouts, portal, API, webhooks), or maintenance is planned.", object: "Incident or maintenance notice",
     screens: [], placement: "A banner on every portal page; a status page outside the platform; Messages",
     lanes: ["OPS", "S4", "S17", "S3", "MER"],
@@ -1051,7 +1054,7 @@ window.WF = (function () {
     ],
     states: [["", "declared", "INVESTIGATING"], ["INVESTIGATING", "cause found", "IDENTIFIED"], ["IDENTIFIED", "fix in place", "MONITORING"], ["MONITORING", "stable", "RESOLVED"], ["", "announced", "PLANNED"], ["PLANNED", "window starts", "IN_MAINTENANCE"], ["IN_MAINTENANCE", "done", "COMPLETED"]],
     rules: ["Notices never give details that would help an attacker.", "Texts approved by the incident manager; when DORA applies, also by Compliance.", "The status page must work when the platform does not."],
-    amends: ["v8.1 incident handling: add notices to merchants for major ICT incidents (DORA Art. 19(3)), a status page outside the platform, portal banners and planned maintenance notices."],
+    amends: ["v8.7 incident handling: add notices to merchants for major ICT incidents (DORA Art. 19(3)), a status page outside the platform, portal banners and planned maintenance notices."],
     questions: [
       { id: "MP-Q53", q: "Is the status page public or only for signed-in merchants, and who approves the texts?", prop: "Public, without details on causes; the incident manager approves, and Compliance too when DORA applies.", owner: "COO" }
     ]
@@ -1059,7 +1062,7 @@ window.WF = (function () {
 
   W("MP-38", {
     title: "Ask for higher limits or new services", area: "Business", status: "new",
-    source: "WF02b 10 to 12 (the onboarding review sets limits, MCC and channels); not as a merchant request in v8.1",
+    source: "WF02b 10 to 12 (the onboarding review sets limits, MCC and channels); not as a merchant request in v8.7",
     trigger: "A merchant needs a higher limit, a new channel (links, terminals, manual capture, saved cards), new customer countries, or a lower reserve.", object: "Change request (S4 review case)",
     screens: [], placement: "Business: a Limits and services tab with current limits, usage and Ask for a change",
     lanes: ["MER", "S3", "S18", "S4", "OPS", "S6", "S10", "S17"],
@@ -1102,24 +1105,26 @@ window.WF = (function () {
   };
   const SCOPE = "Whether each merchant type is in year-one scope is still to decide.";
   const SOURCES = [
-    "CTO architecture v8.1, 13 Oct 2026: one-page modules and workflows; low-level workflows WF02a, WF02b, WF10, WF11",
-    "Module specs (file still v7.1, 2 Oct 2026; its S3 page describes the old bought portal)",
+    "CTO architecture v8.7 (v8.7.1 for the core hosting), read 18 Nov 2026: S19 built in house (ADR-0025), portal sign-in on S19's pages (ADR-0026), sessions held in S18 (ADR-0009), S18 to S19 through A10 (ADR-0010)",
+    "Low-level workflows v8.3, read 18 Nov 2026: WF02a at v8.7, WF02b at v8.5, WF02c (SCA in the portal, a skeleton), WF10, WF11 and WF21 unchanged since v8.1",
+    "Module specs v8.7.1, read 18 Nov 2026: S3 page (own SPA on the BPC API, launch scope, questions 4, 9, 21 to 24, 29, 34 to 36, 38; risks R07 to R11) and S6 page (draft and frozen version, v8.5)",
+    "Our first version was written against v8.1 (13 Oct 2026); the move to v8.7 is in the git history",
     "PRD WF11 Acquiring v6, V. Tulev, 15 Oct 2026",
     "Admin and merchant portal message spec v0.1, 15 Oct 2026 (paytinno-admin/docs/portal-connector.md)",
     "Merchant portal design boards, 14 Oct 2026 (screens only, no workflows)"
   ];
   const CONTRADICTIONS = [
-    "The module spec file is v7.1 and still describes S3 as a portal bought from BPC. v8.1 has the portal built in house; there is no v8.1 S3 page.",
-    "WF02a step 26 points to the wrong steps (MP-Q08).",
-    "WF02b step 17 says the portal talks only to S18; WF02a has the portal talk to S19 directly through the web SDK (IF05 rows). Both can be true: S19's SDK for the passkey, S18 for everything else. Say so in v8.2.",
-    "PRD WF11 and v8.1 WF11 disagree on dispute states, the channel to the schemes and the ledger accounts (MP-Q12). The PRD also uses component names S21a, S21b, S21c that v7.1 dropped.",
-    "Chargeback ratio: v8.1 opens a review case (it says underwriting) above about 1%; Visa VAMP and Mastercard ECP thresholds in the admin are different and still placeholders.",
+    "WF02c step 5 hands a signed refund to WF11 step 16, but leaves payout and payout account change in WF10 \"to be specified\"; WF02c's states and failures are still to be written (MP-Q08).",
+    "The low-level workflows are v8.3 (WF02a v8.7, WF02b v8.5) while the architecture and module specs are v8.7 and v8.7.1. WF02b still has the v8.1 states and names only gambling for sector checks.",
+    "The S3 page puts dispute answers, API keys and payout account changes after launch, worked by Paytinno staff in S4 until the BPC API covers them (questions 21, 29, 33). WF11 and WF02c still describe the merchant doing them in the portal.",
+    "PRD WF11 and v8.7 WF11 disagree on dispute states, the channel to the schemes and the ledger accounts (MP-Q12). The PRD also uses component names S21a, S21b, S21c that v7.1 dropped.",
+    "Chargeback ratio: v8.7 opens a review case (it says underwriting) above about 1%; Visa VAMP and Mastercard ECP thresholds in the admin are different and still placeholders.",
     "Webhooks: payment events from BPC, dispute events from S17, with different signatures and retries (MP-Q34).",
     "The admin's access.revoke stops every action; WF11 needs dispute answers to keep working (MP-Q38)."
   ];
-  const VERSION = "0.1";
+  const VERSION = "0.2";
   const AREAS = ["Access", "Onboarding", "Payments", "Disputes", "Money", "Developers", "Team", "Business"];
-  const STATUS = { v81: ["v81", "In v8.1"], part: ["part", "v8.1 with gaps"], amended: ["amd", "v8.1, gaps closed"], new: ["new", "Proposed"] };
+  const STATUS = { v81: ["v81", "In v8.7"], part: ["part", "v8.7 with gaps"], amended: ["amd", "v8.7, gaps closed"], new: ["new", "Proposed"] };
   const byId = id => list.find(w => w.id === id);
   const forScreen = s => list.filter(w => (w.screens || []).includes(s));
   const questions = () => { const out = []; list.forEach(w => (w.questions || []).forEach(q => out.push(Object.assign({ wf: w.id, wfTitle: w.title }, q)))); return out.sort((a, b) => parseFloat(a.id.slice(4)) - parseFloat(b.id.slice(4))); };

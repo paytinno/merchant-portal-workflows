@@ -11,7 +11,7 @@ Invitations by email, accepted through the normal registration. Roles that can m
 | Status | Proposed |
 | For | Every merchant |
 | Area | Team |
-| Source | One-pager S3 item 7; WF02b 17 ("invites its other users with roles"); WF02a 22 (role above threshold) |
+| Source | One-pager S3 item 7; WF02b 17 ("invites its other users with roles"); WF02a 24 (invited user); WF02c 1 (role above threshold) |
 | Starts when | An admin manages the team. |
 | Object | Person to merchant link (S6) |
 | Systems | Merchant (user), Portal (S3), Gateway, BFF (S18), Identity, SCA (S19), Onboarding (S6), Messages (S17) |
@@ -30,10 +30,10 @@ sequenceDiagram
   participant S17 as Messages S17
   MER->>S3: Admin invites: email, role, limits.
   S18->>S19: SCA when the role is Admin or Finance.
-  S18->>S6: Invitation stored, valid [7] days.
+  S18->>S6: Invitation with role and limits, valid [7]<br/>days, one use. S6 and S18 keep no email<br/>(D-03), where the invited email is held is<br/>open in v8.7.
   S17->>MER: Email with a link.
-  MER->>S19: Invitee registers (MP-01) or signs in if they<br/>already have a portal account.
-  S6->>S6: Accepting links the person to the merchant<br/>with the role. Admins are told.
+  MER->>S19: Invitee registers (MP-01) or signs in if they<br/>already have a portal account. S19 checks the<br/>confirmed email against the invitation.
+  S18->>S6: Accepting links the person ID to the merchant<br/>with the role from the invitation. Admins are<br/>told.
   Note over MER,S17: Change or remove
   MER->>S3: Change role (SCA when raising it) or remove.<br/>The last admin cannot be removed.
   S6->>S19: Removal: sessions for this merchant end at the<br/>next call, the person keeps other merchants.
@@ -44,11 +44,11 @@ sequenceDiagram
 | # | From | To | Step | Call | Notes |
 |---|---|---|---|---|---|
 | 1 | Merchant (user) | Portal (S3) | Admin invites: email, role, limits. |  |  |
-| 2 | Gateway, BFF (S18) | Identity, SCA (S19) | SCA when the role is Admin or Finance. |  | WF02a 22<br>**SCA** |
-| 3 | Gateway, BFF (S18) | Onboarding (S6) | Invitation stored, valid [7] days. | `POST /v1/team/invitations {email, role, mandate}` |  |
+| 2 | Gateway, BFF (S18) | Identity, SCA (S19) | SCA when the role is Admin or Finance. |  | WF02c 1<br>**SCA** |
+| 3 | Gateway, BFF (S18) | Onboarding (S6) | Invitation with role and limits, valid [7] days, one use. S6 and S18 keep no email (D-03); where the invited email is held is open in v8.7. | `POST /v1/team/invitations {email, role, mandate}` | **Open gap:** DC-11 and question 35: may S19 pre-create the user in realm merchant for the invited email? |
 | 4 | Messages (S17) | Merchant (user) | Email with a link. |  |  |
-| 5 | Merchant (user) | Identity, SCA (S19) | Invitee registers (MP-01) or signs in if they already have a portal account. |  |  |
-| 6 | Onboarding (S6) | Onboarding (S6) | Accepting links the person to the merchant with the role. Admins are told. |  |  |
+| 5 | Merchant (user) | Identity, SCA (S19) | Invitee registers (MP-01) or signs in if they already have a portal account. S19 checks the confirmed email against the invitation. |  | WF02a 24 |
+| 6 | Gateway, BFF (S18) | Onboarding (S6) | Accepting links the person ID to the merchant with the role from the invitation. Admins are told. |  | WF02a 24 |
 | | | | **Change or remove** | | |
 | 7 | Merchant (user) | Portal (S3) | Change role (SCA when raising it) or remove. The last admin cannot be removed. |  |  |
 | 8 | Onboarding (S6) | Identity, SCA (S19) | Removal: sessions for this merchant end at the next call; the person keeps other merchants. |  |  |
@@ -92,7 +92,7 @@ Owner: Compliance
 
 ### MP-Q01
 
-v8.1 names only ONBOARDING_APPLICANT and MERCHANT_ADMIN. There is no role list or permission table.
+v8.7 names only ONBOARDING_APPLICANT and MERCHANT_ADMIN. There is no role list or permission table.
 
 **Proposed:** Admin, Finance, Developer, Support, Viewer with the table under Roles and rights.
 

@@ -74,9 +74,9 @@ stateDiagram-v2
 - Paytinno-initiated closure follows the agreement's notice, or immediately for cause.
 - A MATCH or VMAS listing follows the scheme's reason list, not staff preference: listed when a reason applies, never otherwise.
 
-## Changes v8.1 needs
+## Changes v8.7 needs
 
-For the CTO's next version of the architecture (v8.2).
+For the CTO's next version of the architecture.
 
 - S4 closure: record the termination reason; add MATCH and VMAS listing by API only for the scheme listing reasons (MP-Q66).
 

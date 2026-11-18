@@ -8,7 +8,7 @@ One inbox for requests, notices and support. Emails carry a link, not the conten
 
 | | |
 |---|---|
-| Status | v8.1, gaps closed |
+| Status | v8.7, gaps closed |
 | For | Every merchant |
 | Area | Business |
 | Source | S17; admin spec 5.3 merchant.notify templates |
@@ -53,9 +53,9 @@ No states of its own.
 
 - Templates: welcome, application received, application rejected, RFI reminder, tariff change, acceptance suspended, acceptance reactivated, account closing, payout account verified (admin spec P5).
 
-## Changes v8.1 needs
+## Changes v8.7 needs
 
-For the CTO's next version of the architecture (v8.2).
+For the CTO's next version of the architecture.
 
 - S4 module: add a merchant support inbox for phase 1 (MP-Q37).
 - S17: emails to merchants carry a link to the portal, not the content.

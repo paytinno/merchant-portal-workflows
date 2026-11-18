@@ -4,9 +4,9 @@
 
 [All workflows](README.md)
 
-Names from the CTO's architecture v8.1. A01 and A05 are client libraries in S18 and S6; A09 is the BPC API library, which never writes the ledger.
+Names from the CTO's architecture v8.7. A01 and A05 are client libraries in S18 and S6; A09 is the BPC API library, which never writes the ledger.
 
-| Code | System | v8.1 module |
+| Code | System | v8.7 module |
 |---|---|---|
 | `MER` | Merchant | user |
 | `S3` | Portal | S3 |

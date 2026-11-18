@@ -88,9 +88,9 @@ stateDiagram-v2
 - The customer sees the hold on the card until it is captured, cancelled or expires.
 - Hotels and car rental can raise a hold (incremental authorisation) through the API, where BPC supports it.
 
-## Changes v8.1 needs
+## Changes v8.7 needs
 
-For the CTO's next version of the architecture (v8.2).
+For the CTO's next version of the architecture.
 
 - WF10 4: add capture and part capture started by the merchant through A09, the capture mode per website, and the expiry of holds that are not captured.
 

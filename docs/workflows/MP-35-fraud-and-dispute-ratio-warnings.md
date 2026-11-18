@@ -86,9 +86,9 @@ stateDiagram-v2
 - Scheme fines are passed on only as the agreement allows.
 - The merchant sees only its own ratios.
 
-## Changes v8.1 needs
+## Changes v8.7 needs
 
-For the CTO's next version of the architecture (v8.2).
+For the CTO's next version of the architecture.
 
 - S4 monitoring (VAMP, ECP, EFM): show the merchant its own ratios and send warning, programme and exit notices (new templates scheme_warning, scheme_programme, scheme_exit).
 

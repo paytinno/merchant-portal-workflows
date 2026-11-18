@@ -8,7 +8,7 @@ Payment records come from BPC through A09 (masked). Money comes from OraSYS thro
 
 | | |
 |---|---|
-| Status | In v8.1 |
+| Status | In v8.7 |
 | For | Every merchant |
 | Area | Payments |
 | Source | WF10 steps 13 to 16 |

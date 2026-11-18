@@ -8,7 +8,7 @@ The money moves to a dispute account at once. The merchant gets a deadline, can 
 
 | | |
 |---|---|
-| Status | v8.1, gaps closed |
+| Status | v8.7, gaps closed |
 | For | Every merchant |
 | Area | Disputes |
 | Source | WF11 steps 11 to 17; PRD WF11 Acquiring v6 |
@@ -96,14 +96,15 @@ stateDiagram-v2
 
 ## Rules
 
+- The v8.7 S3 page still lists dispute answers as depending on the BPC API (question 29). Our answer (MP-Q13) does not: the merchant answers in the portal, the case is in S4, and analysts submit to the schemes.
 - Internal deadline = scheme deadline minus 3 days.
 - Visa: 22 days for the merchant; Mastercard: 37 days for second presentment, 22 for pre-arbitration (PRD timers).
 - Escalate and Accept are possible only while the stage waits for the merchant and the deadline has not passed.
 - Staff comments are shown; internal notes are not.
 
-## Changes v8.1 needs
+## Changes v8.7 needs
 
-For the CTO's next version of the architecture (v8.2).
+For the CTO's next version of the architecture.
 
 - WF11 14 to 17: the merchant's Escalate or Accept goes to the DisputeCase in S4; chargeback analysts submit in VROL or Mastercom (PRD WF11 v6). Not through A09 at launch (MP-Q12).
 - WF11 states: keep OPEN, SUBMITTED, WON, LOST, DECLINED for reporting; the portal shows the PRD stage names (MP-Q12).
@@ -114,9 +115,9 @@ For the CTO's next version of the architecture (v8.2).
 
 ### MP-Q12
 
-The PRD and v8.1 WF11 disagree: states (PRD stages vs OPEN/SUBMITTED/WON/LOST), channel (staff in VROL/Mastercom vs A09 to BPC), ledger (CB sub-account vs reserve and receivable).
+The PRD and v8.7 WF11 disagree: states (PRD stages vs OPEN/SUBMITTED/WON/LOST), channel (staff in VROL/Mastercom vs A09 to BPC), ledger (CB sub-account vs reserve and receivable).
 
-**Decision:** Use the PRD for the merchant side and update WF11 in v8.2. The portal shows PRD stages and maps them to the v8.1 states for reporting.
+**Decision:** Use the PRD for the merchant side and update WF11 in the next version. The portal shows PRD stages and maps them to the v8.7 states for reporting.
 
 Decided, awaiting sign-off by: CTO
 

@@ -8,10 +8,10 @@ Staff review the merchant and set limits, tariff, reserve and deposit with four 
 
 | | |
 |---|---|
-| Status | v8.1, gaps closed |
+| Status | v8.7, gaps closed |
 | For | Every merchant |
 | Area | Onboarding |
-| Source | WF02b steps 10 to 12 (v8.1 calls it underwriting) |
+| Source | WF02b steps 10 to 12 (v8.7 calls it underwriting) |
 | Starts when | Checks are complete (MP-06). |
 | Object | Onboarding review case (S4), offer |
 | Systems | Merchant (user), Portal (S3), Gateway, BFF (S18), Onboarding (S6), Admin (S4), Paytinno staff (OPS), Outside (bank, scheme), Messages (S17) |
@@ -31,7 +31,7 @@ sequenceDiagram
   participant EXT as Outside bank, scheme
   participant S17 as Messages S17
   S6->>S4: Onboarding review case. Every high-risk sector<br/>on Compliance's list gets its extra checks:<br/>licence, scheme registration, website and<br/>sales model.
-  S4->>EXT: MATCH and VMAS checks by API. Manual check in<br/>the scheme's own tool only when the API cannot<br/>be used, the result and evidence go into the<br/>case.
+  S4->>EXT: MATCH and VMAS checks under Paytinno's own<br/>scheme membership, by API. Manual check in the<br/>scheme's own tool only when the API cannot be<br/>used, the result and evidence go into the<br/>case. A hit means an in-depth review and a<br/>four-eyes decision.
   OPS->>S4: Limits, tariff, rolling reserve %, guarantee<br/>deposit, MCC.
   OPS->>S4: Exposure test. If a credit trigger is met, a<br/>credit review (underwriting) by the credit<br/>approver sets the reserve, deposit and payout<br/>delay that cover the exposure.
   S4->>S6: Approved with conditions, or rejected.<br/>Approver differs from preparer.
@@ -48,13 +48,13 @@ sequenceDiagram
 | # | From | To | Step | Call | Notes |
 |---|---|---|---|---|---|
 | 1 | Onboarding (S6) | Admin (S4) | Onboarding review case. Every high-risk sector on Compliance's list gets its extra checks: licence, scheme registration, website and sales model. |  | WF02b 10<br>**Decided:** [MP-Q61](../open-questions.md#mp-q61) |
-| 2 | Admin (S4) | Outside (bank, scheme) | MATCH and VMAS checks by API. Manual check in the scheme's own tool only when the API cannot be used; the result and evidence go into the case. |  | WF02b 11<br>**Decided:** [MP-Q65](../open-questions.md#mp-q65) |
+| 2 | Admin (S4) | Outside (bank, scheme) | MATCH and VMAS checks under Paytinno's own scheme membership, by API. Manual check in the scheme's own tool only when the API cannot be used; the result and evidence go into the case. A hit means an in-depth review and a four-eyes decision. |  | WF02b 11<br>**Decided:** [MP-Q65](../open-questions.md#mp-q65) |
 | 3 | Paytinno staff (OPS) | Admin (S4) | Limits, tariff, rolling reserve %, guarantee deposit, MCC. |  | WF02b 11<br>Time: 2 business days<br>Rule: Four eyes above a threshold or for high-risk sectors |
-| 4 | Paytinno staff (OPS) | Admin (S4) | Exposure test. If a credit trigger is met, a credit review (underwriting) by the credit approver sets the reserve, deposit and payout delay that cover the exposure. |  | Rule: Without a trigger there is no credit review<br>**Decided:** [MP-Q60](../open-questions.md#mp-q60)<br>Added to v8.1 |
+| 4 | Paytinno staff (OPS) | Admin (S4) | Exposure test. If a credit trigger is met, a credit review (underwriting) by the credit approver sets the reserve, deposit and payout delay that cover the exposure. |  | Rule: Without a trigger there is no credit review<br>**Decided:** [MP-Q60](../open-questions.md#mp-q60)<br>Added to v8.7 |
 | 5 | Admin (S4) | Onboarding (S6) | Approved with conditions, or rejected. Approver differs from preparer. |  | WF02b 12 |
 | 6 | Admin (S4) | Portal (S3) | Rejected: status CLOSED_REJECTED and a neutral notice. | `merchant.notify application_rejected` | **If it fails:** No reason is given in the portal |
 | | | | **Offer** | | |
-| 7 | Admin (S4) | Portal (S3) | Approved: the offer appears: tariff, reserve %, deposit, limits, payout schedule, the agreement. |  | **Decided:** [MP-Q19](../open-questions.md#mp-q19)<br>Added to v8.1 |
+| 7 | Admin (S4) | Portal (S3) | Approved: the offer appears: tariff, reserve %, deposit, limits, payout schedule, the agreement. |  | **Decided:** [MP-Q19](../open-questions.md#mp-q19)<br>Added to v8.7 |
 | 8 | Merchant (user) | Portal (S3) | The admin applicant accepts with SCA. The agreement version and evidence are stored. |  | **SCA**<br>**Decided:** [MP-Q19](../open-questions.md#mp-q19) |
 | 9 | Portal (S3) | Gateway, BFF (S18) | Acceptance. | `POST /v1/merchants/applications/{appId}/offer/accept` |  |
 | 10 | Gateway, BFF (S18) | Onboarding (S6) | Moves on to AWAITING_DEPOSIT or PROVISIONING (MP-09). |  |  |
@@ -88,9 +88,9 @@ stateDiagram-v2
 - The decision record keeps rationale, policy version, tariff, reserve and approvers, and the credit approver when there was a credit review (WF02b 18).
 - "Underwriting" means only the credit review. The rest is the onboarding review.
 
-## Changes v8.1 needs
+## Changes v8.7 needs
 
-For the CTO's next version of the architecture (v8.2).
+For the CTO's next version of the architecture.
 
 - WF02b 10 to 12: call it the onboarding review and the state ONBOARDING_REVIEW, not UNDERWRITING. Underwriting is only the credit review, when a credit trigger is met (MP-Q60).
 - WF02b 10: extra sector checks for every high-risk sector on Compliance's list, not only MCC 7995 (MP-Q61).
@@ -101,7 +101,7 @@ For the CTO's next version of the architecture (v8.2).
 
 ### MP-Q19
 
-Where does the merchant agree to the tariff, reserve and agreement? v8.1 goes from approval straight to set-up.
+Where does the merchant agree to the tariff, reserve and agreement? v8.7 goes from approval straight to set-up.
 
 **Decision:** Add OFFER_SENT: the offer in the portal, accepted with SCA by the applicant who is the representative. Qualified e-signature only if Legal requires it.
 
@@ -125,7 +125,7 @@ Decided, awaiting sign-off by: CTO
 
 ### MP-Q61
 
-Which sectors are high risk, and what extra checks does each get? v8.1 names only gambling (MCC 7995).
+Which sectors are high risk, and what extra checks does each get? v8.7 names only gambling (MCC 7995).
 
 **Decision:** Compliance keeps one list in the risk policy, the same list the AML system scores on. At least: gambling (National Revenue Agency licence), crypto (registration or MiCA licence), online pharmacy and medicines (Bulgarian Drug Agency permit), adult content, dating, tobacco, e-cigarettes and alcohol (age checks), forex and CFDs (investment firm licence), nutraceuticals and free trials (subscription terms), travel and ticketing (credit review). Each gets a licence check where one applies, the scheme high-risk registration where Visa or Mastercard require it, a website and sales-model review, four eyes and KYB refresh every 12 months.
 

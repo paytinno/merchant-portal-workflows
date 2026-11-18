@@ -4,7 +4,7 @@
 
 [All workflows](README.md)
 
-Proposed (MP-Q01). v8.1 names only ONBOARDING_APPLICANT and MERCHANT_ADMIN. Roles live in S6; S18 checks them on every call. The screens hide what a role cannot do, but S18 is the control.
+Proposed (MP-Q01). v8.7 names only ONBOARDING_APPLICANT and MERCHANT_ADMIN. Roles live in S6; S18 checks them on every call. The screens hide what a role cannot do, but S18 is the control.
 
 ## Roles
 

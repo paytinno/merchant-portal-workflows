@@ -11,7 +11,7 @@ The merchant's own four eyes. The request waits until someone else with the righ
 | Status | Proposed |
 | For | Every merchant |
 | Area | Team |
-| Source | One-pager S3 item 7 ("business roles, mandates and approvals"); not modelled in v8.1 |
+| Source | One-pager S3 item 7 ("business roles, mandates and approvals"); not modelled in v8.7 |
 | Starts when | An action over a person's limit, or one that always needs two people. |
 | Object | Approval request (S6) |
 | Systems | Merchant (user), Portal (S3), Gateway, BFF (S18), Onboarding (S6), Identity, SCA (S19), Messages (S17) |
