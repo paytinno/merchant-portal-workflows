@@ -9,6 +9,7 @@ the merchant types, the roles and rights, and the sources.
 | Status | Meaning |
 |---|---|
 | In v8.1 | As the CTO's architecture v8.1 writes it |
+| v8.1 with gaps | In v8.1, with open questions still to answer |
 | v8.1, gaps closed | In v8.1; every gap closed by a decision that awaits its owner's sign-off |
 | Proposed | Not in v8.1. Needs the CTO team's agreement |
 
@@ -56,7 +57,8 @@ directly in a browser.
 
 ## Relation to the portal prototype
 
-The clickable prototype lives in its own folder, `../merchant-portal` (port 8771). It reads `src/model.js` and `src/workflows.js`
+The clickable prototype lives in its own folder, `../merchant-portal` (port 8771), on the Paytinno shared drive under
+`Claude/Sve Code`. It is not on GitHub. It reads `src/model.js` and `src/workflows.js`
 from this repository: its server maps `spec/` to `src/`, so it expects this repository next to it.
 * Its roles and permissions come from `src/model.js`.
 * Its "Behind this screen" panel comes from `src/workflows.js`.
